@@ -1,34 +1,40 @@
-div
-{
-	height:
-}
+
 
 #ScheduleImage
 {
-	height: 20%;
-	width: 20%;
+	height: 15%;
+	width: height;
+	
 }
 
 #ScoreImage
 {
-	height: 20%;
-	width: 20%;
+	height: 15%;
+	width: height;
 }
 
 #ClubImage
 {
-	height: 20%;
-	width: 20%;
+	height: 15%;
+	width: height;
 }
 
 #StoreImage
 {
-	height: 20%;
-	width: 20%;
+	height: 15%;
+	width: height;
 }
 
 #TalonImage
 {
-	height: 20%;
-	width: 20%;
+	height: 15%;
+	width: height;
 }
+
+#NewsImage
+{
+	height: 15%;
+	width: height;
+}
+
+

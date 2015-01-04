@@ -4,13 +4,50 @@
 		
 	</head>
 	<body style="background-color:#0072ff">
-		<div id = "Button">
-			<a href = "index.html"><img style = "height: 20%; width: 20%" src = "img/Schedule.png" id = "ScheduleImage"></a>
-			<img style = "height: 20%; width: 20%"src = "img/Score.png" id = "ScoreImage">
-			<img style = "height: 20%; width: 20%" src = "img/Club.png" id="ClubImage">
-			<img style = "height: 20%; width: 20%" src = "img/Store.png" id = "StoreImage">
-			<img style = "height: 20%; width: 20%" src = "img/Talon.png" id = "TalonImage">
-		</div>
+		
+		<a href = ""><img style = "position:absolute" src = "img/Schedule.png" id = "ScheduleImage"></a>
+		<a href = ""><img style = "position:absolute" src = "img/Score.png" id = "ScoreImage"></a>
+		<a href = ""><img style = "position:absolute" src = "img/Club.png" id="ClubImage"></a>
+		<a href = ""><img style = "position:absolute" src = "img/Store.png" id = "StoreImage"></a>
+		<a href = ""><img style = "position:absolute" src = "img/Talon.png" id = "TalonImage"></a>
+		<a href = ""><img style = "position:absolute" src = "img/news.png" id = "NewsImage"></a>
+		
+		
+		<script type="text/javascript">
+		//This script repositions the images
+			var width = screen.width;
+			var height = screen.height;
+			//change these values to move the ENTIRE block around
+			var xFactor = -1*width*.04;//note this is negative! Thus decreasing the number will move it to the right
+			var yFactor = height*.05;
+			//alert(width);
+			var schedule = document.getElementById("ScheduleImage");
+			var score = document.getElementById("ScoreImage");
+			var club = document.getElementById("ClubImage");
+			var store = document.getElementById("StoreImage");
+			var talon = document.getElementById("TalonImage");
+			var news = document.getElementById("NewsImage");
+			
+			//repositions elements relative to the screen
+			schedule.style.top=height*.05 + yFactor +"px";
+			schedule.style.left=width*.2 + xFactor +"px";
+			
+			score.style.top=height*.05 + yFactor+"px";
+			score.style.left=width*.6 + xFactor +"px";
+			
+			club.style.top=height*.3 + yFactor+"px";
+			club.style.left=width*.2 + xFactor +"px";
+			
+			store.style.top=height*.3 + yFactor+"px";
+			store.style.left=width*.6 + xFactor +"px";
+			
+			talon.style.top=height*.55 + yFactor+"px";
+			talon.style.left=width*.2 + xFactor +"px";
+			
+			news.style.top=height*.55 + yFactor+"px";
+			news.style.left=width*.6 + xFactor +"px";
+			
+		</script>
 		
 	</body>
 
