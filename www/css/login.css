@@ -1,15 +1,15 @@
+#wrapper
+{
+	width:100%;
+	min-width:300px;
+	max-width:1260px;
+	margin: 0 auto;
+}
+
 body {
-	background-color: #faf9fb
+	background-color: #faf9fb;
 }
 
 .center{
 	text-align:center;
-}
-
-#wrapper
-{
-	width:100%
-	min-width:300px;
-	max-width:1260px;
-	margin: 0 auto;
 }
