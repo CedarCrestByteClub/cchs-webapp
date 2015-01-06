@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+
+-->
+<html>
+	<title>The first page when the program runs</title>
+	<head>
+		
+		<link rel="stylesheet" type="text/css" href="../css/index.css" />
+		<img style = "position:absolute" src = "../img/EmptyB.png" id = "TheB">
+		<audio src = "../sounds/bite.mp3" id = "sound"></audio>
+	</head>
+
+	<body>
+		<h1>Brought to you by...</h1>
+
+		<script type="text/javascript">
+			var width = screen.width;
+			var height = screen.height;
+			var theb = document.getElementById("TheB");
+			var byteSound = document.getElementById("sound");
+			var curImg = 0;
+			//runs switch image once a second.
+			var timer = setInterval(function() {
+				switchImage(curImg);
+			}, 1000);
+
+			theb.style.top = height * .3 + "px";
+			theb.style.left = width * .02 + "px";
+			/*
+			Tyler, this sizes the picture to the screen... kinda -Andrew
+			theb.style.height=height+"px";
+			theb.style.width=width+"px";
+			*/
+
+			//switches the image to make it appear as if the B is filling up, the parameter is used to keep track of the current image.
+			function switchImage(num) {
+				switch(num) {
+				case 0:
+					curImg = 1;
+					theb.src = "../img/B1.png";
+					break;
+				case 1:
+					curImg = 2;
+					theb.src = "../img/B2.png";
+					break;
+				case 2:
+					curImg = 3;
+					theb.src = "../img/B3.png";
+					break;
+				case 3:
+					curImg = 4;
+					theb.src = "../img/B4.png";
+					break;
+				case 4:
+					curImg = 5;
+					theb.src = "../img/B5.png";
+					break;
+				case 5:
+					curImg = 6;
+					byteSound.play();
+					theb.src = "../img/ByteClubLogo.png";
+					break;
+				case 6:
+					window.location = "login.html";
+					break;
+				default:
+					alert("Error, entered default switch in index.html!");
+
+				}
+			}
+		</script>
+	</body>
+</html>
