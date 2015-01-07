@@ -35,7 +35,7 @@ function signUp() {
 			}
 		});
 	}
-	window.location = "index.html";
+	window.location = "login.html";
 
 }
 
