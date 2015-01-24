@@ -10,6 +10,7 @@ div.content
 
 div.RightImage
 {
+	margin-top: -1px;
 	width: 10%;
 	height: 100%;
 	min-width: 70px;
@@ -68,5 +69,5 @@ div.spacerB
     max-width: 300px;
     max-height: 300px;
     margin: 45% 0 45% 0;
-    clear : all;
+    clear : both;
 }

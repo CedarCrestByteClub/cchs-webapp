@@ -11,7 +11,6 @@
 		<audio src = "../sounds/bite.mp3" id = "sound"></audio>
 
 	</head>
-
 	<body>
 		<h1>Brought to you by...</h1>
 
@@ -24,7 +23,7 @@
 			//runs switch image once a second.
 			var timer = setInterval(function() {
 				switchImage(curImg);
-			}, 500);
+			}, 1000);
 
 			theb.style.top = height * .3 + "px";
 			theb.style.left = width * .02 + "px";
@@ -33,7 +32,7 @@
 			theb.style.height=height+"px";
 			theb.style.width=width+"px";
 			*/
-
+	
 			//switches the image to make it appear as if the B is filling up, the parameter is used to keep track of the current image.
 			function switchImage(num) {
 				switch(num) {
@@ -67,7 +66,6 @@
 					break;
 				default:
 					alert("Error, entered default switch in index.html!");
-
 				}
 			}
 		</script>
