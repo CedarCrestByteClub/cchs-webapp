@@ -1,40 +1,79 @@
 
-
-#ScheduleImage
+div.content
 {
-	height: 15%;
-	
-	
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+	border: 1px solid #FFF000;
 }
 
-#ScoreImage
+div.RightImage
 {
-	height: 15%;
-	
+	width: 25%;
+	height: 100%;
+	min-width: 100px;
+    max-width: 300px;
+	float: right;
+	border: 1px solid #000000;
 }
 
-#ClubImage
+div.LeftImage
 {
-	height: 15%;
-	
+	width: 25%;
+	height: 100%;
+	min-width: 100px;
+    max-width: 300px;
+	float: left;
+	border: 1px solid #FFFFFF;
 }
 
-#StoreImage
+div.spacerL
 {
-	height: 15%;
-	
+	float: left;
+	max-width: 25%;
+	min-width: 15%;
+	max-height: 95%;
+	min-height: 75%;
 }
 
-#TalonImage
+div.spacerR
 {
-	height: 15%;
-	
+	float: right;
+	max-width: 25%;
+	min-width: 15%;
+	max-height: 95%;
+	min-height: 75%;	
 }
 
-#NewsImage
+div.spacerT
 {
-	height: 15%;
-	
+	width: 100%;
+	top: 0;
+	left: 0;
+	min-height: 5%;
+	max-height: 25%;
 }
 
+div.spacerB
+{
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	min-height: 5%;
+	max-height: 25%;
+}
 
+#Image
+{
+	width: 100%;
+	height: 20%;
+	min-width: 100px;
+    min-height: 100px;
+    max-width: 300px;
+    max-height: 300px;
+    margin: 12% 0 12% 0;
+    clear : all;
+}
