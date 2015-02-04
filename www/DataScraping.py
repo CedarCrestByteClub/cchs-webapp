@@ -5,10 +5,21 @@ originalHTML = urllib.urlopen("http://www.clsd.k12.pa.us/CCHigh.cfm?subpage=4314
 sourceCode = originalHTML.read()
 soup = BeautifulSoup(sourceCode)
 listOfStrings = ""
+
 for link in soup.find_all("a"):
     listOfStrings = listOfStrings + link.text + link.get("href")
+    
 myList = listOfStrings.split("2002-2003")
 finalList = myList[1].split("School Information")
+yearLinks = []
+index = 0
+
+while finalList.hasNext():
+    yearLinks[index] = "http://www.clsd.k12.pa.us/" + (finalList[0].split("200" +str(index + 3) + "-200" + str(index + 4)))[0]
+    print yearLinks[index]
+    index = index + 1
+
+'''
 firstLink = "http://www.clsd.k12.pa.us/" + (finalList[0].split("2003-2004"))[0]
 print firstLink
 secondLink = "http://www.clsd.k12.pa.us/" + (((finalList[0].split("2004-2005"))[1]).split("2005-2006"))[0]
@@ -31,3 +42,4 @@ tenthLink = "http://www.clsd.k12.pa.us/" + (((finalList[0].split("2012-2013"))[1
 print tenthLink
 eleventhLink = "http://www.clsd.k12.pa.us/" + (((finalList[0].split("2013-2014"))[1]).split("2014-2015"))[0]
 print eleventhLink
+'''
