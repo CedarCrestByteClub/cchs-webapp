@@ -1,31 +1,31 @@
 from bs4 import BeautifulSoup
 import urllib
+import execjs
 
 originalHTML = urllib.urlopen("http://www.clsd.k12.pa.us/CCHigh.cfm?subpage=43147")
 sourceCode = originalHTML.read()
 soup = BeautifulSoup(sourceCode)
-listOfStrings = ""
-numberOfLinks = 0
-
-for link in soup.find_all("a"):
-    listOfStrings = listOfStrings + link.text + link.get("href")
-    
-myList = listOfStrings.split("2002-2003")
-finalList = myList[1].split("School Information")
+listOfStrings = []
+years = []
 yearLinks = []
 index = 0
-listString = finalList[0]
 
-while len(listString) > 45:
-    tempString = listString.split(str(2000 + index + 3) + "-" + str(2000 + index + 4))[0]
-    if index != 0:
-        yearLinks.extend([("http://www.clsd.k12.pa.us/" + tempString[9:])])
-    else:
-        yearLinks.extend([("http://www.clsd.k12.pa.us/" + tempString)])
-    listString = listString.split(tempString)[1]
+listOfStrings =soup.find("ul", id="qlItems").find("ul", {"class": "deeper"}).find("ul", {"class": "deeper"}).find("ul", {"class": "deeper"}).findAll("li", recursive = False)
+
+for index in range(0, len(listOfStrings)):
+    years.append(listOfStrings[index].a.string)
+    listOfStrings[index] = listOfStrings[index].a["href"]
+    print listOfStrings[index]
+    print years[index]
+
+index = 0
+
+while index < len(listOfStrings):
+    yearLinks.append("http://www.clsd.k12.pa.us/" + listOfStrings[index])
     print yearLinks[index]
-    index = index + 1
+    index += 1
     
+numberOfLinks = 0
 articleLinks = []     
 for i in range(0,len(yearLinks)):
     print "\n\n\n\n\n" + str(2000 + i + 2) + "-" + str(2000 + i + 3)
@@ -38,6 +38,21 @@ for i in range(0,len(yearLinks)):
     for link in secondSoup.find_all("a"):
         if "Issue" in link.text:
             numberOfLinks += 1
-            issueLinks.extend(link.get("href"))
+            issueLinks.append("http://www.clsd.k12.pa.us" + link.get("href"))
             print(link.get("href"))
-    articleLinks.extend(issueLinks)
+    articleLinks.append(issueLinks)
+
+js = execjs.compile("""
+     function upload(articleLinks) {
+         return articleLinks;
+     }
+""")
+print js.call("upload", articleLinks)
+    
+    
+    
+    
+    
+    
+    
+    
