@@ -14,6 +14,8 @@ index = 0
 weeksTable = soup.find("div", id="sw-clientContent").div.find_next_sibling().table
 clubDescrip = soup.find("ul", id="qlItems").find("ul", {"class", "deeper"}).findAll("li", recursive=False)
 
+tableFile = open("table", 'w')
+tableFile.write(weeksTable)
 
 #Grabs herefs and the year they correspond to
 for index in range(0, len(clubDescrip)):
