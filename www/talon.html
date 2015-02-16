@@ -2,7 +2,10 @@
 <html>
 	<head>
 		<title>Talon Page</title>
-		<script type="text/javascript" src="js/common.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/home.css">
+		<script src="js/common.js"></script>
+		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 	</head>
 	
 	<body>
@@ -11,9 +14,86 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
-		<iframe  src="http://www.useducationtv.com/news.aspx?sid=6553&pid=80822" ></iframe>
+		<!--<iframe id="TalonView"></iframe>-->
 		
-	
+		<table id="linkTable">
+		</table>
+		
+		<script type="text/javascript">
+			//var frame = document.getElementById("TalonView");
+			//frame.style.visibility = 'hidden';
+			var TalonObjects = [];
+			var TalonLinks = Parse.Object.extend("TalonLinks");
+			var query = new Parse.Query(TalonLinks);
+			query.limit(1000);
+			query.find({
+				success: function(results) {
+					for(var i = 0; i < results.length; i++) {
+						//alert(results[i].get("Issue"));
+						TalonObjects.push(results[i]);
+					}
+				},
+				error: function(error) {
+					alert(error);
+				}
+			});
+			interval = setInterval(function() {
+				//alert(TalonObjects.length);
+				if(TalonObjects.length >= 170) {
+					TalonObjects = sortArray(TalonObjects);
+					var table = document.getElementById("linkTable");
+					for(var i = 0; i < 5; i++) {
+						var row = table.insertRow(table.rows.length);
+						var cell = row.insertCell(0);
+						//alert(TalonObjects[i]);
+						var text1 = document.createTextNode("Issue " + (TalonObjects[i].get("Issue")).toString());
+						var text2 = document.createTextNode("\n" + (TalonObjects[i].get("Year")).toString() + "-" + (TalonObjects[i].get("Year") + 1).toString() + " School Year\n");
+						cell.appendChild(text1);
+						cell.appendChild(text2);
+						var button = document.createElement("input");
+						button.setAttribute("value", "View");
+						button.setAttribute("type", "button");
+						button.setAttribute("onclick", "loadView()");
+						button.setAttribute("id", "button" + i.toString());
+						cell.appendChild(button);
+					}
+					var row = table.insertRow(table.rows.length);
+					var cell = row.insertCell(0);
+					var button = document.createElement("input");
+					button.setAttribute("value", "More");
+					button.setAttribute("type", "button");
+					button.setAttribute("id", "loadMore");
+					cell.appendChild(button);
+					stopInterval();
+				}
+			}, 250);
+			function stopInterval() {
+				clearInterval(interval);
+			}
+			function loadView(object) {
+				alert("Load View");
+			}
+			function sortArray(array) {
+				while(isSorted(array) == false) {
+					for(var i = 1; i < array.length; i++) {
+						if(!(array[i].get("Year") < array[i-1].get("Year") || (array[i].get("Year") == array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue")))) {
+							var temp = array[i-1];
+							array[i-1] = array[i];
+							array[i] = temp;
+						}
+					}
+				}
+				return array;
+			}
+			function isSorted(array) {
+				for(var i = 1; i < array.length; i++) {
+					if(!(array[i].get("Year") < array[i-1].get("Year") || (array[i].get("Year") == array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue")))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		</script>
 		
 	</body>
 </html>

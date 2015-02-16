@@ -71,3 +71,7 @@ div.spacerB
     margin: 45% 0 45% 0;
     clear : both;
 }
+
+td {
+	white-space:pre;
+}
