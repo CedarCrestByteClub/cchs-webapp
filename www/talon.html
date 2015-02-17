@@ -37,12 +37,18 @@
 					alert(error);
 				}
 			});
-			interval = setInterval(function() {
+			//loads the talon issues
+			interval = setInterval(function() 
+			{
 				//alert(TalonObjects.length);
-				if(TalonObjects.length >= 170) {
+				if(TalonObjects.length >= 170) 
+				{
+					//sorts issues and creats table that will display issues
 					TalonObjects = sortArray(TalonObjects);
 					var table = document.getElementById("linkTable");
-					for(var i = 0; i < 5; i++) {
+					//adds all of the issues to the table and a button to view the issues
+					for(var i = 0; i < 5; i++) 
+					{
 						var row = table.insertRow(table.rows.length);
 						var cell = row.insertCell(0);
 						//alert(TalonObjects[i]);
@@ -54,9 +60,10 @@
 						button.setAttribute("value", "View");
 						button.setAttribute("type", "button");
 						button.setAttribute("onclick", "loadView()");
-						button.setAttribute("id", "button" + i.toString());
+						button.setAttribute("id", "issueButton" + i.toString());
 						cell.appendChild(button);
 					}
+					//adds a button to load more issues
 					var row = table.insertRow(table.rows.length);
 					var cell = row.insertCell(0);
 					var button = document.createElement("input");
@@ -67,16 +74,23 @@
 					stopInterval();
 				}
 			}, 250);
-			function stopInterval() {
+			function stopInterval() 
+			{
 				clearInterval(interval);
 			}
-			function loadView(object) {
+			function loadView(object) 
+			{
 				alert("Load View");
 			}
-			function sortArray(array) {
-				while(isSorted(array) == false) {
-					for(var i = 1; i < array.length; i++) {
-						if(!(array[i].get("Year") < array[i-1].get("Year") || (array[i].get("Year") == array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue")))) {
+			//this is bublle sort, very ineffective, should reconstruct
+			function sortArray(array) 
+			{
+				while(isSorted(array) == false) 
+				{
+					for(var i = 1; i < array.length; i++) 
+					{
+						if(!(array[i].get("Year") <= array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue"))) 
+						{
 							var temp = array[i-1];
 							array[i-1] = array[i];
 							array[i] = temp;
@@ -85,9 +99,12 @@
 				}
 				return array;
 			}
-			function isSorted(array) {
-				for(var i = 1; i < array.length; i++) {
-					if(!(array[i].get("Year") < array[i-1].get("Year") || (array[i].get("Year") == array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue")))) {
+			function isSorted(array) 
+			{
+				for(var i = 1; i < array.length; i++) 
+				{
+					if(!(array[i].get("Year") <= array[i-1].get("Year") && array[i].get("Issue") < array[i-1].get("Issue"))) 
+					{
 						return false;
 					}
 				}
