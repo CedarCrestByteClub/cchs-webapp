@@ -51,8 +51,12 @@ for i in range(0,len(yearLinks)):
     for link in secondSoup.find_all("a"):
         if "Issue" in link.text:
             numberOfLinks += 1
-            issueLinks.append("http://www.clsd.k12.pa.us" + link.get("href"))
-            print(link.get("href"))
+            if "http" in link.get("href"):
+                issueLinks.append(link.get("href"))
+                print link.get("href")
+            else:
+                issueLinks.append("http://www.clsd.k12.pa.us/" + link.get("href"))
+                print "http://www.clsd.k12.pa.us/" + link.get("href")
     articleLinks.append(issueLinks)
   
 connection = httplib.HTTPSConnection('api.parse.com', 443)
@@ -77,7 +81,7 @@ for i in idNumbers:
        "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C"
     })
     result = json.loads(connection.getresponse().read())
-    print result
+    #print result
 
 for i in range(0, len(articleLinks)):
     for j in range(0, len(articleLinks[i])):
