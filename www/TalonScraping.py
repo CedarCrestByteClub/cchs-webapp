@@ -101,9 +101,3 @@ for i in range(0, len(articleLinks)):
         })
         result = json.loads(connection.getresponse().read())
         print result
-    
-    
-    
-    
-    
-    
