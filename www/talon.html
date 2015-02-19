@@ -17,16 +17,23 @@
 		</table>
 		
 		<script type="text/javascript">
+			//Regulates whether to show iframe or list
 			var frameShowing = false;
 			var numIssuesLoaded = 5;
+			var lengthOfResults  = 0;
+			//Store the database stuff
 			var TalonObjects = [];
+			//Connect to database class
 			var TalonLinks = Parse.Object.extend("TalonLinks");
 			var query = new Parse.Query(TalonLinks);
+			//Allows up to 1000 objects to be received from the database, up from the default 100
 			query.limit(1000);
+			//Returns all objects in an array
 			query.find({
 				success: function(results) {
+					lengthOfResults = results.length;
 					for(var i = 0; i < results.length; i++) {
-						//alert(results[i].get("Issue"));
+						//Transfer results to earlier array
 						TalonObjects.push(results[i]);
 					}
 				},
@@ -37,10 +44,10 @@
 			//loads the talon issues
 			interval = setInterval(function() 
 			{
-				//alert(TalonObjects.length);
-				if(TalonObjects.length >= 170) 
+				//Waits until all objects are loaded to prevent undefined objects from appearing
+				if(TalonObjects.length >= lengthOfResults) 
 				{
-					//sorts issues and creats table that will display issues
+					//sorts issues and creates table that will display issues
 					TalonObjects = sortArray(TalonObjects);
 					loadList(numIssuesLoaded-5);
 					stopInterval();
@@ -50,6 +57,7 @@
 			{
 				clearInterval(interval);
 			}
+			//Clears list and shows frame
 			function loadView(id, TalonObjects) 
 			{
 				frameShowing = true;
@@ -98,12 +106,14 @@
 				}
 				return true;
 			}
+			//Shows 5 more issues
 			function addMore() {
 				numIssuesLoaded += 5;
 				var button = document.getElementById("loadMore");
 				button.parentNode.removeChild(button);
 				loadList(numIssuesLoaded-5);
 			}
+			//Displays list
 			function loadList(start) {
 				var table = document.getElementById("linkTable");
 				//adds all of the issues to the table and a button to view the issues
@@ -138,6 +148,7 @@
 			function toHome()
 			{
 				if(frameShowing) {
+					//Removes iframe and shows list
 					var frame = document.getElementById("frame");
 					frame.parentNode.removeChild(frame);
 					loadList(0);
