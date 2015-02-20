@@ -18,27 +18,56 @@ index = 0
 weeksTable = soup.find("div", id="sw-clientContent").div.find_next_sibling().table.tbody.findAll("tr")
 
 #loads table into 2D array
-clubTable = []
-temp = [None]*len(weeksTable)
+clubTable = [["Fight Club", "800000", "Ms."], ["myClub", "LGI", "woop, there it is"]]
+'''temp = [None]*len(weeksTable)
 for i in range(len(weeksTable)):
     theText = str(weeksTable[i].text)
     temp[i]=(theText)
-    '''if((i % 3) == 0):
+    if((i % 3) == 0):    #keep this a comment, plz
         clubTable.append(temp)
         print temp
         temp = [None]'''
 
 
-
+#HTTP Request to grab stuff from database using REST API
 connection = httplib.HTTPSConnection('api.parse.com', 443)
 connection.connect()
 idNumbers = []
 params = urllib.urlencode({"limit":1000})
+
+#Sends request and returns results in a list
 connection.request('GET', '/1/classes/Clubs?%s' % params, '', {
     "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
     "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C"
 })
 result = json.loads(connection.getresponse().read())
+
+#Loops through and adds each object's ID to array
 for i in range(0, len(result['results'])):
     print ((result['results'])[i])['objectId']
     idNumbers.append(((result['results'])[i])['objectId'])
+
+#Deletes every item one by one (Parse doesn't really do mass deletion)
+for i in idNumbers:
+    print '/1/classes/Clubs/' + i
+    connection.request('DELETE', '/1/classes/Clubs/' + i, '', {
+       "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
+       "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C"
+    })
+    result = json.loads(connection.getresponse().read())
+    #print result
+    
+#Posts updated info to Parse, starting with an empty database
+for i in range(0, len(clubTable)):
+    #for j in range(0, len(articleLinks[i])):
+        connection.request('POST', '/1/classes/Clubs', json.dumps({
+            "Name": clubTable[i][0],
+            "Location": clubTable[i][1],
+            "Advisor": clubTable[i][2]
+        }), {
+           "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
+           "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C",
+           "Content-Type": "application/json"
+        })
+        result = json.loads(connection.getresponse().read())
+        print result
