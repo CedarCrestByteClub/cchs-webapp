@@ -18,7 +18,7 @@ index = 0
 weeksTable = soup.find("div", id="sw-clientContent").div.find_next_sibling().table.tbody.findAll("tr")
 
 #loads table into 2D array
-clubTable = [["Fight Club", "800000", "Ms."], ["myClub", "LGI", "woop, there it is"]]
+clubTable = [["Clubs", "Location", "Advisor", "Week"], ["Fight Club", "800000", "Ms.", "1"], ["myClub", "LGI", "woop, there it is", "2"]]
 '''temp = [None]*len(weeksTable)
 for i in range(len(weeksTable)):
     theText = str(weeksTable[i].text)
@@ -59,15 +59,17 @@ for i in idNumbers:
     
 #Posts updated info to Parse, starting with an empty database
 for i in range(0, len(clubTable)):
-    #for j in range(0, len(articleLinks[i])):
-        connection.request('POST', '/1/classes/Clubs', json.dumps({
-            "Name": clubTable[i][0],
-            "Location": clubTable[i][1],
-            "Advisor": clubTable[i][2]
-        }), {
-           "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
-           "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C",
-           "Content-Type": "application/json"
-        })
-        result = json.loads(connection.getresponse().read())
-        print result
+    connection.request('POST', '/1/classes/Clubs', json.dumps(
+    {
+        "name": clubTable[i][0],
+        "location": clubTable[i][1],
+        "advisor": clubTable[i][2],
+        "week": clubTable[i][3]
+    }), 
+    {
+        "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
+        "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C",
+        "Content-Type": "application/json"
+    })
+    result = json.loads(connection.getresponse().read())
+    print result
