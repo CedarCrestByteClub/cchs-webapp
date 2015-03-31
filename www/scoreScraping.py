@@ -39,6 +39,7 @@ for l in range(len(entries)):
     event[2] = entries[l][5].partition(":")[2]#sport
     event[5] = entries[l][21].partition(":")[2]#gender
     event[7] = entries[l][28].partition(":")[2]#level
+    event[10] = entries[l][57].partition(":")[2]#Home/Away
     
     #cancellations based on the string
     if entries[l][9].partition(":")[2] is "0":
@@ -63,6 +64,7 @@ for l in range(len(entries)):
             event[6] = entries[l][i].partition(":")[2]
         elif "STARTTIME" in entries[l][i]:
             event[8] = entries[l][i].partition(":")[2]
+        
         i+=2
     #add new event to events array
     events.append(event)
@@ -107,7 +109,8 @@ for i in range(0, len(events)):
         "gender": events[i][5],
         "opponent": events[i][6],
         "level": events[i][7],
-        "startTime": events[i][8]
+        "startTime": events[i][8],
+        "home": events[i][10]
     }), 
     {
         "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",

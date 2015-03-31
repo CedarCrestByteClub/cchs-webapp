@@ -1,11 +1,197 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Score Page</title>
+		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+		<link rel="stylesheet" type="text/css" href="css/score.css">
+		<title>Athletic Schedule</title>
 	</head>
 	
 	<body>
+		<!-- button to return to home and table to store calendar -->
+		<div style = "text-align: left; background-color:#00A2E8;">
+   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
+   		</div>
 		
+		<p id="month" style="text-align: center"></p>
+		<table id="calendar" border = 1, width = "100%"><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></table>
 		
+		<script type="text/javascript">
+			var months = [["Jan", 31], ["Feb", 28], ["Mar", 31], ["Apr", 30], ["May", 31], ["Jun", 30], ["Jul", 31], ["Aug", 31], ["Sep", 30], ["Oct", 31], ["Nov", 30], ["Dec", 31]];
+			var nextLeap = 2016;
+			var d = new Date();
+			var month = d.getMonth();//starts at 0
+			var year = d.getFullYear();
+			var dayOfWeek = d.getDay();//Sunday equals 0 and so forth
+			var count = 0;
+		    var dayOfMo = d.getDate();//starts at 1, not 0
+		    var calendar = document.getElementById("calendar");//sets up table
+		    
+		    //Store the database stuff
+			var eventObjects = [];
+
+			//Connect to database class
+			var events = Parse.Object.extend("Sport");
+			var query = new Parse.Query(events);
+			
+			//Allows up to 1000 objects to be received from the database, up from the default 100
+			query.limit(1000);
+			//Returns all objects in an array
+			query.find({
+				success: function(results) 
+				{
+					lengthOfResults = results.length;
+					for(var i = 0; i < results.length; i++) 
+					{
+						//Transfer results to earlier array
+						eventObjects.push(results[i]);
+					}
+					populate();
+				},
+				error: function(error) 
+				{
+					alert(error);
+				}
+			});
+		    
+		    //UI housekeeping
+		    document.getElementById("month").innerHTML = months[month][0] + ", " + year.toString();
+		    
+		    clock(true);
+		    
+		    function clock(start)
+		    {
+			    //so you can reuse the method in monthUp and monthDown
+			    if(start)
+			    {
+			        var startDay = dayOfMo % 7;//gets the number of the first occurance in the month of today's day of the week
+			        
+			        //determines which day of the week the month should start on
+			        for(i=1;i<startDay;i++)
+			        {
+			            if(dayOfWeek === 0)
+			                dayOfWeek = 6;
+			            else
+			                dayOfWeek--;
+			        }//dayOfWeek is now the start day of the month
+			    }
+			        
+			    //makes sure leap day is accounted for
+			    if(month == 1)
+			    {
+			        if(leapYear())
+			            months[1][1] = 29;
+			        else
+			            months[1][1] = 28;
+			    }
+			    
+			    //adds empty data for days that are not in the month
+			    var temp = document.createElement("tr");
+			    for(i=0;i<dayOfWeek;i++)
+			    {
+			        var cell = document.createElement("td");
+			        cell.innerHTML = "<td></td>";
+			        temp.appendChild(cell);
+			    }
+			    
+			    //finish row with blank spaces
+			    for(i=0;i<(7-dayOfWeek);i++)
+			    {
+			        var cell = document.createElement("td");
+			        cell.innerHTML = "<td>" + (i+1).toString() + "    </td>";
+			        temp.appendChild(cell);
+			    }
+			    
+			    //start next row and add old row
+			    calendar.appendChild(temp);
+			    temp = document.createElement("tr");
+			    
+			    for(i=(7-dayOfWeek);i<months[month][1];i++)
+			    {
+			        //start new rows when necessary
+			        if((count % 7) === 0)
+			        {
+			        	calendar.appendChild(temp);
+			            temp = document.createElement("tr");
+			        }
+			        
+			        var cell = document.createElement("td");
+			        cell.innerHTML = (i+1).toString() + "    ";
+			        temp.appendChild(cell);
+			        count++;
+			    }
+			    //add final child and populate table
+				calendar.appendChild(temp);
+		    }
+    		
+    		//populate table with buttons where events occur
+    		function populate()
+    		{
+    			var done = false;
+    			
+    			//loops through every cell in the calendar
+    			for (var i = 0, row; row = calendar.rows[i]; i++)
+    			{
+    				for (var k = 0, cell; cell = row.cells[k]; k++)
+    				{
+    					done = false;
+	    				//loops through all the events in the database
+	    				for(var j = 0; j < eventObjects.length; j++)
+	    				{
+	    					if(done) break;
+	    					
+	    					//if a cell has an event corresponding to it, put a button in the cell and increase the index
+	    					var date = eventObjects[j].get("date");
+	    					if(parseInt(cell.innerHTML) == parseInt(date.substring(date.indexOf(" ") + 1, date.indexOf(" ") + 4)))
+	    					{
+	    						var button = document.createElement("input");
+	    						button.setAttribute("type", "button");
+								button.setAttribute("onclick", "showEvents(this.parentNode.innerHTML)");
+								button.setAttribute("class", "event");
+								calendar.rows[i].cells[k].appendChild(button);
+								done = true;
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    		
+    		function showEvents(dayNum)
+    		{
+    			//store day of month in storage to send to event.html
+    			sessionStorage.setItem("day", dayNum.split(" ")[0]);
+    			
+    			//create event array to send
+    			events = [];
+    			
+    			//collect all strings into an array to send
+    			for(var i = 0; i < eventObjects.length; i++)
+    			{
+    				if(parseInt(eventObjects[i].get("date").split(" ")[1]) == dayNum.split(" ")[0])
+					{
+						event = [9];
+						event[0] = eventObjects[i].get("sport");
+						event[1] = eventObjects[i].get("gender");
+						event[2] = eventObjects[i].get("level");
+						event[3] = eventObjects[i].get("facility");
+						event[4] = eventObjects[i].get("opponent");
+						event[5] = eventObjects[i].get("startTime");
+						event[6] = eventObjects[i].get("postponed");
+						event[7] = eventObjects[i].get("cancelled");
+						event[8] = eventObjects[i].get("home");
+						console.log(event[8]);
+						events.push(event);
+					}
+    			}
+    			
+    			window.localStorage.setItem("eventList", JSON.stringify(events));
+   				window.location = "event.html";
+    		}
+    		
+    		function toHome()
+    		{
+    			window.location = "home.html";
+    		}
+		</script>
 	</body>
 </html>

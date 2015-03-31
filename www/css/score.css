@@ -1,0 +1,12 @@
+.event
+{
+	width: 10px;
+	height: 10px;
+	background-image: url(../img/calButton.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: white;
+	border: 0;
+	text-align: bottom center;
+	padding: 15px 15px 15px 15px;
+}
