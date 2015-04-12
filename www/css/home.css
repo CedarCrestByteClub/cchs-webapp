@@ -10,7 +10,7 @@ div.content
 
 div.RightImage
 {
-	margin-top: -1px;
+	margin: 20% 0 30% 0;
 	width: 10%;
 	height: 100%;
 	min-width: 70px;
@@ -20,6 +20,7 @@ div.RightImage
 
 div.LeftImage
 {
+	margin: 20% 0 30% 0;
 	width: 10%;
 	height: 100%;
 	min-width: 70px;
@@ -49,7 +50,7 @@ div.spacerT
 	top: 0;
 	left: 0;
 	min-height: 7%;
-	max-height: 40%;
+	max-height: 10%;
 }
 
 div.spacerB
@@ -58,7 +59,7 @@ div.spacerB
 	bottom: 0;
 	left: 0;
 	min-height: 7%;
-	max-height: 40%;
+	max-height: 10%;
 }
 
 #Image
