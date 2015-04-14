@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--displays all of the clubs from the database in a nice little table-->
+
 <html>
 	<head>
 		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
@@ -14,7 +14,7 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
-		<table id='clubTable' class="clubs" border="1"><th>Club</th><th>Advisor</th><th>Location</th><th>Week</th></table>
+		<table id='clubTable' class="clubs" border="1"></table>
 		
 		<script type = "text/javascript">
 			//Store the database stuff
@@ -45,6 +45,12 @@
 			{
 				//gets table made above and makes 2d array to store rows of table
 				var table = document.getElementById('clubTable');
+			
+				//get rid of old rows
+				for (var i=0; i<table.rows.length; i++ ) 
+				{
+                	table.deleteRow(0);
+	            }
 			
 				//put all of the info into the rows
 				for(var i = 0; i < ClubObjects.length; i++)

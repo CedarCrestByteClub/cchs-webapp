@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--shows an accurate calendar of the days of the current month and then a button in each day that a sports event is present-->
 <html>
 	<head>
 		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
@@ -8,12 +7,12 @@
 		<title>Athletic Schedule</title>
 	</head>
 	
-	<body bgcolor="#0072ff">
+	<body>
 		<!-- button to return to home and table to store calendar -->
-		<div style = "text-align: left; background-color:#696969;">
+		<div style = "text-align: left; background-color:#00A2E8;">
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
-   		
+		
 		<p id="month" style="text-align: center"></p>
 		<table id="calendar" border = 1, width = "100%"><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></table>
 		
@@ -185,7 +184,6 @@
 					}
     			}
     			
-    			//sets local storage to the items needed in event.html and switches the window
     			window.localStorage.setItem("eventList", JSON.stringify(events));
    				window.location = "event.html";
     		}

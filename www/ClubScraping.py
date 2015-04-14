@@ -17,8 +17,7 @@ index = 0
 #Navigates through publications source code / "parse tree" to find where the links and table are being held hostage
 weeksTable = soup.find("div", id="sw-clientContent").div.find_next_sibling().table.tbody.findAll("tr")
 
-#loads table into 2D array WHOEVER WORKS ON THIS NEXT, WE NEED ACCESS TO THE DISTRICT SITE SO THAT WE
-#CAN GET REAL DATA INSTEAD OF FILLER DATA, CAUSE THEY DON'T HAVE A GOOD SYSTEM TO STORE THEIR DATA
+#loads table into 2D array
 clubTable = [["Clubs", "Location", "Advisor", "Week"], ["Fight Club", "800000", "Ms.", "1"], ["myClub", "LGI", "woop, there it is", "2"]]
 '''temp = [None]*len(weeksTable)
 for i in range(len(weeksTable)):

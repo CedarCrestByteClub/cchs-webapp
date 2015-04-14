@@ -9,6 +9,7 @@ import time
 #set up source code based on date and declare other variables
 originalHTML = urllib.urlopen("http://schedules.schedulestar.com/cfcs/schedule.cfc?ReturnFormat=json&method=getEventList&x=1426611373795_&sc_id=PA170423667&schedDate="+time.strftime("%m")+"%2F"+time.strftime("%d")+"%2F"+time.strftime("%y")+"&current_schedule_view=month&userid=0&genderid=0&levelid=0&sportid=0")
 sourceCode = originalHTML.read()
+soup = BeautifulSoup(sourceCode)
 
 #var declaration
 lines = []
