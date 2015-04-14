@@ -3,7 +3,9 @@
 	displays articles scraped with schoolNews.py-->
 <html>
 	<head>
-		
+		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+		<link rel="stylesheet" type="text/css" href="css/score.css" />
 		<title>School News Page</title>
 	</head>
 	
@@ -12,11 +14,51 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
+		<table id="calendar" width="100%" border="1px"></table>
+		
 		<script type="text/javascript">
+			//Store the database stuff
+			var newsObjects = [];
+
+			//Connect to database class
+			var news = Parse.Object.extend("News");
+			var query = new Parse.Query(news);
+			
+			//Allows up to 1000 objects to be received from the database, up from the default 100
+			query.limit(1000);
+			//Returns all objects in an array
+			query.find({
+				success: function(results) {
+					lengthOfResults = results.length;
+					for(var i = 0; i < results.length; i++) {
+						//Transfer results to earlier array
+						newsObjects.push(results[i]);
+					}
+					makeTable();
+				},
+				error: function(error) {
+					alert(error);
+				}
+			});
+		
+			function makeTable()
+			{
+				//gets table made above and makes 2d array to store rows of table
+				var table = document.getElementById('calendar');
+				
+				//put all of the info into the rows
+				for(var i = 0; i < newsObjects.length; i++)
+				{
+					var temp = document.createElement("tr");
+					temp.innerHTML = newsObjects[i].get("story");
+					table.appendChild(temp);
+				}
+			}
+			
 			function toHome()
-   				{
-   					window.location = "news.html";
-   				}
+   			{
+   				window.location = "news.html";
+   			}
    		</script>
 	</body>
 </html>
