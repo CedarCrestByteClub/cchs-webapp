@@ -15,3 +15,15 @@
 	text-align: bottom center;
 	padding: 15px 15px 15px 15px;
 }
+
+input.center
+{
+	text-align: center;
+}
+
+#article
+{
+	background-color: #FFFFFF;
+	border: solid 1px;
+	overflow: hidden;
+}

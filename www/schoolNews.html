@@ -14,7 +14,7 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
-		<table id="calendar" width="100%" border="1px"></table>
+		<table id="calendar" width="100%" border="1px"><th>Stories</th></table>
 		
 		<script type="text/javascript">
 			//Store the database stuff
@@ -50,9 +50,22 @@
 				for(var i = 0; i < newsObjects.length; i++)
 				{
 					var temp = document.createElement("tr");
-					temp.innerHTML = newsObjects[i].get("story");
+					var button = document.createElement("input");
+					button.setAttribute("value", newsObjects[i].get("story").split("\n")[2]);
+					button.setAttribute("type", "button");
+					button.setAttribute("class", "center");
+					button.setAttribute("id", i.toString());
+					button.setAttribute("onclick", "showMore(this.value, parseInt(this.id))");
+					temp.appendChild(button);
 					table.appendChild(temp);
 				}
+			}
+			
+			function showMore(headline, id)
+			{
+				//sets local storage to the items needed in event.html and switches the window
+    			window.localStorage.setItem("event", newsObjects[id].get("story"));
+   				window.location = "story.html";
 			}
 			
 			function toHome()
