@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<!--place where notifications about school closings etc. will appear LEJ-->
+<html>
+	<head>
+		<title>Notifications</title>
+	</head>
+	<body style="background-color:#0072ff">
+		<div style = "text-align: left; background-color:#696969; ">
+   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
+   		</div>
+   		
+   		<p id="notifs"></p>
+   		
+   		<script type="text/javascript">
+   			//makin variables
+   			var alerts = JSON.parse(window.localStorage.getItem("notifications"));
+   			var para = document.getElementById("notifs");
+   			
+			for(var alert in alerts)
+			{
+				var newPar = document.createElement("p");
+				newPar.innerHTML = alert[0];
+				newPar.innerHTML += " on the day of " + alert[1];
+				para.appendChild(newPar);
+			}
+   		
+   			function toHome()
+   			{
+   				window.location = "home.html";
+   			}
+   		</script>
+	</body>
+</html>
