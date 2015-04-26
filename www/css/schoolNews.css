@@ -1,0 +1,12 @@
+#stories
+{
+	background-color: #FFFFFF;
+	max-width: 100%;
+	white-space: normal;
+	text-align: center;
+}
+
+input.center
+{
+	white-space: normal;
+}
