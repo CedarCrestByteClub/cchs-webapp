@@ -75,13 +75,12 @@ div.spacerB
 
 #notifImage
 {
-	width: 100%;
+	width: 10%;
 	min-width: 70px;
     min-height: 50px;
     max-width: 300px;
     max-height: 300px;
-    margin: 45% 0 45% 0;
-    clear : both;
+    margin: 0 0 0 90%;
 }
 
 td 
