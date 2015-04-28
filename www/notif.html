@@ -3,24 +3,26 @@
 <html>
 	<head>
 		<title>Notifications</title>
+		<link rel="stylesheet" type="text/css" href="css/notif.css">
 	</head>
 	<body style="background-color:#0072ff">
 		<div style = "text-align: left; background-color:#696969; ">
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
    		
-   		<p id="notifs"></p>
+   		<p id="notifs"><u>Closings/2 hour Delays</u></p>
    		
    		<script type="text/javascript">
    			//makin variables
    			var alerts = JSON.parse(window.localStorage.getItem("notifications"));
    			var para = document.getElementById("notifs");
    			
-			for(var alert in alerts)
+			for(var i = 0; i < alerts.length; i++)
 			{
 				var newPar = document.createElement("p");
-				newPar.innerHTML = alert[0];
-				newPar.innerHTML += " on the day of " + alert[1];
+				newPar.innerHTML = "-" + alerts[i][0];
+				newPar.innerHTML += " on the day of " + alerts[i][1];
+				newPar.setAttribute("class", "para");
 				para.appendChild(newPar);
 			}
    		

@@ -62,6 +62,25 @@
 					temp.appendChild(cell2);
 					temp.appendChild(cell3);
 					temp.appendChild(cell4);
+					
+					//make clubs for different weeks different colors
+					switch(cell4.innerHTML)
+					{
+						case "One":
+							temp.setAttribute("class", "one");
+							break;
+						case "Two":
+							temp.setAttribute("class", "two");
+							break;
+						case "Three":
+							temp.setAttribute("class", "three");
+							break;
+						case "Four":
+							temp.setAttribute("class", "four");
+							break;
+						default:
+							temp.setAttribute("class", "other");
+					}
 					table.appendChild(temp);
 				}
 			}
