@@ -66,6 +66,10 @@
 				else
 					startTime.innerHTML = eventList[i][5].substring(1,eventList[i][5].length-1);
 				
+				//color code
+				if(i % 2 == 0)
+					row.setAttribute("class", "grey");
+				
 				//add each cell to row, then add row to table
 				row.appendChild(sport);
 				row.appendChild(gender);

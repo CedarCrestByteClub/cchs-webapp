@@ -37,7 +37,7 @@ for i in idNumbers:
 connection.request('POST', '/1/classes/SchoolAlert', json.dumps(
 {
     "Event": "2hr delay",
-    "willOccurOn": "April 2 2015"
+    "willOccurOn": "June 2 2015"
 }), 
 {
     "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",

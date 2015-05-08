@@ -23,9 +23,13 @@
 			</div>
 		</div>
 		
+		<!--<script type="text/php" src="php/load.php"></script>-->
+		
 		<script type="text/javascript">
+			//LEJ
 			//Store the database stuff
 			var alertObjects = [];
+			var relevant = [];
 			
 			//gets image to replace
 			var bell = document.getElementById("notifImage");
@@ -82,14 +86,32 @@
 				console.log("entered done");
 				if(alertObjects.length > 0)
 				{
-					console.log("objects to show" + viewed);
-					if(!viewed || viewed == "false")
+					//to make sure the dates line up
+					var d = new Date();
+					var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+					
+					//populates above array
+					for(var i = 0; i < alertObjects.length; i++)
+					{
+						var alert = alertObjects[i].get("willOccurOn");
+						
+						if((alert.split(" ")[1] > d.getDate() && months[d.getMonth()] == alert.split(" ")[1]) || (months.indexOf(alert.split(" ")[0]) > d.getMonth() || d.getFullYear() < alert.split(" ")[2]))
+						{
+							relevant.push(alertObjects[i]);
+						}
+					}
+					
+					//ensures that bell is rung only when new alerts are available
+					if((!viewed || viewed == "false") && relevant.length > 0)
 					{
 						console.log("in done"+viewed);
 						ringBell();
 					}
 					else
+					{
 						bell.src = "img/notificationPresent.png";
+					}
 
 				}
 			}
@@ -101,11 +123,11 @@
 				var alerts = [];
 				
 				//make an array to send
-				for(var i = 0; i < alertObjects.length; i++)
+				for(var i = 0; i < relevant.length; i++)
 				{
 					var temp = [2];
-					temp[0] = alertObjects[i].get("Event");
-					temp[1] = alertObjects[i].get("willOccurOn");
+					temp[0] = relevant[i].get("Event");
+					temp[1] = relevant[i].get("willOccurOn");
 					alerts.push(temp);
 				}
 				//send all the stuff
@@ -137,6 +159,7 @@
 					
 				}, 150);
 				
+				//for when the bell rings
 				function switchImage(num)
 				{
 					switch(num)

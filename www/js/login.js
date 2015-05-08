@@ -5,7 +5,7 @@ function login() {
 
 	Parse.User.logIn(user, pass, {
 		success : function(user) {
-			alert("Entered success");
+			console.log("Entered success");
 			window.location = "home.html";
 		},
 		error : function(user, error) {
@@ -17,4 +17,8 @@ function login() {
 
 function signUp() {
 	window.location = "signUp.html";
+}
+
+function home() {
+	window.location = "home.html";
 }

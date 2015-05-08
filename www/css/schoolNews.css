@@ -1,9 +1,15 @@
 #stories
 {
-	background-color: #FFFFFF;
+	background-color: #0072ff;
 	max-width: 100%;
 	white-space: normal;
 	text-align: center;
+}
+
+.list
+{
+	background-color: #FFFFFF;
+	border: 1px solid;
 }
 
 input.center

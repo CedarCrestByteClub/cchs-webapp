@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<!--Lauren Johnston displays lunch menu for current month-->
+<!--Lauren Johnston displays lunch menu for current month LEJ-->
 <html>
 	<head>
 		<title>Lunch Menu</title>
-		<link rel="stylesheet" type="text/css" href="css/score.css">
+		<link rel="stylesheet" type="text/css" href="css/lunch.css">
 		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 	</head>
@@ -14,7 +14,7 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
-		<table id="calendar" bgcolor="white" width="100%" border="1px solid"></table>
+		<table id="calendar" width="100%" border="1px solid"></table>
 		
 		<script type="text/javascript">
 			//get table from html
@@ -63,13 +63,19 @@
 					
 					//create new cell to put info in and gets the content
 					var cell = document.createElement("td");
+					cell.setAttribute("class", "noPad");
 					var content = objects[i].get("cell");
 					
 					//formats the cell so that new lines actually happen
 					for(var j = 0; j < content.split("\n").length; j++)
 					{
-						var line = content.split("\n")[j];
+						//cause I don't want to type this a million times
+						var current = content.split("\n")[j];
+						current = current.replace(/([a-z])([A-Z])/g, '$1 $2');
+						
+						var line = current;
 						var para = document.createElement("p");
+						para.setAttribute("class", "noPad");
 						para.innerHTML = line;
 						cell.appendChild(para);
 					}
@@ -79,6 +85,7 @@
 					count++;
 				}
 			}
+			
 			
 			function toHome()
 			{

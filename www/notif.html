@@ -17,6 +17,7 @@
    			var alerts = JSON.parse(window.localStorage.getItem("notifications"));
    			var para = document.getElementById("notifs");
    			
+   			//adds alerts to display (only the relevant ones)
 			for(var i = 0; i < alerts.length; i++)
 			{
 				var newPar = document.createElement("p");

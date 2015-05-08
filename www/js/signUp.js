@@ -9,7 +9,7 @@ function signUp() {
 		//alert("Parse is initialized");
 		user.set("username", username);
 		user.set("password", pass1);
-		alert("username and password set");
+		console.log("username and password set");
 		var People = Parse.Object.extend("People");
 		var otherUser = new People();
 		otherUser.set("Username", username);
@@ -25,7 +25,7 @@ function signUp() {
 		 alert("Entered my signUp() error call");
 		 }
 		 });*/
-		alert("Please help");
+		console.log("Please help");
 		user.signUp(null, {
 			success : function(user) {
 
@@ -42,11 +42,11 @@ function signUp() {
 //eventually we should change this to require a longer username
 //checks for blank username and password, and checks to make sure passwords are the same
 function validate(username, pass1, pass2) {
-	alert("Entered validate");
+	console.log("Entered validate");
 	if (username !== "") {
 		if (pass1 === pass2) {
 			if (pass1 !== "") {
-				alert("Returning true");
+				console.log("Returning true");
 				return true;
 			} else
 				alert("Password field cannot be empty");
