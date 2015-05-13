@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<html>
 <!-- home for all of the functions that the app has available-->
 	<head>
+		<script src="https://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+		<script src="js/initialize.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/home.css">
-		<script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
-		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 	</head>
 	<body style="background-color:#0072ff">
 		<div class="content">
@@ -13,17 +14,46 @@
 			<div class = "spacerR"> </div>
 			<div class = "LeftImage">
 				<a href = "score.html"> <img src = "img/Score.png" id = "Image" ></a>
+				<p class= "noPad">Sports Schedule</p>
 				<a href = "store.html"><img src = "img/Store.png" id = "Image"></a>
+				<p class= "noPad">School Store</p>
 				<a href = "club.html"><img src = "img/Clubs.png" id = "Image"></a>
+				<p class= "noPad">Clubs</p>
 			</div>
 			<div class = "RightImage">
 				<a href = "lunches.html"><img src = "img/Sandwich.png" id = "Image"></a>
+				<p class= "noPad">Lunch Menu</p>
 				<a href = "news.html"><img src = "img/news.png" id = "Image"></a>
+				<p class= "noPad">News</p>
 				<a href = "map.html"><img src = "img/map.png" id = "Image"></a>
+				<p class= "noPad">Map</p>
 			</div>
 		</div>
 		
-		<!--<script type="text/php" src="php/load.php"></script>-->
+		<!-- this is in order to load stuff when online for offline use, not sure if it even works..
+		<script src="php/load.php"></script>-->
+		
+		<?php
+			//LEJ I started this and might not finish it...
+			//if network is available
+			try
+			{
+				//open files
+				$lunch = fopen("lunch.txt", "w") or die("Unable to open lunch file.");
+				$clubs = fopen("clubs.txt", "w") or die("Unable to open clubs file.");
+				$sports = fopen("sports.txt", "w") or die("Unable to open sports file.");
+				$news = fopen("news.txt", "w") or die("Unable to open news file.");
+				$notif = fopen("notif.txt", "w") or die("Unable to open notif file.");
+				
+				//okay, I dont know PHP. I'll admit that... future generations, please fix
+				Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+				fwrite($lunch, "did do");
+			}
+			catch(Exception $e) 
+			{
+				fwrite($lunch, "did not do");
+			}
+		?>
 		
 		<script type="text/javascript">
 			//LEJ
