@@ -26,7 +26,14 @@
 				newPar.setAttribute("class", "para");
 				para.appendChild(newPar);
 			}
-   		
+
+			if(alerts.length == 0)
+			{
+				var newPar = document.createElement("p");
+				newPar.innerHTML = "N//A";
+				para.appendChild(newPara);
+			}
+			
    			function toHome()
    			{
    				window.location = "home.html";
