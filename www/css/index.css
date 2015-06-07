@@ -63,6 +63,11 @@ div.center
     max-width: 300px;
 }
 
+.follow
+{
+	float: center;
+}
+
 #TheB
 {
 	float: left;
@@ -70,4 +75,5 @@ div.center
 	min-height: 50%;
 	max-width: 50%;
 	min-width: 30%;
+	clear: both;
 }
