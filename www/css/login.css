@@ -6,10 +6,12 @@
 	margin: 0 auto;
 }
 
-body {
+body 
+{
 	background-color: #FBF9FA;
 }
 
-.center{
+.center
+{
 	text-align:center;
 }
