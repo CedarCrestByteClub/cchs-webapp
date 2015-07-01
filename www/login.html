@@ -36,7 +36,7 @@ under the License.
 	</head>
 
 	<body>
-		<div id="wrapper">
+		<!--<div id="wrapper">-->
 			<p class="center">
 				<img src="../img/falcon.png" alt="Our School Mascot, the Falcon"/>
 			</p>
@@ -55,7 +55,7 @@ under the License.
 				<input type="button" onclick="signUp()" value = "Sign Up">
 				<input type="button" onclick="home()" value = "oops">
 			</div>
-		</div>
+		<!--</div>-->
 
 		<div id="deviceready" class="blink">
 			<p class="event listening"></p>
@@ -64,11 +64,6 @@ under the License.
 		<script type="text/javascript" src="js/index.js"></script>
 		<!--<script type="text/javascript" src="cordova.js"></script>-->
 		<script type="text/javascript">
-			var TestObject = Parse.Object.extend("TestObject");
-			var testObject = new TestObject();
-			testObject.save({foo: "bar"}).then(function(object) {
-  			alert("yay! it worked");
-			});
 			
 			app.initialize();
 			
