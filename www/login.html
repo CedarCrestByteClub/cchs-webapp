@@ -32,7 +32,7 @@ under the License.
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="msapplication-tap-highlight" content="no" />
 		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
 		<link href="../css/login.css" rel="stylesheet" type="text/css" />
 	</head>
 
@@ -55,7 +55,7 @@ under the License.
 				<input type="button" onclick="login()" value = "Login">
 				<input type="button" onclick="signUp()" value="Sign Up">
 <!--<<<<<< HEAD-->
-				<!--<input type="button" onclick="home()" value="oops">-->
+				<input type="button" onclick="home()" value="oops">
 <!--=======
 >>>>>>> origin/master-->
 			</div>
@@ -73,7 +73,6 @@ under the License.
 			
 			function login() 
 			{
-				alert("Look, You tried the button");
 				var user = document.getElementById("Username").value;
 				var pass = document.getElementById("Password").value;
 			
