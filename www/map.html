@@ -27,7 +27,11 @@
 		</style>
 	</head>
 	
-	<body>
+	<body style="background-color:#0072ff">
+		<!-- button to return to home and table to store clubs -->
+		<div style = "text-align: left; background-color:#696969; ">
+   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
+   		</div>
 		<p>From:</p>
 		<textarea rows="1" cols="20" placeholder="Search" onchange = "searchStart()" maxlength="20" id="startRoomInput"></textarea>
 		<p>To:</p>
@@ -48,6 +52,13 @@
 			<canvas id="drawCanvas" width="250" height="150"></canvas>
 		</div>
 		<script src="js/map.js"></script>
+		
+		<script type="text/javascript">
+			function toHome()
+			{
+				window.location = "home.html";
+			}
+		</script>
 	</body>
 </html>
 
