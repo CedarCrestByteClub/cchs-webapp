@@ -7,7 +7,7 @@ function signUp() {
 	{
 		//alert("validate works");
 		var user = new Parse.User();
-		//alert("Parse is initialized");
+		alert("Parse is initialized");
 		
 		user.set("username", username);
 		user.set("password", pass1);
