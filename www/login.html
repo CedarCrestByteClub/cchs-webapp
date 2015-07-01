@@ -63,10 +63,9 @@ under the License.
 			<p class="event received"></p>
 		</div>
 		<script type="text/javascript" src="js/index.js"></script>
-		<script type="text/javascript" src="cordova.js"></script>
+		<!--<script type="text/javascript" src="cordova.js"></script>-->
 		<script type="text/javascript">
 			app.initialize();
-			
 			
 			function login() 
 			{
@@ -74,11 +73,13 @@ under the License.
 				var pass = document.getElementById("Password").value;
 			
 				Parse.User.logIn(user, pass, {
-					success : function(user) {
+					success : function(user) 
+					{
 						console.log("Entered success");
 						window.location = "home.html";
 					},
-					error : function(user, error) {
+					error : function(user, error) 
+					{
 						alert("Error: " + error.code + " " + error.message);
 					}
 				});
