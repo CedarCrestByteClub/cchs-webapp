@@ -1,17 +1,21 @@
 function signUp() {
-	//alert("Entered sign up")
+	alert("Entered sign up");
 	var username = document.getElementById("Username").value;
 	var pass1 = document.getElementById("Password").value;
 	var pass2 = document.getElementById("Password2").value;
-	if (validate(username, pass1, pass2)) {
+	if (validate(username, pass1, pass2)) 
+	{
 		//alert("validate works");
 		var user = new Parse.User();
 		//alert("Parse is initialized");
+		
 		user.set("username", username);
 		user.set("password", pass1);
 		console.log("username and password set");
+		
 		var People = Parse.Object.extend("People");
 		var otherUser = new People();
+		
 		otherUser.set("Username", username);
 		otherUser.set("Password", pass1);
 		/*otherUser.save(null,
