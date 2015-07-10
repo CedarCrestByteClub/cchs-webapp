@@ -1,11 +1,16 @@
-function signUp() {
+function signUp() 
+{
 	alert("Entered sign up");
+	
+	//retrieves user entered values
 	var username = document.getElementById("Username").value;
 	var pass1 = document.getElementById("Password").value;
 	var pass2 = document.getElementById("Password2").value;
+	
+	//asserts that user entered values are valid
 	if (validate(username, pass1, pass2)) 
 	{
-		//alert("validate works");
+		alert("validate works");
 		var user = new Parse.User();
 		alert("Parse is initialized");
 		
@@ -13,12 +18,12 @@ function signUp() {
 		user.set("password", pass1);
 		console.log("username and password set");
 		
-		var People = Parse.Object.extend("People");
+		/*var People = Parse.Object.extend("People");
 		var otherUser = new People();
 		
 		otherUser.set("Username", username);
 		otherUser.set("Password", pass1);
-		/*otherUser.save(null,
+		otherUser.save(null,
 		 {
 		 success: function(otherUser)
 		 {
@@ -40,22 +45,28 @@ function signUp() {
 		});
 	}
 	window.location = "login.html";
-
 }
 
 //eventually we should change this to require a longer username
 //checks for blank username and password, and checks to make sure passwords are the same
-function validate(username, pass1, pass2) {
+function validate(username, pass1, pass2) 
+{
 	console.log("Entered validate");
-	if (username !== "") {
-		if (pass1 === pass2) {
-			if (pass1 !== "") {
+	if (username !== "") 
+	{
+		if (pass1 === pass2) 
+		{
+			if (pass1 !== "") 
+			{
 				console.log("Returning true");
 				return true;
-			} else
+			}
+			else
 				alert("Password field cannot be empty");
-		} else
+		}
+		else
 			alert("Passwords do not match!");
-	} else
+	}
+	else
 		alert("Username cannot be blank!");
 }

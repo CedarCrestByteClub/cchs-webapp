@@ -1,4 +1,5 @@
-function login() {
+function login()
+{
 
 	var user = document.getElementById("Username").value;
 	var pass = document.getElementById("Password").value;
@@ -15,10 +16,12 @@ function login() {
 
 }
 
-function signUp() {
+function signUp()
+{
 	window.location = "signUp.html";
 }
 
-function home() {
+function home()
+{
 	window.location = "home.html";
 }
