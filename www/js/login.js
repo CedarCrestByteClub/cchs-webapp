@@ -3,7 +3,7 @@ function login()
 
 	var user = document.getElementById("Username").value;
 	var pass = document.getElementById("Password").value;
-
+	alert("about to try login");
 	Parse.User.logIn(user, pass, {
 		success : function(user) {
 			console.log("Entered success");
@@ -13,7 +13,6 @@ function login()
 			alert("Error: " + error.code + " " + error.message);
 		}
 	});
-
 }
 
 function signUp()

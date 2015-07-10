@@ -40,7 +40,7 @@ function signUp()
 
 			},
 			error : function(user, error) {
-				/*alert("Error: " + error.code + " " + error.message);*/
+				alert("Error: " + error.code + " " + error.message);
 			}
 		});
 	}
