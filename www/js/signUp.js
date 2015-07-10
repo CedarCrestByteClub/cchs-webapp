@@ -14,8 +14,8 @@ function signUp()
 		var user = new Parse.User();
 		alert("Parse is initialized");
 		
-		user.set("username", username);
-		user.set("password", pass1);
+		user.setUsername(username);
+		user.setPassword(pass1);
 		console.log("username and password set");
 		
 		/*var People = Parse.Object.extend("People");
