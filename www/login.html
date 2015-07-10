@@ -70,6 +70,7 @@ under the License.
 			
 			function login() 
 			{
+				event.preventDefault();
 				var user = document.getElementById("Username").value;
 				var pass = document.getElementById("Password").value;
 			
@@ -84,7 +85,7 @@ under the License.
 						alert("Error: " + error.code + " " + error.message);
 					}
 				});
-			
+				return false;
 			}
 			
 			function signUp() 

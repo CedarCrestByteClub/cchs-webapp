@@ -45,6 +45,7 @@ function signUp()
 		});
 	}
 	window.location = "login.html";
+	return false;
 }
 
 //eventually we should change this to require a longer username
