@@ -312,7 +312,7 @@ jasmine.HtmlReporterHelpers.addHelpers(jasmine.HtmlReporter);jasmine.HtmlReporte
   function specPluralizedFor(count) {
     var str = count + " spec";
     if (count > 1) {
-      str += "s"
+      str += "s";
     }
     return str;
   }

@@ -98,7 +98,10 @@
 					}
 					//otherwise, status of whether or not they should be viewed stays the same
 					else
+					{
 						viewed = window.localStorage.getItem("viewed");
+						console.log(alertObjects.length);
+					}
 					
 					//then, done is called to ring bell if necessary
 					console.log(viewed);
@@ -133,16 +136,16 @@
 					}
 					
 					//ensures that bell is rung only when new alerts are available
-					if((!viewed || viewed == "false") && relevant.length > 0)
+					if(relevant.length > 0)
 					{
-						console.log("in done"+viewed);
-						ringBell();
+						if(!viewed || viewed == "false")
+						{
+							console.log("in done"+viewed);
+							ringBell();
+						}
+						else
+							bell.src = "img/notificationPresent.png";
 					}
-					else
-					{
-						bell.src = "img/notificationPresent.png";
-					}
-
 				}
 			}
 			
