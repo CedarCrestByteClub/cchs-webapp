@@ -1,5 +1,4 @@
 for(i = 0; i < 1; i++) {
-	//Create variables that need to be used globally
 	//Get original canvas and its height and width
 	var canvasstart = document.getElementById("drawCanvas");
 	var height = canvasstart.height - 10;
@@ -11,16 +10,14 @@ for(i = 0; i < 1; i++) {
 	var roomEnd = "";
 	var path = [];
 	var directions = [];
-	var directionsIndex = 0;
 	var specialCase = 0;
 	var pressStart = false;
 	var check1 = false;
 	var check2 = false;
 	var sClass = 0;
 	var eClass = 0;
-}   
-//Searches teacher array and finds entries that match what the user types in and adds them to the select
-//For starting classroom
+}
+    
 function searchStart() {
 	check1 = true;
     var textBox = document.getElementById("startRoomInput");
@@ -126,8 +123,6 @@ function searchStart() {
 		}
 	}
 }
-//Searches teacher array and finds entries that match what the user types in and adds them to the select
-//For end classroom
 function searchEnd() {
 	check2 = true;
     var textBox = document.getElementById("endRoomInput");
@@ -232,14 +227,12 @@ function searchEnd() {
 		}
 	} 
 }
-//Changes text field to match what the user selects in the select
 function changeStart(selected) {
     if(selected != "") {
         var textBox = document.getElementById("startRoomInput");
         textBox.value = selected;
 	}
 }
-//Changes text field to match what the user selects in the select
 function changeEnd(selected) {
     if(selected != "") {
         var textBox = document.getElementById("endRoomInput");
@@ -247,6 +240,7 @@ function changeEnd(selected) {
     }
 }
 
+//Hallway "class" and Intersection "class"
 //Passes the x and y coords of the top left of the hallway, the direction(0 for vertical and 1 for horizontal)
 //The length is centimeters, the id number, an array of the rooms in the hall, and the distance and side from the start of the hall
 function Hallway(x,y,direc,length,id,allRooms,coords){  
@@ -285,12 +279,10 @@ function Intersection(num1,num2) {
     this.id2 = 300;
    }
 }
-//Polymorphic class that takes place of an intersection, only handles one entrance to a staircase
 function Stair(x,y) {
 	this.x = x;
 	this.y = y;
 }
-//Allows teachers to be stored offline and accessed in the same way that Parse handles its objects
 function Teacher(name, room) {
 	this.name = name;
 	this.room = room;
@@ -302,7 +294,6 @@ Hallway.prototype.draw = function(x1, y1, x2, y2) {
     canvas.strokeStyle = "#858585";
     canvas.stroke();
 };
-//Mimics the Parse function that returns a field of an object
 Teacher.prototype.get = function(param) {
 	if(param === "name") {
 		return this.name;
@@ -312,7 +303,6 @@ Teacher.prototype.get = function(param) {
 	}
 };
 
-//Manually creates all of the hallways and intersections and adds them to arrays
 for(i = 0; i < 1; i++) {
     //Creates all of the hallways in the school
     var hall1 = new Hallway(.4,11.5,0,6,1,["301","302","304","305","306","307","308","310","311","312"], ["r1.0", "l1.0", "l1.5", "r3.5", "l3.5", "r4.0", "l4.0", "l6.5", "r6.5", "l7.0"]);
@@ -415,7 +405,6 @@ function sketch() {
 	canvas.closePath();
 }
 
-//Adds each teacher into an object and into an array
 for(c = 0; c < 1; c++) {
 	sketch();
 	//var roomClass = Parse.Object.extend("Teachers");
@@ -439,14 +428,9 @@ for(c = 0; c < 1; c++) {
 	});*/
 }
 
-//Print each direction to the console
 function giveDirections() {
-	directions = [];
-	var first = true;
 	for(b = 0; b < path.length; b++) {
-		console.log("b:" + b);
 		var message = "";
-		//For the first direction, from class to intersection
 		if(b == 0) {
 			var inter = 0;
 			var a=0;
@@ -468,12 +452,12 @@ function giveDirections() {
 	        }
 	        var passedInts = [];
 	        for(a = 0; a < path.length - 1; a++) {
-	        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(34);}
-	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(35);}
-	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(36);}
+	        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(37);}
+	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(39);}
+	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(38);}
 	        	else if(path[a+1] == 150) {}
-	        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-	        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
+	        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,13));}
+	        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,14));}
 	        	else {passedInts.push(intOf(path[a],path[a+1]));}
 	        }
 	        for(a = 0; a < passedInts.length; a++) {
@@ -581,34 +565,23 @@ function giveDirections() {
 				message += " intersection.";
 			}
 	        console.log(message);
-	        directions.push(message);
 		}
-		//For the middle directions, from intersection to intersection
 		else if(b < path.length - 2) {
 			var a = b;
 			var inter = 0;
-			if(path[a+1] == 100) {inter = stairs[0];}
-			else if(path[a] == 150) {if(path[a+1] == 200) {inter = stairs[1];} else if(path[a+1] == 300) {inter = stairs[2];}}
-	        else if(path[a+1] == 200) {inter = stairs[1];}
-	        else if(path[a+1] == 300) {inter = stairs[2];}
+			if(path[a+1] == 100) {inter = intersections[intOf(12,3)];}
+	        else if(path[a+1] == 200) {inter = intersections[intOf(15,13)];}
+	        else if(path[a+1] == 300) {inter = intersections[intOf(15,14)];}
+	        else if(path[a+1] == 150) {if(path[a+2] == 200) {inter = intersections[intOf(15,13)];} else if(path[a+2] == 300) {inter = intersections[intOf(15,14)];}}
 	        else if(path[a+1] == 400) {inter = stairs[4];}
 	        else if(path[a+1] == 500) {inter = stairs[5];}
-	        else {inter = intersections[intOf(path[b],path[b+1])];}
+	        else {intersections[intOf(path[b],path[b+1])];}
 	        //if(interesections[passedInts[b-1]].id)
-	        if(path[a] == 400 || path[a] == 500) {
-	        	var message = "Walk straight and go up the stairs.";
-	        	console.log(message);
-	        }
-	        if([100,200,300,400,500].indexOf(path[a]) < 0) {
-	        	var current = halls[path[b]-1];
-	        	if(path.indexOf(150) > 0 && first) {
-	        		b--;
-	        		//current = halls[path[b]-1];
-	        		//first = false;
-	        	}
+	        if([100,200,300,150,400,500].indexOf(path[a]) < 0) {
 	        	//console.log("current" + path[b] + "passedInts" + passedInts[b+1]);
+				var current = halls[path[b]-1];
 				var otherHalls = [];
-				for(a = 0; a < intersections.length - 6; a++) {
+				for(a = 0; a < intersections.length; a++) {
 		            if(intersections[a].id1 == current.id) {
 		                otherHalls.push(intersections[a].hall2);
 		            } else if(intersections[a].id2 == current.id) {
@@ -617,12 +590,12 @@ function giveDirections() {
 		        }
 		        var passedInts = [];
 		        for(a = 0; a < path.length - 1; a++) {
-		        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(34);}
-		        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(35);}
-		        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(36);}
+		        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(37);}
+		        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(39);}
+		        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(38);}
 		        	else if(path[a+1] == 150) {}
-		        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-		        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
+		        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,13));}
+		        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,14));}
 		        	else {passedInts.push(intOf(path[a],path[a+1]));}
 		        }
 		        var rank = 1;
@@ -637,7 +610,7 @@ function giveDirections() {
 	        			}
 					} else {
 						for(i = 0; i < otherHalls.length; i++) {
-	        				if(otherHalls[i].y > intersections[passedInts[b-1]].y && otherHalls[i].y < inter.y) {
+	        				if(otherHalls[i].y > intersections[passedInts[0]].y && otherHalls[i].y < inter.y) {
 	        					rank += 1;
 	        				}
 	        			}
@@ -645,60 +618,42 @@ function giveDirections() {
 				} else {
 					if(intersections[passedInts[b-1]].x > intersections[passedInts[b]].x) {
 						for(i = 0; i < otherHalls.length; i++) {
-	        				if(otherHalls[i].x < intersections[passedInts[b-1]].x && otherHalls[i].x > inter.x) {
+	        				if(otherHalls[i].x < intersections[passedInts[0]].x && otherHalls[i].x > inter.x) {
 	        					rank += 1;
 	        				}
 	        			}
 					} else {
 						for(i = 0; i < otherHalls.length; i++) {
-	        				if(otherHalls[i].x < intersections[passedInts[b-1]].x && otherHalls[i].x > inter.x) {
+	        				if(otherHalls[i].x < intersections[passedInts[0]].x && otherHalls[i].x > inter.x) {
 	        					rank += 1;
 	        				}
 	        			}
 					}
 				}
 				message += "Walk straight and turn ";
-				var ehall = path[path.length-1];
-				var intbx = intersections[passedInts[b]].x;
-				var intby = intersections[passedInts[b]].y;
-				var intb1x = 0;
-				var intb1y = 0;
-				if(b < passedInts.length - 1) {
-					intb1x = intersections[passedInts[b+1]].x;
-					intb1y = intersections[passedInts[b+1]].y;
-				}
-				else {
-					if(halls[ehall-1].direc == 1) {
-						intb1x = halls[ehall-1].x + parseFloat(halls[ehall-1].coords[eroom].substring(1));
-						intb1y = halls[ehall-1].y;
-					} else {
-						intb1x = halls[ehall-1].x;
-						intb1y = halls[ehall-1].y - parseFloat(halls[ehall-1].coords[eroom].substring(1));
-					}
-				}
 				if(current.direc == 0) {
-					if(intby > intersections[passedInts[b-1]].y) {
-						if(intb1x > intbx) {
+					if(intersections[passedInts[b]].y > intersections[passedInts[b-1]].y) {
+						if(intersections[passedInts[b+1]].x > intersections[passedInts[b]].x) {
 							message += "right";
 						} else {
 							message += "left";
 						}
 					} else {
-						if(intb1x > intbx) {
+						if(intersections[passedInts[b+1]].x > intersections[passedInts[b]].x) {
 							message += "left";
 						} else {
 							message += "right";
 						}
 					}
 				} else {
-					if(intbx > intersections[passedInts[b-1]].x) {
-						if(intb1y > intby) {
+					if(intersections[passedInts[b]].x > intersections[passedInts[b-1]].x) {
+						if(intersections[passedInts[b+1]].y > intersections[passedInts[b]].y) {
 							message += "left";
 						} else {
 							message += "right";
 						}
 					} else {
-						if(intb1y > intby) {
+						if(intersections[passedInts[b+1]].y > intersections[passedInts[b]].y) {
 							message += "right";
 						} else {
 							message += "left";
@@ -709,7 +664,7 @@ function giveDirections() {
 				if(rank == 1) {
 					message += "first";
 				} else if(rank == 2) {
-					message += "second"; 
+					message += "second";
 				} else if(rank == 3) {
 					message += "third";
 				} else if(rank == 4) {
@@ -718,27 +673,17 @@ function giveDirections() {
 					message += "fifth";
 				}
 				message += " intersection.";
-				console.log(b);
-				if(passedInts[b+1] >= 34 && passedInts[b+1] <= 36) {
+				if(passedInts[b+1] >= 34) {
 					message = "Walk straight and go down the stairs.";
 				}
-				if(passedInts[b] >= 37) {
-					message = "Walk straight and go up the stairs.";
-				}
-				if(first) {
-					//b++;
-					first = false;
-				}
 		        console.log(message);
-		        directions.push(message);
 	       }
 		}
-		//For the second to last direction, because of an issue with finding which way to turn
 		else if(b == path.length - 2) {
 			//var inter = intersections[intOf(path[b],path[b+1])];
 			var current = halls[path[b]-1];
 			var otherHalls = [];
-			for(a = 0; a < intersections.length - 6; a++) {
+			for(a = 0; a < intersections.length; a++) {
 	            if(intersections[a].id1 == current.id) {
 	                otherHalls.push(intersections[a].hall2);
 	            } else if(intersections[a].id2 == current.id) {
@@ -747,44 +692,39 @@ function giveDirections() {
 	        }
 	        var passedInts = [];
 	        for(a = 0; a < path.length - 1; a++) {
-	        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(37);}
-	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(38);}
-	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(39);}
-	        	else if(path[a+1] == 150) {}
-	        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-	        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
-	        	else {passedInts.push(intOf(path[a],path[a+1]));}
+	        	passedInts.push(intOf(path[a],path[a+1]));
+	        	//console.log(path[a] + "   " + path[a+1]);
+	        	//console.log(intOf(path[a], path[a+1]));
 	        }
-	        var rank = 0;
+	        var rank = 1;
 			if(current.direc == 0) {
-				var inter = halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1));
+				var inter = halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1));
 				//console.log("class" + (current.y - parseFloat(current.coords[sClass].substring(1))) + " intersection" + intersections[passedInts[0]].y);
 				if(intersections[passedInts[b-1]].y > intersections[passedInts[b]].y) {
 					//console.log("hall" + current.id + " class" + current.coords[sroom]);
 					for(i = 0; i < otherHalls.length; i++) {
-						//console.log("oh" + otherHalls[i].y + "  ipi" + intersections[passedInts[b-1]].y + "  inter" + inter);
         				if(otherHalls[i].y < intersections[passedInts[b-1]].y && otherHalls[i].y > inter) {
         					rank += 1;
         				}
         			}
 				} else {
 					for(i = 0; i < otherHalls.length; i++) {
-        				if(otherHalls[i].y > intersections[passedInts[b-1]].y && otherHalls[i].y < inter) {
+        				if(otherHalls[i].y > intersections[passedInts[0]].y && otherHalls[i].y < inter) {
         					rank += 1;
         				}
         			}
 				}
 			} else {
-				var inter = halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1));
+				var inter = halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1));
 				if(intersections[passedInts[b-1]].x > intersections[passedInts[b]].x) {
 					for(i = 0; i < otherHalls.length; i++) {
-        				if(otherHalls[i].x < intersections[passedInts[b-1]].x && otherHalls[i].x > inter) {
+        				if(otherHalls[i].x < intersections[passedInts[0]].x && otherHalls[i].x > inter) {
         					rank += 1;
         				}
         			}
 				} else {
 					for(i = 0; i < otherHalls.length; i++) {
-        				if(otherHalls[i].x < intersections[passedInts[b-1]].x && otherHalls[i].x > inter) {
+        				if(otherHalls[i].x < intersections[passedInts[0]].x && otherHalls[i].x > inter) {
         					rank += 1;
         				}
         			}
@@ -793,13 +733,13 @@ function giveDirections() {
 			message += "Walk straight and turn ";
 			if(current.direc == 0) {
 				if(intersections[passedInts[b]].y > intersections[passedInts[b-1]].y) {
-					if((halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1))) > intersections[passedInts[b]].x) {
+					if((halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1))) > intersections[passedInts[b]].x) {
 						message += "right";
 					} else {
 						message += "left";
 					}
 				} else {
-					if((halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1))) > intersections[passedInts[b]].x) {
+					if((halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1))) > intersections[passedInts[b]].x) {
 						message += "left";
 					} else {
 						message += "right";
@@ -807,13 +747,13 @@ function giveDirections() {
 				}
 			} else {
 				if(intersections[passedInts[b]].x > intersections[passedInts[b-1]].x) {
-					if((halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1))) > intersections[passedInts[b]].y) {
+					if((halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1))) > intersections[passedInts[b]].y) {
 						message += "left";
 					} else {
 						message += "right";
 					}
 				} else {
-					if((halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1))) > intersections[passedInts[b]].y) {
+					if((halls[path[path.length-1]-1].y - parseFloat(halls[path[path.length-1]-1].coords[sroom].substring(1))) > intersections[passedInts[b]].y) {
 						message += "right";
 					} else {
 						message += "left";
@@ -834,9 +774,7 @@ function giveDirections() {
 			}
 			message += " intersection.";
 	        console.log(message);
-	        directions.push(message);
 		}
-		//For the last direction, from intersection to class
 		else {
 			var inter = intersections[passedInts[passedInts.length-1]];
 			var current = halls[path[path.length-1]-1];
@@ -872,30 +810,10 @@ function giveDirections() {
 				}
 			}
 			console.log(message);
-			directions.push(message);
 		}
 	}
-	var label = document.getElementById("directionsLabel");
-	label.innerHTML = directions[0];
 }
 
-function goLeft() {
-	if(directions.length > 0 && directionsIndex > 0) {
-		directionsIndex--;
-		var label = document.getElementById("directionsLabel");
-		label.innerHTML = directions[directionsIndex];
-	}
-}
-
-function goRight() {
-	if(directions.length > 0 && directionsIndex < directions.length - 1) {
-		directionsIndex++;
-		var label = document.getElementById("directionsLabel");
-		label.innerHTML = directions[directionsIndex];
-	}
-}
-
-//Returns true if the two given halls intersect
 function doesIntersect(one, two) {
 	for(h = 0; h < intersections.length; h++) {
 		if((intersections[h].id1 == one && intersections[h].id2 == two) || (intersections[h].id1 == two && intersections[h].id2 == one)) {
@@ -905,7 +823,6 @@ function doesIntersect(one, two) {
 	return false;
 }
 
-//Returns the intersection array index of the intersection of the two given hallways
 function intOf(one, two) {
 	for(h = 0; h < intersections.length; h++) {
 		if((intersections[h].id1 == one && intersections[h].id2 == two) || (intersections[h].id1 == two && intersections[h].id2 == one)) {
@@ -925,7 +842,6 @@ function intOf(one, two) {
 	return -1;
 }
 
-//Initializes everything once the start button is pressed
 function start() {
 	/*var names = "";
 	var locations = "";
@@ -944,7 +860,7 @@ function start() {
 	if(tempselect.options[tempselect.selectedIndex].value == "" || check2 == false) {
 		return;
 	}
-	canvas.clearRect(0,0,width,height);
+	canvas.clearRect(0,0,height,width);
 	sketch();
 	roomStart = "";
 	roomEnd = "";
@@ -1003,7 +919,6 @@ function start() {
     checkIntersect(shall,ehall,sroom,eroom);
 }
 
-//Paints everything to the screen
 function checkIntersect(starting,ending,sClass,eClass) {
     var shall = starting;
     var ehall = ending;
@@ -1293,7 +1208,6 @@ function checkIntersect(starting,ending,sClass,eClass) {
 		canvas.stroke();
 	}
     canvas.closePath();
-    //Draw beginning and ending circles
     canvas.beginPath();
     var centerX = 0, centerY = 0;
     if(halls[shall-1].direc == 0) {
