@@ -24,6 +24,10 @@
 				position: relative;
 				z-index: 20;
 			}
+			label.input {
+				font-size: 6pt;
+				display: inline-block;
+			}
 		</style>
 	</head>
 	
@@ -48,6 +52,11 @@
 			<canvas id="drawCanvas" width="250" height="150"></canvas>
 		</div>
 		<script src="js/map.js"></script>
+		<div>
+			<input type="button" id="leftScrollButton" onclick="goLeft()" value="<"></input>
+			<label class="input" id="directionsLabel">Directions will appear here</label>
+			<input type="button" id"rightScrollButton" onclick="goRight()" value=">"></input>
+		</div>
 	</body>
 </html>
 
