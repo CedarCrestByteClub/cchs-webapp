@@ -2,7 +2,7 @@
 <!--displays the top 5 most current articles of the talon-->
 <html>
 	<head>
-		<script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+		<script src="https://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<link rel="stylesheet" type="text/css" href="css/talon.css">
 		<title>Talon Page</title>
@@ -14,9 +14,12 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
+		<label id="loadingLabel">Loading...</label>
 		<table id="linkTable" bgcolor="white" width="100%"></table>
 		
 		<script type="text/javascript">
+			//var loaded = 0;
+		
 			//Regulates whether to show iframe or list
 			var frameShowing = false;
 			var numIssuesLoaded = 5;
@@ -44,9 +47,15 @@
 			//loads the talon issues
 			interval = setInterval(function() 
 			{
+				//if(TalonObjects.length >= loaded + 10) {
+					//loaded += 10;
+					//alert("" + TalonObjects.length);
+				//}
 				//Waits until all objects are loaded to prevent undefined objects from appearing
 				if(TalonObjects.length >= lengthOfResults) 
 				{
+					var label = document.getElementById("loadingLabel");
+					label.style.display = "none";
 					//sorts issues and creates table that will display issues
 					TalonObjects = sortArray(TalonObjects);
 					loadList(numIssuesLoaded-5);

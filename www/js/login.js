@@ -3,10 +3,10 @@ function login()
 
 	var user = document.getElementById("Username").value;
 	var pass = document.getElementById("Password").value;
-	alert("about to try login");
+	alert("about to try login with user " + user + " and pass " + pass);
 	Parse.User.logIn(user, pass, {
 		success : function(user) {
-			console.log("Entered success");
+			alert("Entered success");
 			window.location = "home.html";
 		},
 		error : function(user, error) {

@@ -18,6 +18,15 @@ for(i = 0; i < 1; i++) {
 	var check2 = false;
 	var sClass = 0;
 	var eClass = 0;
+	var screenWidth = screen.width;
+	var screenHeight = screen.height;
+	var ratio = screenWidth / 250;
+	//alert("" + ratio);
+	canvas.canvas.width = 250 * ratio;
+	canvas.canvas.height = 150 * ratio;
+	canvas.lineWidth = canvas.lineWidth * ratio;
+	var originalWidth = canvas.lineWidth;
+	
 }   
 //Searches teacher array and finds entries that match what the user types in and adds them to the select
 //For starting classroom
@@ -287,8 +296,8 @@ function Intersection(num1,num2) {
 }
 //Polymorphic class that takes place of an intersection, only handles one entrance to a staircase
 function Stair(x,y) {
-	this.x = x;
-	this.y = y;
+	this.x = x * ratio;
+	this.y = y / ratio;
 }
 //Allows teachers to be stored offline and accessed in the same way that Parse handles its objects
 function Teacher(name, room) {
@@ -297,8 +306,8 @@ function Teacher(name, room) {
 }
 //Create draw "method"
 Hallway.prototype.draw = function(x1, y1, x2, y2) {
-    canvas.moveTo(x1,y1);
-    canvas.lineTo(x2,y2);
+    canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+    canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
     canvas.strokeStyle = "#858585";
     canvas.stroke();
 };
@@ -408,9 +417,11 @@ function sketch() {
 	   }
 	}
 	for(i=0; i<=4; i++) {
-		canvas.moveTo(0,0);
-		canvas.lineTo(0,1);
+		canvas.lineWidth = 1;
+		canvas.moveTo(canvas.canvas.width, canvas.canvas.height - 1);
+		canvas.lineTo(canvas.canvas.width, canvas.canvas.height);
 		canvas.stroke();
+		canvas.lineWidth = originalWidth;
 	}
 	canvas.closePath();
 }
@@ -1058,8 +1069,8 @@ function checkIntersect(starting,ending,sClass,eClass) {
         //console.log("x" + x2);
         //console.log("x" + y2);
         canvas.globalAlpha = 1;
-        canvas.moveTo(x1,y1);
-        canvas.lineTo(x2,y2);
+        canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+        canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
         canvas.stroke();
     } else {
         //console.log(path.length);
@@ -1127,8 +1138,8 @@ function checkIntersect(starting,ending,sClass,eClass) {
                 x2 = (halls[11].x * 10) + 10;
                 y2 = height - (halls[2].y * 10);
                 canvas.globalAlpha = 1;
-                canvas.moveTo(x1,y1);
-                canvas.lineTo(x2,y2);
+                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
                 canvas.stroke();
                 var ja = j + 2;
                 x1 = (halls[19].x * 10) + 10;
@@ -1165,8 +1176,8 @@ function checkIntersect(starting,ending,sClass,eClass) {
                     y2 = height - (halls[13].y * 10);
                 }
                 canvas.globalAlpha = 1;
-                canvas.moveTo(x1,y1);
-                canvas.lineTo(x2,y2);
+                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
                 canvas.stroke();
                 var ja = j + 2;
                 if(pathValue == 200) {
@@ -1196,8 +1207,8 @@ function checkIntersect(starting,ending,sClass,eClass) {
                 x2 = x1;
                 y2 = halls[12].y;
                 canvas.globalAlpha = 1;
-                canvas.moveTo(x1,y1);
-                canvas.lineTo(x2,y2);
+                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
                 canvas.stroke();
                 var ja = j + 2;
                 if(pathValue == 200) {
@@ -1234,8 +1245,8 @@ function checkIntersect(starting,ending,sClass,eClass) {
                 else {x2 = 215;}
                 y2 = y1;
                 canvas.globalAlpha = 1;
-                canvas.moveTo(x1,y1);
-                canvas.lineTo(x2,y2);
+                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
                 canvas.stroke();
                 var ja = j + 2;
                 x1 = (halls[14].x * 10) + 10;
@@ -1282,15 +1293,17 @@ function checkIntersect(starting,ending,sClass,eClass) {
             //console.log("drAw" + j + "  " + path.length);
             canvas.strokeStyle = "#FF0000";
             canvas.globalAlpha = 1;
-            canvas.moveTo(x1,y1);
-            canvas.lineTo(x2,y2);
+            canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+            canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
             canvas.stroke();
         }
     }
     for(i=0; i<=4; i++) {
-		canvas.moveTo(0,0);
-		canvas.lineTo(0,0);
+    	canvas.lineWidth = 1;
+		canvas.moveTo(canvas.canvas.width, canvas.canvas.height - 1);
+		canvas.lineTo(canvas.canvas.width, canvas.canvas.height);
 		canvas.stroke();
+		canvas.lineWidth = originalWidth;
 	}
     canvas.closePath();
     //Draw beginning and ending circles
@@ -1303,7 +1316,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
     	centerX = (halls[shall-1].x + parseFloat(halls[shall-1].coords[sClass].substring(1))) * 10 + 10;
     	centerY = height - (halls[shall-1].y * 10);
     }
-    canvas.arc(centerX,centerY,3,0,2*Math.PI);
+    canvas.arc(centerX * ratio + screenWidth/300,centerY * ratio - screenHeight/9,3 * ratio,0,2*Math.PI);
     canvas.fillStyle = "green";
     canvas.fill();
     //canvas.lineWidth = 5;
@@ -1318,7 +1331,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
     	centerX = (halls[ehall-1].x + parseFloat(halls[ehall-1].coords[eClass].substring(1))) * 10 + 10;
     	centerY = height - (halls[ehall-1].y * 10);
     }
-    canvas.arc(centerX,centerY,3,0,2*Math.PI);
+    canvas.arc(centerX * ratio + screenWidth/300,centerY * ratio - screenHeight/9,3 * ratio,0,2*Math.PI);
     canvas.fillStyle = "red";
     canvas.fill();
     //canvas.lineWidth = 5;

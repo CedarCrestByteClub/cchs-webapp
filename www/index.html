@@ -24,8 +24,8 @@ This is the first page the user sees. It shows a nice little graphic to advertis
 		</div>
 		<script type="text/javascript">
 			var theb = document.getElementById("TheB");
-			//var byteSound = document.getElementById("sound");
-			var curImg = 1;
+			var byteSound = document.getElementById("sound");
+			var curImg = 0;
 			
 			//runs switch image once a second.
 			var timer = setInterval(function() {
@@ -35,9 +35,9 @@ This is the first page the user sees. It shows a nice little graphic to advertis
 			//switches the image to make it appear as if the B is filling up, the parameter is used to keep track of the current image.
 			function switchImage(num) {
 				switch(num) {
-				case 1: case 2: case 3: case 4:
+				case 0: case 1: case 2: case 3: case 4:
 					curImg++;
-					theb.src = "img/B" + num.toString() + ".png";
+					theb.src = "img/B" + curImg.toString() + ".png";
 					break;
 				case 5:
 					curImg = 6;
@@ -45,7 +45,7 @@ This is the first page the user sees. It shows a nice little graphic to advertis
 					theb.src = "img/ByteClubLogo.png";
 					break;
 				case 6:
-					window.location = "login.html";
+					window.location = "home.html";
 					break;
 				default:
 					alert("Error, entered default switch in index.html!");

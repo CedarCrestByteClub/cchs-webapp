@@ -61,49 +61,6 @@ under the License.
 		<!--<div id="deviceready" class="blink">
 			<p class="event listening"></p>
 			<p class="event received"></p>
-		</div>
-<<<<<<< HEAD
-		
-		<script type="text/javascript">
-			
-			//app.initialize();
-			
-			function login() 
-			{
-				event.preventDefault();
-				var user = document.getElementById("Username").value;
-				var pass = document.getElementById("Password").value;
-			
-				alert("gonna try things");
-				Parse.User.logIn(user, pass, {
-					success : function(user) 
-					{
-						console.log("Entered success");
-						window.location = "home.html";
-					},
-					error : function(user, error) 
-					{
-						alert("Error: " + error.code + " " + error.message);
-					}
-				});
-				alert("yo it happened yo");
-				return false;
-			}
-			
-			function signUp() 
-			{
-				window.location = "signUp.html";
-			}
-			
-			function home() 
-			{
-				window.location = "home.html";
-			}
-		</script>
-=======
-		<script type="text/javascript" src="js/index.js"></script>
-		<script type="text/javascript" src="cordova.js"></script>-->
-		
->>>>>>> parent of f6ada5f... Revert "Finishing touches (hopefully)"
+		</div>-->
 	</body>
 </html>
