@@ -24,6 +24,10 @@
 				position: relative;
 				z-index: 20;
 			}
+			label.input {
+				font-size: 6pt;
+				display: inline-block;
+			}
 		</style>
 	</head>
 	
@@ -59,6 +63,12 @@
 				window.location = "home.html";
 			}
 		</script>
+		
+		<div>
+			<input type="button" id="leftScrollButton" onclick="goLeft()" value="<"></input>
+			<label class="input" id="directionsLabel">Directions will appear here</label>
+			<input type="button" id"rightScrollButton" onclick="goRight()" value=">"></input>
+		</div>
 	</body>
 </html>
 
