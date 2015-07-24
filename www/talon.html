@@ -70,7 +70,7 @@
 			function loadView(id, TalonObjects) 
 			{
 				frameShowing = true;
-				var issueNum = id.substring(id.length - 1);
+				var issueNum = id.substring(11);
 				var url = TalonObjects[issueNum].get("Link");
 				var body = document.getElementsByTagName("body")[0];
 				var frame = document.createElement("iframe");

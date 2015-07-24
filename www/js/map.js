@@ -296,8 +296,8 @@ function Intersection(num1,num2) {
 }
 //Polymorphic class that takes place of an intersection, only handles one entrance to a staircase
 function Stair(x,y) {
-	this.x = x * ratio;
-	this.y = y / ratio;
+	this.x = x;
+	this.y = y;
 }
 //Allows teachers to be stored offline and accessed in the same way that Parse handles its objects
 function Teacher(name, room) {
@@ -455,7 +455,7 @@ function giveDirections() {
 	directions = [];
 	var first = true;
 	for(b = 0; b < path.length; b++) {
-		console.log("b:" + b);
+		//console.log("b:" + b);
 		var message = "";
 		//For the first direction, from class to intersection
 		if(b == 0) {
@@ -488,7 +488,7 @@ function giveDirections() {
 	        	else {passedInts.push(intOf(path[a],path[a+1]));}
 	        }
 	        for(a = 0; a < passedInts.length; a++) {
-	        	console.log("passed " + passedInts[a]);
+	        	//console.log("passed " + passedInts[a]);
 	        }
 	        var rank = 1;
 			if(current.direc == 0) {
@@ -602,14 +602,14 @@ function giveDirections() {
 			else if(path[a] == 150) {if(path[a+1] == 200) {inter = stairs[1];} else if(path[a+1] == 300) {inter = stairs[2];}}
 	        else if(path[a+1] == 200) {inter = stairs[1];}
 	        else if(path[a+1] == 300) {inter = stairs[2];}
-	        else if(path[a+1] == 400) {inter = stairs[4];}
-	        else if(path[a+1] == 500) {inter = stairs[5];}
+	        else if(path[a+1] == 500) {inter = stairs[4];}
+	        else if(path[a+1] == 400) {inter = stairs[5];}
 	        else {inter = intersections[intOf(path[b],path[b+1])];}
 	        //if(interesections[passedInts[b-1]].id)
-	        if(path[a] == 400 || path[a] == 500) {
-	        	var message = "Walk straight and go up the stairs.";
-	        	console.log(message);
-	        }
+	        //if(path[a] == 400 || path[a] == 500) {
+	        	//var message = "Walk straight and go up the stairs.";
+	        	//console.log(message);
+	        //}
 	        if([100,200,300,400,500].indexOf(path[a]) < 0) {
 	        	var current = halls[path[b]-1];
 	        	if(path.indexOf(150) > 0 && first) {
@@ -632,10 +632,10 @@ function giveDirections() {
 		        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(35);}
 		        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(36);}
 		        	else if(path[a+1] == 150) {}
-		        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-		        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
+		        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
+		        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
 		        	else {passedInts.push(intOf(path[a],path[a+1]));}
-		        }
+		        }	
 		        var rank = 1;
 				if(current.direc == 0) {
 					//console.log("class" + (current.y - parseFloat(current.coords[sClass].substring(1))) + " intersection" + intersections[passedInts[0]].y);
@@ -674,6 +674,7 @@ function giveDirections() {
 				var intby = intersections[passedInts[b]].y;
 				var intb1x = 0;
 				var intb1y = 0;
+				//console.log("array value " + intersections[passedInts[b+1]].x);
 				if(b < passedInts.length - 1) {
 					intb1x = intersections[passedInts[b+1]].x;
 					intb1y = intersections[passedInts[b+1]].y;
@@ -686,6 +687,9 @@ function giveDirections() {
 						intb1x = halls[ehall-1].x;
 						intb1y = halls[ehall-1].y - parseFloat(halls[ehall-1].coords[eroom].substring(1));
 					}
+				}
+				if(b == 1) {
+					//console.log("bx is " + intbx + " and b1x is " + intb1x);
 				}
 				if(current.direc == 0) {
 					if(intby > intersections[passedInts[b-1]].y) {
@@ -729,18 +733,20 @@ function giveDirections() {
 					message += "fifth";
 				}
 				message += " intersection.";
-				console.log(b);
-				if(passedInts[b+1] >= 34 && passedInts[b+1] <= 36) {
+				//console.log(b);
+				if(passedInts[b] >= 34 && passedInts[b] <= 36 || path[b+1] == 12 && path[b+2] == 100) {
 					message = "Walk straight and go down the stairs.";
+					b++;
 				}
 				if(passedInts[b] >= 37) {
 					message = "Walk straight and go up the stairs.";
+					b++;
 				}
 				if(first) {
 					//b++;
 					first = false;
 				}
-		        console.log(message);
+		        console.log(b + " " + message);
 		        directions.push(message);
 	       }
 		}
@@ -1340,7 +1346,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
     canvas.closePath();
     giveDirections();
     for(tmp = 0; tmp < directions.length; tmp++) {
-    	console.log(directions[tmp]);
+    	//console.log(directions[tmp]);
     }
 }
 
