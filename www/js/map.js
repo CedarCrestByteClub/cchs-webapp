@@ -338,7 +338,7 @@ for(i = 0; i < 1; i++) {
     var hall12 = new Hallway(12.7,6.9,0,5.8,12,["514","512","1014"], ["l2.5", "l3.0","l5.0"]);
     var hall13 = new Hallway(10.8,5.7,1,7,13,["610","608","606","604","602"], ["r2.5", "r3.5", "r4.0", "r5.5", "r6.0"]);
     var hall14 = new Hallway(12.7,3.5,1,5.2,14,["510","508","506","504","502"], ["l0.5", "l1.5", "l2.5", "l3.0", "l4.0"]);
-    var hall15 = new Hallway(17.8,13,0,12,15,["500","707","705","703","701","1005","1006","1013"], ["l8.0", "r5.5", "r4.5", "r4.0", "r3.5","r1.0","r11.5","l4.5"]);
+    var hall15 = new Hallway(17.8,13,0,12,15,["500","707","705","703","701","1005","1006","1013"], ["l8.0", "r5.5", "r4.5", "r4.0", "r3.5","r1.0","l11.5","l4.5"]);
     var hall16 = new Hallway(12,10.7,1,5.8,16,["1003"], ["l4.5"]);
     var hall17 = new Hallway(20.6,3.8,1,3.3,17,["809","808","807"], ["l0.5", "r1.0", "r2.5"]);
     var hall18 = new Hallway(22.5,3.8,0,2.7,18,["806","805","804"], ["r2.5", "r3.0", "r3.5"]);
@@ -454,6 +454,12 @@ for(c = 0; c < 1; c++) {
 function giveDirections() {
 	directions = [];
 	var first = true;
+	if(roomStart == roomEnd) {
+		directions.push("Same classroom.");
+		var label = document.getElementById("directionsLabel");
+		label.innerHTML = directions[0];
+		return;
+	}
 	for(b = 0; b < path.length; b++) {
 		//console.log("b:" + b);
 		var message = "";
@@ -479,16 +485,16 @@ function giveDirections() {
 	        }
 	        var passedInts = [];
 	        for(a = 0; a < path.length - 1; a++) {
-	        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(34);}
-	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(35);}
-	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(36);}
+	        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(37);}
+	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(38);}
+	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(39);}
 	        	else if(path[a+1] == 150) {}
-	        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-	        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
+	        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
+	        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
 	        	else {passedInts.push(intOf(path[a],path[a+1]));}
-	        }
+	        }	
 	        for(a = 0; a < passedInts.length; a++) {
-	        	//console.log("passed " + passedInts[a]);
+	        	console.log("passed " + passedInts[a]);
 	        }
 	        var rank = 1;
 			if(current.direc == 0) {
@@ -544,8 +550,8 @@ function giveDirections() {
 				}
 			}
 			if(path[b+1] == 100 || path[b+1] == 200 || path[b+1] == 300){b++;message += ", walk straight, and go down the stairs.";}
-			else if(path[b+1] == 150){b+=2;message += ", walk straight, and go down the stairs.";}
-			else if(path[b+1] == 400 || path[b+1] == 500){b++;message += ", walk straight, and go up the stairs.";}
+			else if(path[b+1] == 150){b+=2;console.log(b);message += ", walk straight, and go down the stairs.";}
+			else if(path[b+1] == 400 || path[b+1] == 500){b++;message += ", walk straight, and go up the stairs.";if(path.length > 5) {b++;}}
 			else {
 				message += ", walk straight, and turn ";
 				if(current.direc == 0) {
@@ -591,7 +597,7 @@ function giveDirections() {
 				}
 				message += " intersection.";
 			}
-	        console.log(message);
+	        console.log(b + "" + message);
 	        directions.push(message);
 		}
 		//For the middle directions, from intersection to intersection
@@ -612,8 +618,10 @@ function giveDirections() {
 	        //}
 	        if([100,200,300,400,500].indexOf(path[a]) < 0) {
 	        	var current = halls[path[b]-1];
-	        	if(path.indexOf(150) > 0 && first) {
-	        		b--;
+	        	if(path.indexOf(150) > 0) {
+	        		console.log("Before: " + b);
+	        		b-=2;
+	        		console.log("After: " + b);
 	        		//current = halls[path[b]-1];
 	        		//first = false;
 	        	}
@@ -628,9 +636,9 @@ function giveDirections() {
 		        }
 		        var passedInts = [];
 		        for(a = 0; a < path.length - 1; a++) {
-		        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(34);}
-		        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(35);}
-		        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(36);}
+		        	if(path[a+1] == 100) {a++;passedInts.push(intOf(12,3));passedInts.push(37);}
+		        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(38);}
+		        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(39);}
 		        	else if(path[a+1] == 150) {}
 		        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
 		        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
@@ -734,19 +742,30 @@ function giveDirections() {
 				}
 				message += " intersection.";
 				//console.log(b);
-				if(passedInts[b] >= 34 && passedInts[b] <= 36 || path[b+1] == 12 && path[b+2] == 100) {
+				if((passedInts[b] >= 34 && passedInts[b] <= 36 || path[b+1] == 12 && path[b+2] == 100 || path[b] == 12 && path[b+1] == 100 || path[b+1] == 200 || path[b+1] == 300) && !(path.length-2 == passedInts.length)) {
 					message = "Walk straight and go down the stairs.";
 					b++;
 				}
-				if(passedInts[b] >= 37) {
+				if(passedInts[b] >= 37 && !(path.indexOf(100) >= 0 || path.indexOf(200) >= 0 || path.indexOf(300) >= 0)) {
 					message = "Walk straight and go up the stairs.";
 					b++;
+					if(path.length > 5) {
+						b++;
+					}
 				}
 				if(first) {
 					//b++;
 					first = false;
 				}
-		        console.log(b + " " + message);
+				if(message == directions[directions.length-1]) {
+					message += " (2)";
+				}
+				if(path.indexOf(150) > 0) {
+	        		b+=2;
+	        		//current = halls[path[b]-1];
+	        		//first = false;
+	        	}
+		        console.log(b + "" + message);
 		        directions.push(message);
 	       }
 		}
@@ -768,11 +787,16 @@ function giveDirections() {
 	        	else if(path[a+1] == 200) {a++;passedInts.push(intOf(15,13));passedInts.push(38);}
 	        	else if(path[a+1] == 300) {a++;passedInts.push(intOf(15,14));passedInts.push(39);}
 	        	else if(path[a+1] == 150) {}
-	        	else if(path[a+1] == 400) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
-	        	else if(path[a+1] == 500) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
+	        	else if(path[a+1] == 500) {a++;passedInts.push(38);passedInts.push(intOf(15,13));}
+	        	else if(path[a+1] == 400) {a++;passedInts.push(39);passedInts.push(intOf(15,14));}
 	        	else {passedInts.push(intOf(path[a],path[a+1]));}
-	        }
-	        var rank = 0;
+	        }	
+		    rank = 0;
+		    if(path.indexOf(150) > 0) {
+        		b-=2;
+        		//current = halls[path[b]-1];
+        		//first = false;
+        	}
 			if(current.direc == 0) {
 				var inter = halls[path[path.length-1]-1].x + parseFloat(halls[path[path.length-1]-1].coords[eroom].substring(1));
 				//console.log("class" + (current.y - parseFloat(current.coords[sClass].substring(1))) + " intersection" + intersections[passedInts[0]].y);
@@ -848,9 +872,19 @@ function giveDirections() {
 				message += "fourth";
 			} else if(rank == 5) {
 				message += "fifth";
+			} else {
+				message += "first";
 			}
 			message += " intersection.";
-	        console.log(message);
+			if(message == directions[directions.length-1]) {
+				message += " (2)";
+			}
+			if(path.indexOf(150) > 0) {
+        		b+=2;
+        		//current = halls[path[b]-1];
+        		//first = false;
+        	}
+	        console.log(b + "C" + message);
 	        directions.push(message);
 		}
 		//For the last direction, from intersection to class
@@ -886,6 +920,13 @@ function giveDirections() {
 					} else {
 						message += "The destination is on your left";
 					}
+				}
+			}
+			if(directions[directions.length-1] == "Walk straight and go up the stairs." || path[path.length-2] == 500 || path[path.length-2] == 400) {
+				if(roomEnd == "1006") {
+					message = "Turn left, walk straight, and t" + message.substring(1);
+				} else {
+					message = "Turn right, walk straight, and t" + message.substring(1);
 				}
 			}
 			console.log(message);
@@ -962,10 +1003,13 @@ function start() {
 		return;
 	}
 	canvas.clearRect(0,0,width,height);
+	canvasstart.width = canvasstart.width;
 	sketch();
 	roomStart = "";
 	roomEnd = "";
 	path = [];
+	directions = [];
+	directionsIndex = 0;
 	specialCase = 0;
 	pressStart = false;
 	pressStart = true;
@@ -1078,230 +1122,256 @@ function checkIntersect(starting,ending,sClass,eClass) {
         canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
         canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
         canvas.stroke();
-    } else {
+    }
+    else {
         //console.log(path.length);
         //Cycles through each path element to draw path
         for(j = 0; j < path.length; j++) {
-            var x1 = 0;
-            var y1 = 0;
-            var x2 = 0;
-            var y2 = 0;
-            //For first line in path
-            if(j == 0) {
-            	//console.log("al-jazero");
-                var cHall = halls[starting-1];
-                if(cHall.direc == 0) {
-                    x1 = (cHall.x * 10) + 10;
-                    y1 = height - ((cHall.y - parseFloat(cHall.coords[sClass].substring(1))) * 10);
-                } else {
-                    x1 = ((cHall.x + parseFloat(cHall.coords[sClass].substring(1))) * 10) + 10;
-                    y1 = height - (cHall.y * 10);
-                }
-                var firstInt = 0;
-                //console.log("AAAAA" + i);
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == starting && intersections[i].id2 == path[1]) || (intersections[i].id1 == path[1] && intersections[i].id2 == starting)) {
-                        firstInt = intersections[i];
-                        //console.log("" + firstInt.id1 + " " + firstInt.id2);
-                    }
-                }
-                //if(firstInt == 0) {console.log("failure");}
-                x2 = (firstInt.x * 10) + 10;
-                y2 = height - (firstInt.y * 10);
-            //For last line in path
-            } else if(j == path.length - 1) {
-            	//console.log("al-jaenda");
-                var lastInt = 0;
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == ending && intersections[i].id2 == path[path.length - 1]) || (intersections[i].id1 == path[path.length - 1] && intersections[i].id2 == ending)) {
-                        lastInt = intersections[i];
-                    }
-                }
-                x1 = (lastInt.x * 10) + 10;
-                y1 = height - (lastInt.y * 10);
-                var cHall = halls[ending-1];
-                if(cHall.direc == 0) {
-                    x2 = (cHall.x * 10) + 10;
-                    y2 = height - ((cHall.y - parseFloat(cHall.coords[eClass].substring(1))) * 10);
-                } else {
-                    x2 = ((cHall.x + parseFloat(cHall.coords[eClass].substring(1))) * 10) + 10;
-                    y2 = height - (cHall.y * 10);
-                }
-                if(cHall.id == 16 && halls[chend-1].allRooms[eClass] == "1003" && path[path.length - 2] == 12) {
-                    x2 = ((halls[11].x + 1.5) * 10) + 10;
-                }
-            //For going down the down only stairs
-            } else if(path[j+1] == 100) {
-            	//console.log("al-ja100");
-                var firstInt = 0;
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
-                        firstInt = intersections[i];
-                    }
-                }
-                x1 = (firstInt.x * 10) + 10;
-                y1 = height - (firstInt.y * 10);
-                x2 = (halls[11].x * 10) + 10;
-                y2 = height - (halls[2].y * 10);
-                canvas.globalAlpha = 1;
-                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
-                canvas.stroke();
-                var ja = j + 2;
-                x1 = (halls[19].x * 10) + 10;
-                y1 = height - ((halls[19].y - halls[19].length) * 10);
-                if(ja == path.length - 1) {
-                    x2 = (parseFloat(halls[19].x + (halls[ending].coords[eClass].substring(1))) * 10) + 10;
-                    y2 = height - (parseFloat(halls[19].y - (halls[ending].coords[eClass].substring(1))) * 10);
-                } else {
-                    var lastInt = 0;
-                    for(i = 0; i < intersections.length; i++) {
-                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
-                            lastInt = intersections[i];
-                        }
-                    }
-                    x2 = (lastInt.x * 10) + 10;
-                    y2 = height - (lastInt.y * 10);
-                }
-            //For going down either of the other two stairs
-            } else if(path[j+1] == 200 || path[j+1] == 300) {
-            	//console.log("al-ja2030");
-                var pathValue = path[j+1];
-                var firstInt = 0;
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
-                        firstInt = intersections[i];
-                    }
-                }
-                x1 = (firstInt.x * 10) + 10;
-                y1 = height - (firstInt.y * 10);
-                x2 = (halls[14].x * 10) + 10;
-                if(path[j+1] == 200) {
-                    y2 = height - (halls[12].y * 10);
-                } else {
-                    y2 = height - (halls[13].y * 10);
-                }
-                canvas.globalAlpha = 1;
-                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
-                canvas.stroke();
-                var ja = j + 2;
-                if(pathValue == 200) {
-                    x1 = (halls[16].x * 10) + 10;
-                } else {
-                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
-                }
-                y1 = height - (halls[16].y * 10);
-                if(ja == path.length - 1) {
-                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
-                    y2 = height - (halls[16].y * 10);
-                } else {
-                    var lastInt = 0;
-                    for(i = 0; i < intersections.length; i++) {
-                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
-                            lastInt = intersections[i];
-                        }
-                    }
-                    x2 = (lastInt.x * 10) + 10;
-                    y2 = height - (lastInt.y * 10);
-                }
-            //If start room is in the same hall as the two non-down only stairs
-            } else if(path[j+1] == 150) {
-            	//console.log("al-ja150");
-                x1 = (halls[14].x * 10) + 10;
-                y1 = height - ((halls[14].y - parseFloat(halls[14].coords[sClass].substring(1))) * 10);
-                x2 = x1;
-                y2 = halls[12].y;
-                canvas.globalAlpha = 1;
-                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
-                canvas.stroke();
-                var ja = j + 2;
-                if(pathValue == 200) {
-                    x1 = (halls[16].x * 10) + 10;
-                } else {
-                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
-                }
-                y1 = height - (halls[16].y * 10);
-                if(ja == path.length - 1) {
-                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
-                    y2 = height - (halls[16].y * 10);
-                } else {
-                    var lastInt = 0;
-                    for(i = 0; i < intersections.length; i++) {
-                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
-                            lastInt = intersections[i];
-                        }
-                    }
-                    x2 = (lastInt.x * 10) + 10;
-                    y2 = height - (lastInt.y * 10);
-                }
-            //For going up the two permissible up stairs
-            } else if(path[j+1] == 400 || path[j+1] == 500) {
-            	//console.log("al-ja4050");
-                pathValue = path[j+1];
-                if(path.length == 1) {
-                    x1 = ((halls[16].x + parseFloat(halls[16].coords[sClass].substring(1))) * 10) + 10;
-                    y1 = height - (halls[16].y * 10);
-                } else {
-                    x1 = (halls[17].x * 10) + 10;
-                    y1 = height - (halls[16].y * 10);
-                }
-                if(pathValue == 400) {x2 = 245;}
-                else {x2 = 215;}
-                y2 = y1;
-                canvas.globalAlpha = 1;
-                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
-                canvas.stroke();
-                var ja = j + 2;
-                x1 = (halls[14].x * 10) + 10;
-                if(pathValue == 500) {
-                    y1 = height - (halls[12].y * 10);
-                } else {
-                    y1 = height - (halls[13].y * 10);
-                }
-                if(ja == path.length - 1) {
-                    x2 = (halls[14].x * 10) + 10;
-                    y2 = height - ((halls[14].y - parseFloat(halls[14].coords[eClass].substring(1))) * 10);
-                } else {
-                    var lastInt = 0;
-                    for(i = 0; i < intersections.length; i++) {
-                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
-                            lastInt = intersections[i];
-                        }
-                    }
-                    x2 = (lastInt.x * 10) + 10;
-                    y2 = height - (lastInt.y * 10);
-                }
-            //For all other normal paths
-            } else {
-                var firstInt = 0;
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
-                        firstInt = intersections[i];
-                    }
-                }
-                var lastInt = 0;
-                for(i = 0; i < intersections.length; i++) {
-                    if((intersections[i].id1 == path[j] && intersections[i].id2 == path[j+1]) || (intersections[i].id1 == path[j+1] && intersections[i].id2 == path[j])) {
-                        lastInt = intersections[i];
-                    }
-                }
-                x1 = (firstInt.x * 10) + 10;
-                y1 = height - (firstInt.y * 10);
-                x2 = (lastInt.x * 10) + 10;
-                y2 = height - (lastInt.y * 10);
-                //console.log("rAlp LarEn" + j);
+        	if(j == 1 && path[1] == 500) {
+        		//console.log("entered this");
+        	}
+        	else if(j == 1 && path[1] == 400) {
+        	}
+        	else {
+	            var x1 = 0;
+	            var y1 = 0;
+	            var x2 = 0;
+	            var y2 = 0;
+	            //For first line in path
+	            if(j == 0) {
+	            	//console.log("al-jazero");
+	                var cHall = halls[starting-1];
+	                if(cHall.direc == 0) {
+	                    x1 = (cHall.x * 10) + 10;
+	                    y1 = height - ((cHall.y - parseFloat(cHall.coords[sClass].substring(1))) * 10);
+	                } else {
+	                    x1 = ((cHall.x + parseFloat(cHall.coords[sClass].substring(1))) * 10) + 10;
+	                    y1 = height - (cHall.y * 10);
+	                }
+	                var firstInt = 0;
+	                //console.log("AAAAA" + i);
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == starting && intersections[i].id2 == path[1]) || (intersections[i].id1 == path[1] && intersections[i].id2 == starting)) {
+	                        firstInt = intersections[i];
+	                        //console.log("" + firstInt.id1 + " " + firstInt.id2);
+	                    }
+	                    if(path[1] == 500) {
+	                    	firstInt = stairs[4];
+	                    }
+	                    if(path[1] == 400) {
+	                    	firstInt = stairs[5];
+	                    }
+	                }
+	                //if(firstInt == 0) {console.log("failure");}
+	                x2 = (firstInt.x * 10) + 10;
+	                y2 = height - (firstInt.y * 10);
+	            //For last line in path
+	            }
+	            else if(j == path.length - 1) {
+	            	//console.log("al-jaenda");
+	                var lastInt = 0;
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == ending && intersections[i].id2 == path[path.length - 1]) || (intersections[i].id1 == path[path.length - 1] && intersections[i].id2 == ending)) {
+	                        lastInt = intersections[i];
+	                    }
+	                }
+	                x1 = (lastInt.x * 10) + 10;
+	                y1 = height - (lastInt.y * 10);
+	                var cHall = halls[ending-1];
+	                if(cHall.direc == 0) {
+	                    x2 = (cHall.x * 10) + 10;
+	                    y2 = height - ((cHall.y - parseFloat(cHall.coords[eClass].substring(1))) * 10);
+	                } else {
+	                    x2 = ((cHall.x + parseFloat(cHall.coords[eClass].substring(1))) * 10) + 10;
+	                    y2 = height - (cHall.y * 10);
+	                }
+	                if(cHall.id == 16 && halls[chend-1].allRooms[eClass] == "1003" && path[path.length - 2] == 12) {
+	                    x2 = ((halls[11].x + 1.5) * 10) + 10;
+	                }
+	            //For going down the down only stairs
+	            }
+	            else if(path[j+1] == 100) {
+	            	//console.log("al-ja100");
+	                var firstInt = 0;
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
+	                        firstInt = intersections[i];
+	                    }
+	                }
+	                x1 = (firstInt.x * 10) + 10;
+	                y1 = height - (firstInt.y * 10);
+	                x2 = (halls[11].x * 10) + 10;
+	                y2 = height - (halls[2].y * 10);
+	                canvas.globalAlpha = 1;
+	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.stroke();
+	                var ja = j + 2;
+	                x1 = (halls[19].x * 10) + 10;
+	                y1 = height - ((halls[19].y - halls[19].length) * 10);
+	                if(ja == path.length - 1) {
+	                    x2 = (parseFloat(halls[19].x + (halls[ending].coords[eClass].substring(1))) * 10) + 10;
+	                    y2 = height - (parseFloat(halls[19].y - (halls[ending].coords[eClass].substring(1))) * 10);
+	                } else {
+	                    var lastInt = 0;
+	                    for(i = 0; i < intersections.length; i++) {
+	                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
+	                            lastInt = intersections[i];
+	                        }
+	                    }
+	                    x2 = (lastInt.x * 10) + 10;
+	                    y2 = height - (lastInt.y * 10);
+	                }
+	            //For going down either of the other two stairs
+	            }
+	            else if(path[j+1] == 200 || path[j+1] == 300) {
+	            	//console.log("al-ja2030");
+	                var pathValue = path[j+1];
+	                var firstInt = 0;
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
+	                        firstInt = intersections[i];
+	                    }
+	                }
+	                x1 = (firstInt.x * 10) + 10;
+	                y1 = height - (firstInt.y * 10);
+	                x2 = (halls[14].x * 10) + 10;
+	                if(path[j+1] == 200) {
+	                    y2 = height - (halls[12].y * 10);
+	                } else {
+	                    y2 = height - (halls[13].y * 10);
+	                }
+	                canvas.globalAlpha = 1;
+	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.stroke();
+	                var ja = j + 2;
+	                if(pathValue == 200) {
+	                    x1 = (halls[16].x * 10) + 10;
+	                } else {
+	                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
+	                }
+	                y1 = height - (halls[16].y * 10);
+	                if(ja == path.length - 1) {
+	                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
+	                    y2 = height - (halls[16].y * 10);
+	                } else {
+	                    var lastInt = 0;
+	                    for(i = 0; i < intersections.length; i++) {
+	                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
+	                            lastInt = intersections[i];
+	                        }
+	                    }
+	                    x2 = (lastInt.x * 10) + 10;
+	                    y2 = height - (lastInt.y * 10);
+	                }
+	            //If start room is in the same hall as the two non-down only stairs
+	            }
+	            else if(path[j+1] == 150) {
+	            	//console.log("al-ja150");
+	                x1 = (halls[14].x * 10) + 10;
+	                y1 = height - ((halls[14].y - parseFloat(halls[14].coords[sClass].substring(1))) * 10);
+	                x2 = x1;
+	                y2 = halls[12].y;
+	                canvas.globalAlpha = 1;
+	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.stroke();
+	                var ja = j + 2;
+	                if(pathValue == 200) {
+	                    x1 = (halls[16].x * 10) + 10;
+	                } else {
+	                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
+	                }
+	                y1 = height - (halls[16].y * 10);
+	                if(ja == path.length - 1) {
+	                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
+	                    y2 = height - (halls[16].y * 10);
+	                } else {
+	                    var lastInt = 0;
+	                    for(i = 0; i < intersections.length; i++) {
+	                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
+	                            lastInt = intersections[i];
+	                        }
+	                    }
+	                    x2 = (lastInt.x * 10) + 10;
+	                    y2 = height - (lastInt.y * 10);
+	                }
+	            //For going up the two permissible up stairs
+	            }
+	            else if(path[j+1] == 400 || path[j+1] == 500) {
+	            	//console.log("al-ja4050");
+	                pathValue = path[j+1];
+	                if(path.length == 1) {
+	                    x1 = ((halls[16].x + parseFloat(halls[16].coords[sClass].substring(1))) * 10) + 10;
+	                    y1 = height - (halls[16].y * 10);
+	                } else {
+	                    x1 = (halls[17].x * 10) + 10;
+	                    y1 = height - (halls[16].y * 10);
+	                }
+	                if(pathValue == 400) {x2 = 245;}
+	                else {x2 = 215;}
+	                y2 = y1;
+	                canvas.globalAlpha = 1;
+	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.stroke();
+	                var ja = j + 2;
+	                x1 = (halls[14].x * 10) + 10;
+	                if(pathValue == 500) {
+	                    y1 = height - (halls[12].y * 10);
+	                } else {
+	                    y1 = height - (halls[13].y * 10);
+	                }
+	                if(ja == path.length - 1) {
+	                    x2 = (halls[14].x * 10) + 10;
+	                    y2 = height - ((halls[14].y - parseFloat(halls[14].coords[eClass].substring(1))) * 10);
+	                } else {
+	                    var lastInt = 0;
+	                    for(i = 0; i < intersections.length; i++) {
+	                        if((intersections[i].id1 == path[ja] && intersections[i].id2 == path[ja+1]) || (intersections[i].id1 == path[ja+1] && intersections[i].id2 == path[ja])) {
+	                            lastInt = intersections[i];
+	                        }
+	                    }
+	                    x2 = (lastInt.x * 10) + 10;
+	                    y2 = height - (lastInt.y * 10);
+	                }
+	            //For all other normal paths
+	            }
+	            else {
+	                var firstInt = 0;
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == path[j-1] && intersections[i].id2 == path[j]) || (intersections[i].id1 == path[j] && intersections[i].id2 == path[j-1])) {
+	                        firstInt = intersections[i];
+	                    }
+	                    if(j == 1 && path[1] == 500) {
+	                    	firstInt = intOf(15,13);
+	                    }
+	                    if(j == 1 && path[1] == 400) {
+	                    	firstInt = intOf(15,14);
+	                    }
+	                }
+	                var lastInt = 0;
+	                for(i = 0; i < intersections.length; i++) {
+	                    if((intersections[i].id1 == path[j] && intersections[i].id2 == path[j+1]) || (intersections[i].id1 == path[j+1] && intersections[i].id2 == path[j])) {
+	                        lastInt = intersections[i];
+	                    }
+	                }
+	                x1 = (firstInt.x * 10) + 10;
+	                y1 = height - (firstInt.y * 10);
+	                x2 = (lastInt.x * 10) + 10;
+	                y2 = height - (lastInt.y * 10);
+	                //console.log("rAlp LarEn" + j);
+	            }
+	            
+	            //Set color to read and paint
+	            //console.log("drAw" + j + "  " + path.length);
+	            canvas.strokeStyle = "#FF0000";
+	            canvas.globalAlpha = 1;
+	            canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
+	            canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	            canvas.stroke();
             }
-            
-            //Set color to read and paint
-            //console.log("drAw" + j + "  " + path.length);
-            canvas.strokeStyle = "#FF0000";
-            canvas.globalAlpha = 1;
-            canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-            canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
-            canvas.stroke();
         }
     }
     for(i=0; i<=4; i++) {
