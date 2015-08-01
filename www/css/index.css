@@ -4,6 +4,14 @@ body
 	text-align: center;
 }
 
+h1.bottomHeading
+{
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	width:100%;
+}
+
 div.content
 {
 	top: 0;
