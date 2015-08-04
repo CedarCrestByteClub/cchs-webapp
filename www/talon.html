@@ -71,7 +71,9 @@
 			{
 				frameShowing = true;
 				var issueNum = id.substring(11);
+				alert("Issue:" + issueNum);
 				var url = TalonObjects[issueNum].get("Link");
+				alert("URL:"+url);
 				var body = document.getElementsByTagName("body")[0];
 				var frame = document.createElement("iframe");
 				frame.setAttribute("id", "frame");
