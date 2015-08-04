@@ -71,9 +71,7 @@
 			{
 				frameShowing = true;
 				var issueNum = id.substring(11);
-				alert("Issue:" + issueNum);
 				var url = TalonObjects[issueNum].get("Link");
-				alert("URL:"+url);
 				var body = document.getElementsByTagName("body")[0];
 				var frame = document.createElement("iframe");
 				frame.setAttribute("id", "frame");
@@ -82,11 +80,11 @@
 					cell.parentNode.removeChild(cell);
 				}
 				var loadMore = document.getElementById("loadMore");
-				loadMore.parentNode.removeChild(loadMore);
+				loadMore.style.visibility="hidden";
 				frame.style.width = "100%";
 				frame.style.height = "750px";
 				frame.setAttribute("src", url);
-				frame.style.visibility = "visible";
+				frame.setAttribute("seamless", "seamless");
 				body.appendChild(frame);
 			}
 			//this is bublle sort, very ineffective, should reconstruct
