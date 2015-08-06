@@ -81,13 +81,14 @@
 				}
 				var loadMore = document.getElementById("loadMore");
 				loadMore.style.visibility="hidden";
+				frame.style.visible="visible";
 				frame.style.width = "100%";
 				frame.style.height = "750px";
 				frame.setAttribute("src", url);
 				frame.setAttribute("seamless", "seamless");
 				body.appendChild(frame);
 			}
-			//this is bublle sort, very ineffective, should reconstruct
+			//this is bubble sort, very ineffective, should reconstruct
 			function sortArray(array) 
 			{
 				while(isSorted(array) == false) 
