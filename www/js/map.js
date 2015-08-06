@@ -434,7 +434,7 @@ for(c = 0; c < 1; c++) {
 	//roomQuery.limit(300);
 	var teachers = [];
 	var tNames = ["Mrs. Lebo", "Hansell", "Hall", "Straight", "Hopwood", "Zackey", "Chandler", "Sra. Snyder", "Hostetter", "Schwalm", "Hepler", "Gernert", "Dissinger", "Keefer", "Lukridge", "Zorilla", "Flex Lab", "Boger", "Barnhart", "Batistelli", "Bielecki", "Bott", "Brightbill", "Campbell", "Cronin", "Custer", "Doll", "Mrs. Dresch", "Eckert", "Engebretson", "Felli", "Fried", "Gates", "Gebhard", "Gingrich", "Goodreau", "Grumbine", "Haines", "Harris", "Haussener", "Heizman", "Hulme", "Hysick", "Isenberg", "Jeffrey", "Keath", "Keddie", "Keightly", "King", "Kohr", "Kulikowski", "Kyper", "Lambros", "Mr. Lebo", "Lehmier", "Lieboff", "Mr. Leonard", "Mrs. Leonard", "Light", "Lilley", "Lumsden", "Sides", "J. Smith", "Lutz", "Marzock", "Miller", "Mull", "Munnion", "O'Kain", "Oplinger", "Pierce", "Plichta", "Powers", "Reed", "Reisch", "Rhen", "Rhoades", "Mr. Risser", "Mrs. Risser", "Rita", "Schaffer", "Rodriguez", "Schelhorn", "Schultheis", "Scipioni", "T. Smith", "Mr. Snyder", "Mrs. Snyder", "Spohn", "Steckbeck", "Steedle", "Stettner", "Sullivan", "Mrs. Thomas", "Mr. Thomas", "Tobin", "C. Wagner", "J. Wagner", "Waranavage", "Weber", "Weitzel", "Welliver", "Wildasin", "Williams"];
-	var tLocations = [302, 306, 308, 310, 312, 314, 318, 219, 217, 113, 120, 118, 116, 114, 110, 111, 103, 202, 206, 205, 502, 305, 153, 102, 317, 212, 303, 305, 313, 214, 401, 412, 413, 307, 606, 807, 403, 608, 806, 409, 322, 701, 304, 508, 207, 512, 602, 155, 215, 204, 106, 604, 107, 402, 309, 210, 417, 510, 410, 514, 532, 703, 406, 808, 208, 405, 506, 315, 200, 404, 104, 221, 105, 803, 211, 203, 311, 112, 1007, 408, 500, 143, 185, 201, 108, 703, 301, 415, 802, 303, 534, 804, 809, 207, 213, 805, 215, 209, 109, 316, 407, 610, 801, 320];
+	var tLocations = [302, 306, 308, 310, 312, 314, 318, 219, 217, 113, 120, 118, 116, 114, 110, 111, 103, 202, 206, 205, 502, 305, 153, 102, 317, 212, 303, 305, 313, 214, 401, 412, 413, 307, 606, 807, 403, 608, 806, 409, 322, 701, 304, 508, 207, 512, 602, 155, 215, 204, 106, 604, 107, 402, 309, 210, 417, 510, 410, 514, 532, 705, 406, 808, 208, 405, 506, 315, 200, 404, 104, 221, 105, 803, 211, 203, 311, 112, 1007, 408, 500, 143, 185, 201, 108, 703, 301, 415, 802, 303, 534, 804, 809, 207, 213, 805, 215, 209, 109, 316, 407, 610, 801, 320];
 	for(i = 0; i < tNames.length; i++) {
 		teachers.push(new Teacher(tNames[i], tLocations[i]));
 	}
@@ -460,6 +460,160 @@ function giveDirections() {
 		label.innerHTML = directions[0];
 		return;
 	}
+	else if(path.length == 2) {
+		var message = "";
+		var current = halls[path[0]-1];
+		var passedInts = [];
+		passedInts.push(intOf(path[0],path[1]));
+		console.log(passedInts[0]);
+		var otherHalls = [];
+		for(a = 0; a < intersections.length; a++) {
+            if(intersections[a].id1 == current.id) {
+                otherHalls.push(intersections[a].hall2);
+            } else if(intersections[a].id2 == current.id) {
+                otherHalls.push(intersections[a].hall1);
+            }
+        }
+        var inter = intersections[intOf(path[0],path[1])];
+		if(current.direc == 0) {
+			//console.log("class" + (current.y - parseFloat(current.coords[sClass].substring(1))) + " intersection" + intersections[passedInts[0]].y);
+			if((current.y - parseFloat(current.coords[sroom].substring(1))) > intersections[passedInts[0]].y) {
+				//console.log("hall" + current.id + " class" + current.coords[sroom]);
+				if(current.coords[sroom].substring(0,1).localeCompare("l") == 0) {
+					message += "Turn right";
+				} else {
+					message += "Turn left";
+				}
+				for(i = 0; i < otherHalls.length; i++) {
+    				if(otherHalls[i].y < (current.y - parseFloat(current.coords[sroom].substring(1))) && otherHalls[i].y > inter.y) {
+    					rank += 1;
+    				}
+    			}
+			} else {
+				if(current.coords[sroom].substring(0,1).localeCompare("r") == 0) {
+					message += "Turn right";
+				} else {
+					message += "Turn left";
+				}
+				for(i = 0; i < otherHalls.length; i++) {
+    				if(otherHalls[i].y > (current.y - parseFloat(current.coords[sroom].substring(1))) && otherHalls[i].y < inter.y) {
+    					rank += 1;
+    				}
+    			}
+			}
+		}
+		else {
+			if(current.x + parseFloat(current.coords[sroom].substring(1)) > intersections[passedInts[0]].x) {
+				if(current.coords[sroom].substring(0,1).localeCompare("l") == 0) {
+					message += "Turn right";
+				} else {
+					message += "Turn left";
+				}
+				for(i = 0; i < otherHalls.length; i++) {
+    				if(otherHalls[i].x < (current.x + parseFloat(current.coords[sroom].substring(1))) && otherHalls[i].x > inter.x) {
+    					rank += 1;
+    				}
+    			}
+			} else {
+				if(current.coords[sroom].substring(0,1).localeCompare("r") == 0) {
+					message += "Turn right";
+				} else {
+					message += "Turn left";
+				}
+				for(i = 0; i < otherHalls.length; i++) {
+    				if(otherHalls[i].x < (current.x + parseFloat(current.coords[sroom].substring(1))) && otherHalls[i].x > inter.x) {
+    					rank += 1;
+    				}
+    			}
+			}
+		}
+		message += ", walk straight, and turn ";
+		var current1 = halls[path[1]-1];
+		if(current.direc == 0) {
+			if(intersections[passedInts[0]].y > (current.y - parseFloat(current.coords[sroom].substring(1)))) {
+				if(current1.x + parseFloat(current1.coords[eroom].substring(1)) > intersections[passedInts[0]].x) {
+					message += "right";
+				} else {
+					message += "left";
+				}
+			} else {
+				if(current1.x + parseFloat(current1.coords[eroom].substring(1)) > intersections[passedInts[0]].x) {
+					message += "left";
+				} else {
+					message += "right";
+				}
+			}
+		}
+		else {
+			if(intersections[passedInts[0]].x > (current.x + parseFloat(current.coords[sroom].substring(1)))) {
+				if(current1.y - parseFloat(current1.coords[eroom].substring(1)) > intersections[passedInts[0]].y) {
+					message += "left";
+				} else {
+					message += "right";
+				}
+			} else {
+				if(current1.y - parseFloat(current1.coords[eroom].substring(1)) > intersections[passedInts[0]].y) {
+					message += "right";
+				} else {
+					message += "left";
+				}
+			}
+		}
+		message += " at the ";
+		if(rank == 1) {
+			message += "first";
+		} else if(rank == 2) {
+			message += "second";
+		} else if(rank == 3) {
+			message += "third";
+		} else if(rank == 4) {
+			message += "fourth";
+		} else if(rank == 5) {
+			message += "fifth";
+		}
+		message += " intersection.";
+		directions.push(message);
+		console.log(message);
+		message = "";
+		current = halls[path[1]-1];
+		if(current.direc == 0) {
+			var coord = current.y - parseFloat(current.coords[eroom].substring(1));
+			if(coord > inter.y) {
+				if(current.coords[eroom].substring(0,1).localeCompare("l") == 0) {
+					message += "The destination is on your left";
+				} else {
+					message += "The destination is on your right";
+				}
+			} else {
+				if(current.coords[eroom].substring(0,1).localeCompare("l") == 0) {
+					message += "The destination is on your right";
+				} else {
+					message += "The destination is on your left";
+				}
+			}
+		}
+		else {
+			var coord = current.x + parseFloat(current.coords[eroom].substring(1));
+			if(coord > inter.x) {
+				if(current.coords[eroom].substring(0,1).localeCompare("l") == 0) {
+					message += "The destination is on your left";
+				} else {
+					message += "The destination is on your right";
+				}
+			} else {
+				if(current.coords[eroom].substring(0,1).localeCompare("l") == 0) {
+					message += "The destination is on your right";
+				} else {
+					message += "The destination is on your left";
+				}
+			}
+		}
+		directions.push(message);
+		console.log(message);
+		var label = document.getElementById("directionsLabel");
+		label.innerHTML = directions[0];
+		return;
+	}
 	for(b = 0; b < path.length; b++) {
 		//console.log("b:" + b);
 		var message = "";
@@ -473,7 +627,7 @@ function giveDirections() {
 	        else if(path[a+1] == 150) {if(path[a+1] == 200) {inter = intersections[intOf(15,13)];} else if(path[a+1] == 300) {inter = intersections[intOf(15,14)];}}
 	        else if(path[a+1] == 400) {inter = stairs[4];}
 	        else if(path[a+1] == 500) {inter = stairs[5];}
-	        else {intersections[intOf(path[0],path[1])];}
+	        else {inter = intersections[intOf(path[0],path[1])];}
 			var current = halls[path[0]-1];
 			var otherHalls = [];
 			for(a = 0; a < intersections.length; a++) {

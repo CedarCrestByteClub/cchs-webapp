@@ -82,8 +82,9 @@
 				var loadMore = document.getElementById("loadMore");
 				loadMore.parentNode.removeChild(loadMore);
 				frame.style.width = "100%";
-				frame.style.height = "750px";
+				frame.style.height = "100%";
 				frame.setAttribute("src", url);
+				frame.setAttribute("seamless", "seamless");
 				frame.style.visibility = "visible";
 				body.appendChild(frame);
 			}
