@@ -16,6 +16,7 @@
 		
 		<label id="loadingLabel">Loading...</label>
 		<table id="linkTable" bgcolor="white" width="100%"></table>
+		<iframe id="frame" style="width:100%; height: 0pt;"></iframe>
 		
 		<script type="text/javascript">
 			//var loaded = 0;
@@ -73,8 +74,8 @@
 				var issueNum = id.substring(11);
 				var url = TalonObjects[issueNum].get("Link");
 				var body = document.getElementsByTagName("body")[0];
-				var frame = document.createElement("iframe");
-				frame.setAttribute("id", "frame");
+				var frame = document.getElementById("frame");//document.createElement("iframe");
+				//frame.setAttribute("id", "frame");
 				for(var i = 0; i < numIssuesLoaded; i++) {
 					var cell = document.getElementById("cell" + i.toString());
 					cell.parentNode.removeChild(cell);
