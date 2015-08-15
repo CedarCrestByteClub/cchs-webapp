@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="css/home.css">
 	</head>
 	<body style="background-color:#0072ff">
+		<input type="button" value="Info" style="float:top;" onclick="info()"></input>
 		<div class="content">
 			<div class="spacerT"><img src = "img/notifications.png" onclick="notify()" id = "notifImage"></div>
 			<div class = "spacerB"> </div>
@@ -147,6 +148,10 @@
 							bell.src = "img/notificationPresent.png";
 					}
 				}
+			}
+			
+			function info() {
+				window.location = "info.html";
 			}
 			
 			//function that moves to notify from home page and makes necessary changes beforehand
