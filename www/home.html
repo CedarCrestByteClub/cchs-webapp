@@ -7,9 +7,11 @@
 		<link rel="stylesheet" type="text/css" href="css/home.css">
 	</head>
 	<body style="background-color:#0072ff">
-		<input type="button" value="Info" style="float:top;" onclick="info()"></input>
 		<div class="content">
-			<div class="spacerT"><img src = "img/notifications.png" onclick="notify()" id = "notifImage"></div>
+			<div class="spacerT">
+				<input type="button" value="Info" id="infoButton" style="margin: 0 10% 0 1%;" onclick="info()">
+				<img src = "img/notifications.png" onclick="notify()" id = "notifImage">
+			</div>
 			<div class = "spacerB"> </div>
 			<div class = "spacerL"> </div>
 			<div class = "spacerR"> </div>
@@ -151,6 +153,7 @@
 			}
 			
 			function info() {
+				console.log("info");
 				window.location = "info.html";
 			}
 			
