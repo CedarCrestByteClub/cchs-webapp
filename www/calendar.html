@@ -2,8 +2,8 @@
 <!--Lauren Johnston displays lunch menu for current month LEJ-->
 <html>
 	<head>
-		<title>Lunch Menu</title>
-		<link rel="stylesheet" type="text/css" href="css/lunch.css">
+		<title>Calendar</title>
+		<link rel="stylesheet" type="text/css" href="css/calendar.css">
 		<script src="//www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 	</head>
@@ -16,11 +16,13 @@
 		
 		<table id="calendar" width="100%" border="1px solid">
 			<tr>
+				<td>Sunday</td>
 				<td>Monday</td>
 				<td>Tuesday</td>
 				<td>Wednesday</td>
 				<td>Thursday</td>
 				<td>Friday</td>
+				<td>Saturday</td>
 			</tr>
 		</table>
 		
@@ -32,7 +34,7 @@
 			var objects = [];
 
 			//Connect to database class
-			var events = Parse.Object.extend("Lunch");
+			var events = Parse.Object.extend("Calendar");
 			var query = new Parse.Query(events);
 			
 			//Allows up to 1000 objects to be received from the database, up from the default 100
@@ -47,7 +49,6 @@
 						//Transfer results to earlier array
 						objects.push(results[i]);
 					}
-					console.log(objects.length);
 					bubbleSort();
 					populate();
 				},
@@ -62,17 +63,23 @@
 				var count = 0;
 				var row = document.createElement("tr");
 				switch(objects[0].get("name")) {
-					case "Tuesday":
+					case "Monday":
 						count = 1;
 						break;
-					case "Wednesday":
+					case "Tuesday":
 						count = 2;
 						break;
-					case "Thursday":
+					case "Wednesday":
 						count = 3;
 						break;
-					case "Friday":
+					case "Thursday":
 						count = 4;
+						break;
+					case "Friday":
+						count = 5;
+						break;
+					case "Saturday":
+						count = 6;
 						break;
 					default:
 						break;
@@ -82,11 +89,10 @@
 					cell.setAttribute("class", "noPad");
 					row.appendChild(cell);
 				}
-				console.log(objects.length);
 				for(var i = 0; i < objects.length; i++)
 				{
 					//reset vars
-					if(count == 5)
+					if(count == 7)
 					{
 						count = 0;
 						table.appendChild(row);
@@ -98,13 +104,17 @@
 					cell.setAttribute("class", "noPad");
 					var content = objects[i].get("cell");
 					
+					var para = document.createElement("p");
+					para.setAttribute("class", "noPad");
+					para.innerHTML = objects[i].get("date");
+					cell.appendChild(para);
+					
 					//formats the cell so that new lines actually happen
 					for(var j = 0; j < content.split("\n").length; j++)
 					{
 						//cause I don't want to type this a million times
 						var current = content.split("\n")[j];
 						current = current.replace(/([a-z])([A-Z])/g, '$1 $2');
-						
 						var line = current;
 						var para = document.createElement("p");
 						para.setAttribute("class", "noPad");
@@ -121,7 +131,7 @@
 			
 			function bubbleSort() {
 				var temp = [];
-				for(i = 0; i < 31; i++) {
+				for(i = 0; i < objects.length; i++) {
 					for(j = 0; j < objects.length; j++) {
 						if(parseInt(objects[j].get("date")) == i + 1) {
 							temp.push(objects[j]);

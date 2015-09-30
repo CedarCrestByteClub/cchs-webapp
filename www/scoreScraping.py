@@ -7,9 +7,10 @@ import json,httplib
 import time
 
 #set up source code based on date and declare other variables
-originalHTML = urllib.urlopen("http://schedules.schedulestar.com/cfcs/schedule.cfc?ReturnFormat=json&method=getEventList&x=1426611373795_&sc_id=PA170423667&schedDate="+time.strftime("%m")+"%2F"+time.strftime("%d")+"%2F"+time.strftime("%y")+"&current_schedule_view=month&userid=0&genderid=0&levelid=0&sportid=0")
+url = "http://schedules.schedulestar.com/cfcs/schedule.cfc?ReturnFormat=json&method=getEventList&x=1426611373795_&sc_id=PA170423667&schedDate="+time.strftime("%m")+"%2F"+time.strftime("%d")+"%2F"+time.strftime("%y")+"&current_schedule_view=month&userid=0&genderid=0&levelid=0&sportid=0"
+originalHTML = urllib.urlopen(url)
 sourceCode = originalHTML.read()
-
+print(url)
 #var declaration
 lines = []
 entries = []
@@ -19,15 +20,20 @@ event = [None]*11 #creates empty array with 11 elements
 #splits the scraped code by a square bracket and only keeps the code that has the event list in it
 lines = sourceCode.partition("[")
 line = lines[2]
+#print(lines[2])
 
 #resets the lines array and then sets it to the list of events split by commas
 lines = []
-lines = line.split("{\"ME_SC_ID\"", 150)
-
+#lines = line.split("{", 150)
+lines = line.split("{", 150)
+# print(lines)
+print(len(lines))
 #adds all of the different events into all of their componenets
 for l in range(1, len(lines)):
     entries.append(lines[l].split(","))
+    #print(entries[0])
 
+print(len(entries))
 #goes through every event and...
 for l in range(len(entries)):
     #resets values
@@ -35,13 +41,20 @@ for l in range(len(entries)):
     event = [None]*11
     
     #takes care of unfindable components by using their common index
-    event[2] = entries[l][5].partition(":")[2]#sport
-    event[5] = entries[l][21].partition(":")[2]#gender
-    event[7] = entries[l][28].partition(":")[2]#level
-    event[10] = entries[l][57].partition(":")[2]#Home/Away
+    #event[0] = entries[l][62].partition(":")[2]#sport
+    #event[1] = entries[l][62].partition(":")[2]#sport
+    event[2] = entries[l][62].partition(":")[2]#sport
+    #event[3] = entries[l][62].partition(":")[2]#sport
+    #event[4] = entries[l][62].partition(":")[2]#sport
+    event[5] = entries[l][60].partition(":")[2]#gende
+    #event[6] = entries[l][62].partition(":")[2]#sportr
+    event[7] = entries[l][20].partition(":")[2]#level
+    #event[8] = entries[l][62].partition(":")[2]#sport
+    #event[9] = entries[l][62].partition(":")[2]#sport
+    event[10] = (entries[l][75].partition(":")[2])[0:-1]#Home/Away
     
     #cancellations based on the string
-    if entries[l][9].partition(":")[2] is "0":
+    if entries[l][24].partition(":")[2] is "0":
         event[3] = 0
     else:
         event[3] = 1
@@ -52,7 +65,7 @@ for l in range(len(entries)):
         if "FACILITY" in entries[l][i] and not "_" in entries[l][i]:
             event[0] = entries[l][i].partition(":")[2]
         elif "PPONEDTO" in entries[l][i]:
-            print entries[l][i]
+#             print entries[l][i]
             event[1] = entries[l][i].partition(":")[2]
         elif "EVENTDATE" in entries[l][i]:
             try:
@@ -64,7 +77,7 @@ for l in range(len(entries)):
         elif "STARTTIME" in entries[l][i]:
             event[8] = entries[l][i].partition(":")[2]
         
-        i+=2
+        i+=1
     #add new event to events array
     events.append(event)
 

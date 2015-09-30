@@ -1,3 +1,7 @@
+body{
+	overflow:scroll;
+}
+
 div.content
 {
 	top: 0;
@@ -29,6 +33,14 @@ div.LeftImage
     max-width: 300px;
 	float: left;
 }
+
+div.Bottom
+{
+	position:absolute;
+	bottom:0;
+	left:40%;
+}
+
 
 div.spacerL
 {

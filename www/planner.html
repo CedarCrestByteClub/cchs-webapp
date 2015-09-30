@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script src="js/jquery-2.1.4.min.js"></script>
+	</head>
+	
+	<body>
+		<table id="table" style="width:100%;"></table>
+		
+		<input type="button" onclick="add()" value="Add Assignment">
+		
+		<script type="text/javascript">
+			if(localStorage.numAssignments == null) {
+				localStorage.numAssignments = 0;
+			}
+			if(localStorage.assignments == null) {
+				localStorage.assignments = "";
+			}
+			var table = document.getElementById("table");
+			var assignments = [];
+			update();
+			
+			function update() {
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+				for(i = 0; i < localStorage.numAssignments; i++) {
+					assignments = JSON.parse(localStorage.assignments);
+					var row = table.insertRow(table.rows.length);
+					var cell = row.insertCell(0);
+					cell.setAttribute("id", "cell" + i.toString());
+					var text1 = document.createElement("p");
+					text1.innerHTML = assignments[i];
+					cell.appendChild(text1);
+					var button = document.createElement("input");
+					button.setAttribute("value", "Delete");
+					button.setAttribute("type", "button");
+					button.setAttribute("onclick", "deleteAssignment(this.id)");
+					button.setAttribute("id", i.toString());
+					cell.appendChild(button);
+				}
+			}
+			
+			function add() {
+				var hw = window.prompt("Enter the assignment", "Assignment");
+				if(hw != null) {
+					assignments.push(hw);
+					localStorage.numAssignments = parseInt(localStorage.numAssignments) + 1;
+				}
+				localStorage.assignments = JSON.stringify(assignments);
+				update();
+			}
+			
+			function deleteAssignment(id) {
+				assignments = JSON.parse(localStorage.assignments);
+				assignments.splice(id, 1);
+				localStorage.numAssignments = parseInt(localStorage.numAssignments) - 1;
+				localStorage.assignments = JSON.stringify(assignments);
+				update();
+			}
+		</script>
+	</body>
+</html>

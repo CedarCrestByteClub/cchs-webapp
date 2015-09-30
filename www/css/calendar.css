@@ -1,0 +1,22 @@
+#calendar
+{
+	background-color: white;
+	font-size: 70%;
+	text-align: center;
+	padding: 0 0 0 0;
+}
+
+.noPad
+{
+	padding: 0 0 0 0;
+	
+}
+
+table {
+	table-layout: fixed;
+}
+
+td {
+	width: 14%;
+	height: 50px;
+}

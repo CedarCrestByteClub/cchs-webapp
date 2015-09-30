@@ -2,7 +2,7 @@
 <html>
 <!-- home for all of the functions that the app has available-->
 	<head>
-		<script src="https://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+		<script src="//www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<link rel="stylesheet" type="text/css" href="css/home.css">
 	</head>
@@ -17,7 +17,7 @@
 			<div class = "spacerR"> </div>
 			<div class = "LeftImage">
 				<a href = "score.html"> <img src = "img/Score.png" id = "Image" ></a>
-				<p class= "noPad">Sports Schedule</p>
+				<p id="test" class= "noPad">Sports Schedule</p>
 				<a href = "store.html"><img src = "img/Store.png" id = "Image"></a>
 				<p class= "noPad">School Store</p>
 				<a href = "club.html"><img src = "img/Clubs.png" id = "Image"></a>
@@ -30,6 +30,10 @@
 				<p class= "noPad">News</p>
 				<a href = "map.html"><img src = "img/map.png" id = "Image"></a>
 				<p class= "noPad">Map</p>
+			</div>
+			<div class = "Bottom">
+				<a href = "planner.html">Planner</a>
+				<a href = "FlappyFalcon.html"><img src="img/FlappyFalconLogo.png" id="Image"></a>
 			</div>
 		</div>
 		
@@ -59,9 +63,34 @@
 		?>-->
 		
 		<script type="text/javascript">
+			var versionNumber = 1.1;
+			
+			var update = Parse.Object.extend("Updates");
+			var checker = new Parse.Query(update);
+			query.find({
+				success: function(results) {
+					var index = 0;
+					for(i=0; i < results.length; i++) {
+						if(results[i].get("Version") > index)
+						{
+							index = results[i].get("Version");
+						}
+					}
+					if(index > versionNumber) {
+						alert("There is an update available! Download it on the App Store!");
+					}
+				},
+				error: function(error) {
+					
+				}
+			});
+		</script>
+		
+		<script type="text/javascript">
 			//LEJ
 			//Store the database stuff
 			var alertObjects = [];
+			var closings = [];
 			var relevant = [];
 			
 			//gets image to replace
@@ -87,23 +116,26 @@
 					{
 						//Transfer results to earlier array
 						alertObjects.push(results[i]);
+						if(results[i].get("planned") == 0) {
+							closings.push(results[i]);
+						}
 					}
 					//gets num of notifications since last time homepage was used
 					lastNotif = window.localStorage.getItem("lastNotif");
 					console.log(lastNotif);
 					//if there are more notifications than last time, the notifications should be viewed
-					if(lastNotif < alertObjects.length)
+					if(lastNotif < closings.length)
 					{
 						console.log("more notifications!");
 						window.localStorage.setItem("viewed", false);
-						window.localStorage.setItem("lastNotif", alertObjects.length);
+						window.localStorage.setItem("lastNotif", closings.length);
 						viewed = false;
 					}
 					//otherwise, status of whether or not they should be viewed stays the same
 					else
 					{
 						viewed = window.localStorage.getItem("viewed");
-						console.log(alertObjects.length);
+						console.log(closings.length);
 					}
 					
 					//then, done is called to ring bell if necessary

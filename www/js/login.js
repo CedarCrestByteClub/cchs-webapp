@@ -3,14 +3,14 @@ function login()
 
 	var user = document.getElementById("Username").value;
 	var pass = document.getElementById("Password").value;
-	alert("about to try login with user " + user + " and pass " + pass);
+	localStorage.username = user;
+	localStorage.password = pass;
 	Parse.User.logIn(user, pass, {
 		success : function(user) {
-			alert("Entered success");
 			window.location = "home.html";
 		},
 		error : function(user, error) {
-			alert("Error: " + error.code + " " + error.message);
+			alert(error);
 		}
 	});
 }
@@ -23,4 +23,16 @@ function signUp()
 function home()
 {
 	window.location = "home.html";
+}
+
+function autologin(user, pass)
+{
+	Parse.User.logIn(user, pass, {
+		success : function(user) {
+			window.location = "home.html";
+		},
+		error : function(user, error) {
+			window.location = "login.html";
+		}
+	});
 }
