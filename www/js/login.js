@@ -32,6 +32,8 @@ function autologin(user, pass)
 			window.location = "home.html";
 		},
 		error : function(user, error) {
+			alert(error);
+			window.location = "index.html";
 			window.location = "login.html";
 		}
 	});

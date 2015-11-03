@@ -4,62 +4,69 @@ from bs4 import BeautifulSoup
 import urllib
 import json,httplib
 
-#Variables and stuff
-originalHTML = urllib.urlopen("http://www.clsd.k12.pa.us/CCHigh.cfm?subpage=43147")
-sourceCode = originalHTML.read()
-soup = BeautifulSoup(sourceCode)
-listOfStrings = []
 years = []
-yearLinks = []
-index = 0
+issues = []
+urls = []
+baseurl = "https://moodle.clsd.k12.pa.us/district_videos/Talons"
+baseurl2 = baseurl
+url = ""
+#https://moodle.clsd.k12.pa.us/district_videos/Talons/2015-16/Talon01/Talon2015-01.html
+#https://moodle.clsd.k12.pa.us/district_videos/Talons/2015-16/Talon01/Talon2015-01.html
+#https://moodle.clsd.k12.pa.us/district_videos/Talons/Talon01/Talon2014-01.html
+startYear = 2014
+notDoneYear = True
+notDoneIssue = True
+issueCount = 0
 
-#Navigates through publications source code / "parse tree" to find where the links are being held hostage
-listOfStrings =soup.find("ul", id="qlItems").find("ul", {"class": "deeper"}).find("ul", {"class": "deeper"}).find("ul", {"class": "deeper"}).findAll("li", recursive = False)
-
-#Grabs herefs and the link they correspond too
-for index in range(0, len(listOfStrings)):
-    years.append(listOfStrings[index].a.string)
-    listOfStrings[index] = listOfStrings[index].a["href"]
-    print listOfStrings[index]
-    print years[index]
-  
-currentLink = ""
-for link in soup.find_all("a"):
-    if "20" + str(len(years) + 2) + "-20" + str(len(years) + 3) in link.text:
-        currentLink = link.get("href")
-
-#index done equals cero
-index = 0
-
-#adds stuffs to the thinger that the website doesn't already have done included
-while index < len(listOfStrings):
-    yearLinks.append("http://www.clsd.k12.pa.us/" + listOfStrings[index])
-    print yearLinks[index]
-    index += 1
-    
-yearLinks.append("http://www.clsd.k12.pa.us/" + currentLink)
-    
-#finds each year's links and try to store them prettily like the souop we has that was beautiful like soup
-numberOfLinks = 0
-articleLinks = []     
-for i in range(0,len(yearLinks)):
-    print "\n\n\n\n\n" + str(2000 + i + 2) + "-" + str(2000 + i + 3)
-    issueLinks = []
-    currentLink = yearLinks[i]
-    html = urllib.urlopen(currentLink)
-    source = html.read()
-    secondSoup = BeautifulSoup(source)
-    moreLinks = ""
-    for link in secondSoup.find_all("a"):
-        if "Issue" in link.text:
-            numberOfLinks += 1
-            if "http" in link.get("href"):
-                issueLinks.append(link.get("href"))
-                print link.get("href")
+while notDoneYear == True:
+    if startYear == 2014:
+        baseurl2 = baseurl + "/"
+    else:
+        baseurl2 = baseurl + "/" + str(startYear) + "-" + str(startYear - 2000 + 1)
+    url = baseurl2
+    notDoneIssue = True
+    issueCount = 0
+    while notDoneIssue == True:
+        url = baseurl2
+        issueCount = issueCount + 1
+        if issueCount < 10:
+            url = url + "/Talon0" + str(issueCount) + "/Talon" + str(startYear) + "-0" + str(issueCount) + ".html"
+        else:
+            url = url + "/Talon" + str(issueCount) + "/Talon" + str(startYear) + "-" + str(issueCount) + ".html"
+        try:
+            print(url)
+            originalHTML = urllib.urlopen(url)
+            sourceCode = originalHTML.read()
+            soup = BeautifulSoup(sourceCode)
+            #print(sourceCode)
+            try:
+                title = soup.title.string
+                print("not null")
+                if issueCount == 1:
+                    notDoneIssue = False
+                    notDoneYear = False
+                else:
+                    notDoneIssue = False
+            except:
+                print("null")
+                urls.append(url)
+                years.append(startYear)
+                issues.append(issueCount)
+        except:
+            if issueCount == 1:
+                notDoneIssue = False
+                notDoneYear = False
             else:
-                issueLinks.append("http://www.clsd.k12.pa.us/" + link.get("href"))
-                print "http://www.clsd.k12.pa.us/" + link.get("href")
-    articleLinks.append(issueLinks)
+                notDoneIssue = False
+    startYear = startYear + 1
+
+
+
+
+
+
+
+
   
 #HTTP Request to grab stuff from database using REST API
 connection = httplib.HTTPSConnection('api.parse.com', 443)
@@ -90,16 +97,15 @@ for i in idNumbers:
     #print result
     
 #Posts updated info to Parse, starting with an empty database
-for i in range(0, len(articleLinks)):
-    for j in range(0, len(articleLinks[i])):
-        connection.request('POST', '/1/classes/TalonLinks', json.dumps({
-            "Year": i + 2002,
-            "Issue": j + 1,
-            "Link": articleLinks[i][j]
-        }), {
-           "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
-           "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C",
-           "Content-Type": "application/json"
-        })
-        result = json.loads(connection.getresponse().read())
-        print result
+for i in range(0, len(urls)):
+    connection.request('POST', '/1/classes/TalonLinks', json.dumps({
+        "Year": years[i],
+        "Issue": issues[i],
+        "Link": urls[i]
+    }), {
+       "X-Parse-Application-Id": "1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw",
+       "X-Parse-REST-API-Key": "wL9fgRcbDT7UE6slUasHwC1bClQxRyaPCUOZ7a5C",
+       "Content-Type": "application/json"
+    })
+    result = json.loads(connection.getresponse().read())
+    print result

@@ -2,7 +2,7 @@
 <!--displays the top 5 most current articles of the talon-->
 <html>
 	<head>
-		<script src="https://www.parsecdn.com/js/parse-1.5.0.min.js"></script>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<link rel="stylesheet" type="text/css" href="css/talon.css">
 		<title>Talon Page</title>
@@ -16,18 +16,16 @@
 		
 		<label id="loadingLabel">Loading...</label>
 		<table id="linkTable" bgcolor="white" width="100%"></table>
-		<iframe id="frame" style="width:100%; height: 0pt;"></iframe>
 		
-		<embed src="http://www.clsd.k12.pa.us/files/filesystem/Talon05.pdf" style="width:100%;height:100%;"></embed>
-		
-		<iframe id="frame" style="width:100%;height:100%;" src="http://www.clsd.k12.pa.us/files/filesystem/Talon05.pdf"></iframe>
+		<iframe id="frame" style="width:100%;height:100%;visibility:hidden;"></iframe>
 				
 		<script type="text/javascript">
 			//var loaded = 0;
 		
 			//Regulates whether to show iframe or list
+			var frame = document.getElementById("frame");
 			var frameShowing = false;
-			var numIssuesLoaded = 5;
+			var numIssuesLoaded = 2;
 			var lengthOfResults  = 0;
 			//Store the database stuff
 			var TalonObjects = [];
@@ -63,7 +61,7 @@
 					label.style.display = "none";
 					//sorts issues and creates table that will display issues
 					TalonObjects = sortArray(TalonObjects);
-					loadList(numIssuesLoaded-5);
+					loadList(0);
 					stopInterval();
 				}
 			}, 250);
@@ -78,11 +76,15 @@
 				var issueNum = id.substring(11);
 				var url = TalonObjects[issueNum].get("Link");
 				var body = document.getElementsByTagName("body")[0];
-				var frame = document.getElementById("frame");
-				for(var i = 0; i < numIssuesLoaded; i++) {
+				frame = document.getElementById("frame");
+				var table = document.getElementById("linkTable");
+				while(table.rows.length > 1) {
+					table.deleteRow(0);
+				}
+				/*for(var i = 0; i < numIssuesLoaded; i++) {
 					var cell = document.getElementById("cell" + i.toString());
 					cell.parentNode.removeChild(cell);
-				}
+				}*/
 				var loadMore = document.getElementById("loadMore");
 				loadMore.style.visibility="hidden";
 				//frame.style.visible="visible";
@@ -166,8 +168,10 @@
 			{
 				if(frameShowing) {
 					//Removes iframe and shows list
-					var frame = document.getElementById("frame");
-					frame.parentNode.removeChild(frame);
+					frame = document.getElementById("frame");
+					//frame.parentNode.removeChild(frame);
+					//frame = document.createElement("iframe");
+					frame.style.visibility = "hidden";
 					loadList(0);
 					frameShowing = false;
 				} else {

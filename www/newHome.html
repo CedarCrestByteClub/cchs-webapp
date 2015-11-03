@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<!-- home for all of the functions that the app has available-->
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+		<!--<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>-->
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+  		<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/redesignedHome.css">
+		<style>
+			#outer {
+				height:30%;
+				width:25%;
+				position:relative;
+				max-height:30%;
+				max-width:30%;
+				float:left;
+				/*transition: display 2s;*/
+			}
+			#left-panel {
+				display:none;
+			}
+			img {
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-o-user-select: none;
+				user-select: none;
+			}
+		</style>
+	</head>
+	<body background="img/Gradient.PNG">
+		<!--<canvas id="drawCanvas" width="100%" height="100%"></canvas>
+		<div class="content">
+		</div>-->
+		<div style="height:100%;width:100%;overflow:hidden;">
+		<!--<img src="img/Gradient.PNG" id="bg">-->
+		<div id="rotationDiv" align="center">
+			<img id="mainContent" src="img/CCHS 1.png" align="top" style="height:100%;max-width:100%;">
+		</div>
+		
+		<!--<input data-role="none" type="button" value="Toggle" style="margin: 0 auto;" id="toggle" onclick="toggle()">-->
+		
+		<div style="width:100%;min-width:100%;overflow:auto;">
+			<img src="img/CCHS 14.png" id="placeholder" style="width:100%;float:right;">
+		</div>
+		
+		</div>
+		
+		<div id="left-panel" data-role="panel" style="height:100%;width:100%;overflow:auto;padding-right:25px;">
+			<table id="contentTable" width="100%" align="center">
+				<tr><td><a href="score.html"><div id="cell"><font size="24" color="white">Score</font></div></a></td></tr>
+				<tr><td><a href="lunches.html"><div id="cell"><font size="24" color="white">Lunches</font></div></a></td></tr>
+				<tr><td><a href="store.html"><div id="cell"><font size="24" color="white">Store</font></div></a></td></tr>
+				<tr><td><a href="news.html"><div id="cell"><font size="24" color="white">News</font></div></a></td></tr>
+				<tr><td><a href="club.html"><div id="cell"><font size="24" color="white">Clubs</font></div></a></td></tr>
+				<tr><td><a href="map.html"><div id="cell"><font size="24" color="white">Map</font></div></a></td></tr>
+				<tr><td><a href="calendar.html"><div id="cell"><font size="24" color="white">Calendar</font></div></a></td></tr>
+				<tr><td><a href="info.html"><div id="cell"><font size="24" color="white">Info</font></div></a></td></tr>
+				<tr><td><a href="notif.html"><div id="cell"><font size="24" color="white">Closings</font></div></a></td></tr>
+				<tr><td><a href="FlappyFalcon.html"><div id="cell"><font size="24" color="white">Flappy Falcon</font></div></a></td></tr> 
+			</table>
+		</div>
+		
+		<script type="text/javascript">
+			//document.addEventListener("offline", offlineCheck);
+			//document.addEventListener("online", onlineCheck);
+			
+			//$("#outer").on("swiperight", function(event) {
+				//$("#inner").fadeIn("slow");
+			//});
+			
+			/*function toggle() {
+				if(document.getElementById("inner").style.display == "none") {
+					$("#inner").fadeOut("slow");
+				} else {
+					$("#inner").fadeIn("slow");
+				}
+			}*/		
+			/*$(document).on('pageinit', function(event){
+				$( document ).on( "swiperight", function( e ) {
+					console.log("test");
+					// We check if there is no open panel on the page because otherwise
+					// a swipe to close the left panel would also open the right panel (and v.v.).
+					// We do this by checking the data that the framework stores on the page element (panel: open).
+					if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+						$( "#left-panel" ).panel( "open" );
+					}
+				});
+			});*/
+			
+			function checkConnection(){
+				
+				var connection = navigator.connection.type;
+				if (networkState == Connection.NONE) {
+        			offlineCheck();
+    			} else {
+    				onlineCheck();
+    			}
+			}
+			
+			//checkConnection();
+			
+			function offlineCheck() {
+				alert("Can't connect to CCHS App. Continuing in offline mode.");
+				var table = document.getElementById("contentTable");
+				table.deleteRow(8);
+				table.deleteRow(6);
+				table.deleteRow(4);
+				table.deleteRow(3);
+				table.deleteRow(2);
+				table.deleteRow(1);
+				table.deleteRow(0);
+			} 
+			
+			function onlineCheck() {
+				console.log("online");
+				Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+				var UUID = Parse.Object.extend("UserIDs");
+				if(localStorage.getItem("uuid") === null || localStorage.getItem("uuid").length != 8) {
+					var id = "" + parseInt(Math.random() * 100000000, 10).toString();
+					localStorage.setItem("uuid", id);
+					var UserId = new UUID();
+					UserId.set("uuid", localStorage.getItem("uuid"));
+					alert(UserId.get("uuid"));
+					UserId.save();
+				}
+				
+				var query = new Parse.Query(UUID);
+				query.equalTo("uuid", localStorage.uuid);
+				query.first({
+					success: function(object) {
+						var today = new Date();
+						var dd = today.getDate();
+						var mm = today.getMonth()+1; //January is 0!
+						var yyyy = today.getFullYear();
+						if(dd<10) {dd='0'+dd;} 	
+						if(mm<10) {mm='0'+mm;}
+						today = mm+'/'+dd+'/'+yyyy;
+						object.set("active", today);
+						object.save();
+					}
+				});
+			}
+		
+			var image = document.getElementById("mainContent");
+			var count = 0;
+			var pics = ["img/CCHS 1.png", "img/CCHS 2.png", "img/CCHS 9.png", "img/CCHS 13.png", "img/CCHS 14.png"];
+			var interval = setInterval(function() {
+				count++;
+				if(count == pics.length) {
+					count = 0;
+				}
+				//alert("about to transition");
+				/*$("#mainContent").animate({opacity:0}, "slow", function() {
+					image.setAttribute("src", pics[count]);
+					//alert("transition");
+					$("#mainContent").animate({opacity:1}, "slow");
+				});*/
+				$("#mainContent").fadeOut("slow", function() {
+					image.setAttribute("src", pics[count]);
+					//alert("transition");
+					$("#mainContent").fadeIn("slow");
+				});
+			}, 3000);
+		</script>
+	</body>
+</html>

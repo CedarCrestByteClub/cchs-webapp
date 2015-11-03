@@ -2,7 +2,7 @@
 <html>
 <!-- home for all of the functions that the app has available-->
 	<head>
-		<script src="//www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<link rel="stylesheet" type="text/css" href="css/home.css">
 	</head>
@@ -32,7 +32,6 @@
 				<p class= "noPad">Map</p>
 			</div>
 			<div class = "Bottom">
-				<a href = "planner.html">Planner</a>
 				<a href = "FlappyFalcon.html"><img src="img/FlappyFalconLogo.png" id="Image"></a>
 			</div>
 		</div>
@@ -63,7 +62,34 @@
 		?>-->
 		
 		<script type="text/javascript">
-			var versionNumber = 1.1;
+			var UUID = Parse.Object.extend("UserIDs");
+			if(localStorage.getItem("uuid") === null || localStorage.getItem("uuid").length != 8) {
+				var id = "" + parseInt(Math.random() * 100000000, 10).toString();
+				localStorage.setItem("uuid", id);
+				var UserId = new UUID();
+				UserId.set("uuid", localStorage.getItem("uuid"));
+				alert(UserId.get("uuid"));
+				UserId.save();
+			}
+			
+			var query = new Parse.Query(UUID);
+			query.equalTo("uuid", localStorage.uuid);
+			query.first({
+				success: function(object) {
+					var today = new Date();
+					var dd = today.getDate();
+					var mm = today.getMonth()+1; //January is 0!
+					var yyyy = today.getFullYear();
+					if(dd<10) {dd='0'+dd;} 	
+					if(mm<10) {mm='0'+mm;}
+					today = mm+'/'+dd+'/'+yyyy;
+					object.set("active", today);
+					object.save();
+				}
+			});
+		
+		
+			var versionNumber = 1.2;
 			
 			var update = Parse.Object.extend("Updates");
 			var checker = new Parse.Query(update);

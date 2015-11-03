@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+		<script>Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<title>Store Page</title>
 		<style type="text/css">
 			html,body {
 				width:100%;
 				height:100%;
 				margin:0px;
+			}
+			table
+			{
+				background-color: #FFFFFF;
+				width: 100%;
+				max-width: 100%;
+				text-align: center;
+				padding: 0px;
+				font-size: 80%;
+				table-layout: fixed;
 			}
 		</style>
 		<script type="text/javascript" src="js/common.js"></script>
@@ -18,9 +30,41 @@
    			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
    		</div>
 		
-		<iframe style="width:100%; height: 100%;" src="http://www.mylocker.net/pennsylvania/lebanon/cedar-crest-high-school/index.html" seamless="seamless"></iframe>
+		<table id="storeTable" width="100%" border="1"></table>
 		
-	
+		<script>
+			var objects = [];
+			var store = Parse.Object.extend("Store");
+			var query = new Parse.Query(store);
+			query.find({
+				success: function(results) {
+					for(i=0; i<results.length; i++) {
+						objects.push(results[i]);
+					}
+					loadTable();
+				},
+				error: function(error) {
+					console.log(error);
+				}
+			});
+			
+			function loadTable() {
+				var table = document.getElementById("storeTable");
+				for(i = 0; i < objects.length; i++) {
+					var tr = document.createElement("tr");
+					var td = document.createElement("td");
+					var td2 = document.createElement("td");
+					td.style.fontSize = "20px";
+					td.innerHTML = objects[i].get("name");
+					var image = document.createElement("img");
+					image.setAttribute("src", objects[i].get("url"));
+					td2.appendChild(image);
+					tr.appendChild(td);
+					tr.appendChild(td2);
+					table.appendChild(tr);
+				}
+			}
+		</script>
 		
 	</body>
 </html>

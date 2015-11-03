@@ -1,7 +1,7 @@
 //Credit for this code goes to blog.lessmilk.com
 
 // Initialize Phaser, and create a 400x490px game
-var game = new Phaser.Game(screen.width, screen.height, Phaser.AUTO, 'gameDiv');
+var game = new Phaser.Game(screen.width, screen.height, Phaser.CANVAS, 'gameDiv');
 
 var firstTime = true;
 
@@ -27,19 +27,22 @@ var mainState = {
 	
 	    // Display the bird on the screen
 	    this.bird = this.game.add.sprite(100, 245, 'bird');
+	    this.bird.height = screen.width/8;
+	    this.bird.width = screen.width/8;
+	    //this.bird.scale.setTo(screen.height/500, screen.height/500);
 	
 	    // Add gravity to the bird to make it fall
 	    game.physics.arcade.enable(this.bird);
-	    this.bird.body.gravity.y = 1000;  
-	
+	    this.bird.body.gravity.y = 800;
+
 	    // Call the 'jump' function when the spacekey is hit
-	    var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-	    spaceKey.onDown.add(this.jump, this);     
+	    //var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+	    //spaceKey.onDown.add(this.jump, this);     
 	    
 	    this.pipes = game.add.group(); // Create a group  
 		this.pipes.enableBody = true;  // Add physics to the group  
 		this.pipes.createMultiple(20, 'pipeG'); // Create 20 pipes  
-		this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
+		this.timer = game.time.events.loop(((screen.width)/250) * 1000, this.addRowOfPipes, this);
 		
 		this.score = 0;  
 		this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });  
@@ -64,7 +67,7 @@ var mainState = {
 	// Make the bird jump 
 	jump: function() {  
 	    // Add a vertical velocity to the bird
-	    this.bird.body.velocity.y = -350;
+	    this.bird.body.velocity.y = -screen.height/2.25;
 	},
 	
 	// Restart the game
@@ -84,8 +87,10 @@ var mainState = {
 	    // Add velocity to the pipe to make it move left
 	    pipe.body.velocity.x = -200; 
 	    
-	    pipe.body.width = 30;
-	    pipe.body.height = 30;
+	    pipe.width = screen.height/15;
+	    pipe.height = screen.height/15;
+	    
+	    //pipe.scale.setTo(screen.height/500, screen.height/500);
 	
 	    // Kill the pipe when it's no longer visible 
 	    pipe.checkWorldBounds = true;
@@ -105,7 +110,7 @@ var mainState = {
 	    // Add the 6 pipes 
 	    for (var i = 0; i < 9; i++)
 	        if (i != hole && i != hole + 1) 
-	            this.addOnePipe(400, i * 60 + 10);   
+	            this.addOnePipe((7 * screen.width)/8, i * screen.height/10 + 20);   
 	},
 };
 

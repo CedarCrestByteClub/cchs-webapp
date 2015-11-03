@@ -50,11 +50,13 @@ This is the first page the user sees. It shows a nice little graphic to advertis
 					theb.src = "img/ByteClubLogo.png";
 					break;
 				case 6:
-					if(localStorage.username != null && localStorage.password != null) {
+					/*if(localStorage.username != null && localStorage.password != null) {
 						autologin(localStorage.username, localStorage.password);
 					} else {
 						window.location = "login.html";
-					}
+					}*/
+					//window.location = "redesignedHome.html";
+					window.location = "home.html";
 					break;
 				default:
 					alert("Error, entered default switch in index.html!");
