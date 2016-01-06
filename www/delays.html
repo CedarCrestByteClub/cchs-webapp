@@ -1,14 +1,16 @@
 <!DOCTYPE html>
+<!--displays all of the clubs from the database in a nice little table LEJ-->
 <html>
 	<head>
 		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
-		<script>Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
-		<title>Store Page</title>
+		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
 		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
 		<script src="js/jquery-2.1.4.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/theme.css">
 		<script src="js/menu.js"></script>
+		<script src="js/delays.js"></script>
+		<title>Clubs</title>
 	</head>
 	
 	<body>
@@ -37,45 +39,87 @@
 			</div>
 			<div id="holder2" style="width:100%;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
 				<div id="content" style="overflow-y:auto;overflow-x:hidden;width:102%;height:100%;">
-					<table id="storeTable" width="100%" border="1"></table>
+					<table id='closingTable'><th>Date</th><th>Type</th></table>
 				</div>
 			</div>
 		</div>
 		
-		<script>
-			localStorage.setItem("pageStore", parseInt(localStorage.getItem("pageStore")) + 1);
+		<script type = "text/javascript">
+			localStorage.setItem("pageClosing", parseInt(localStorage.getItem("pageClosing")) + 1);
+		
+			//Store the database stuff
+			var AlertObjects = [];
+			var delays = [];
+
+			//Connect to database class
+			var Alerts = Parse.Object.extend("SchoolAlert");
+			var query = new Parse.Query(Alerts);
 			
-			var objects = [];
-			var store = Parse.Object.extend("Store");
-			var query = new Parse.Query(store);
-			query.find({
-				success: function(results) {
-					for(i=0; i<results.length; i++) {
-						objects.push(results[i]);
-					}
-					loadTable();
-				},
-				error: function(error) {
-					console.log(error);
+			//Allows up to 1000 objects to be received from the database, up from the default 100
+			query.limit(1000);
+			//Returns all objects in an array
+			query.find().then(function(results) {
+				lengthOfResults = results.length;
+				for(var i = 0; i < results.length; i++) {
+					//Transfer results to earlier array
+					AlertObjects.push(results[i]);
 				}
+				delays = parseArray(AlertObjects);
+				makeTable();
 			});
 			
-			function loadTable() {
-				var table = document.getElementById("storeTable");
-				for(i = 0; i < objects.length; i++) {
-					var tr = document.createElement("tr");
-					var td = document.createElement("td");
-					var td2 = document.createElement("td");
-					td.style.fontSize = "20px";
-					td.innerHTML = objects[i].get("name");
-					var image = document.createElement("img");
-					image.setAttribute("src", objects[i].get("url"));
-					td2.appendChild(image);
-					tr.appendChild(td);
-					tr.appendChild(td2);
-					table.appendChild(tr);
+			function makeTable()
+			{
+				console.log(AlertObjects.length);
+				//gets table made above and makes 2d array to store rows of table
+				var table = document.getElementById('closingTable');
+			
+				for(i = 0; i < delays.length; i++) {
+					var temp = document.createElement("tr");
+					var cell1 = document.createElement("td");
+					var cell2 = document.createElement("td");
+					var date = month[delays[i].get("Month")-1] + " " + delays[i].get("Day") + ", 20" + delays[i].get("Year");
+					cell1.innerHTML = date;
+					cell2.innerHTML = delays[i].get("Event").toString();
+					cell1.setAttribute("class", "delayCell");
+					cell2.setAttribute("class", "delayCell");
+					temp.appendChild(cell1);
+					temp.appendChild(cell2);
+					temp.style.height = (window.innerHeight/4) + "px";
+					table.appendChild(temp);
 				}
+			
+				//put all of the info into the rows
+				for(var i = 0; i < AlertObjects.length; i++)
+				{
+					var temp = document.createElement("tr");
+					var cell1 = document.createElement("td");
+					var cell2 = document.createElement("td");
+					var date = month[AlertObjects[i].get("Month")-1] + " " + AlertObjects[i].get("Day") + ", 20" + AlertObjects[i].get("Year");
+					cell1.innerHTML = date;
+					cell2.innerHTML = AlertObjects[i].get("Event").toString();
+					temp.appendChild(cell1);
+					temp.appendChild(cell2);
+					temp.style.height = (window.innerHeight/12) + "px";
+					table.appendChild(temp);
+				}
+				table.width = screen.width;
 			}
+			
+			var d = new Date();
+			var month = new Array();
+			month[0] = "January";
+			month[1] = "February";
+			month[2] = "March";
+			month[3] = "April";
+			month[4] = "May";
+			month[5] = "June";
+			month[6] = "July";
+			month[7] = "August";
+			month[8] = "September";
+			month[9] = "October";
+			month[10] = "November";
+			month[11] = "December";
 		</script>
 		
 		<script>
@@ -84,8 +128,12 @@
 			$(document).on("swiperight", function(event) {
 				var content = document.getElementById("holder2");
 				var menu = document.getElementById("holder");
+				//content.setAttribute("style", "width: 70%");
 				content.style.cssFloat = "right";
 				menu.style.display = "inline";
+				//var offset = (content.clientWidth + 20);
+				//menu.setAttribute("style", "right:-20px");
+				//content.setAttribute("style", "margin-left:0px");
 				document.getElementById("content").style.width = "102%";
 				var table = document.getElementById("contentTable");
 				var ratio = window.devicePixelRatio;
@@ -100,13 +148,18 @@
 				var image = document.getElementById("stretchImage");
 				image.style.height = div.style.height;
 				image.style.width = div.style.width;
+				//var holder = document.getElementById("menu");
+				//console.log(holder.style.width);
+				//holder.style.width = (menu.style.width + 30) + "px";
+				//console.log(holder.style.width);
 			});
 			
 			$(document).on("swipeleft", function(event) {
+				//document.getElementById("holder2").setAttribute("style", "width: 100%");
+				//document.getElementById("holder2").style.cssFloat = "right";
 				document.getElementById("holder").style.display = "none";
 				document.getElementById("content").style.width = "102%";
 			});
 		</script>
-		
 	</body>
 </html>

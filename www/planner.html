@@ -1,22 +1,122 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
 		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
+		<style>
+			th {
+				font-size:3vh;
+			}
+			span {
+				display:table-cell;
+				height:100%;
+				width:100%;
+				padding:0;
+				margin:0;
+				text-align:center;
+			}
+			#blanket {
+			   background-color:#111111 !important;
+			   opacity: 0.90 !important;
+			   position:absolute !important;
+			   z-index: 100 !important;
+			   top:0px !important;
+			   left:0px !important;
+			   width:100% !important;
+			}
+			#upper {
+				position:absolute !important;
+				height:70% !important;
+				width:100% !important;
+				z-index:101 !important;
+			}
+		</style>
 	</head>
 	
 	<body>
-		<table id="table" style="width:100%;"></table>
-		
-		<input type="button" onclick="add()" value="Add Assignment">
+		<div style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="z-index:1000;display:none;width:50%;height:100%;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="position:absolute;overflow-y:auto;overflow-x:hidden;width:102%;height:100%;">
+					<div id="lower" style="position:absolute;z-index:1;height:100%;width:100%;">
+						<table id="table" style="width:100%;"><th>Class</th><th>Assignment</th><th>Due Date</th><th>Delete</th>
+						</table>
+						<table id="table2" style="width:100%;"><tr style="width:100%;height:25%;"><td class="delayCell" onclick="add()" style="width:100%;font-size:3vh;height:100%;">Add Assignment</td></tr></table>
+					</div>
+					<div id="blanket" style="display:none;"></div>
+					<div id="upper" style="display:none;text-align:center;overflow:hidden;vertical-align:middle;">
+						<span style="height:10%;font-size:3vh;padding:0;text-align:center;margin:0;">Enter the class:</span>
+						<textarea data-role="none" style="height:10%;font-size:3vh;resize:none;width:100%;" rows="1" placeholder=" " onkeyup="updateList()" maxlength="75" id="upperInput1"></textarea>
+						<span style="height:10%;font-size:3vh;padding:0;text-align:center;margin:0;">Enter the assignment:</span>
+						<textarea data-role="none" style="height:10%;font-size:3vh;resize:none;width:100%;" rows="1" placeholder=" " onkeyup="updateList()" maxlength="75" id="upperInput2"></textarea>
+						<div style="width:100%;padding:5px;height:30%;">
+							<p class="noPad" style="margin:0;width:35%;display:inline;font-size:3vh;">Due date:</p>
+							<select id="dateSelect" style="width:60%;float:right;display:inline;font-size:3vh;" data-role="none">
+								<option value="1">1 day</option>
+								<option value="2">2 days</option>
+								<option value="3">3 days</option>
+								<option value="4">4 days</option>
+								<option value="5">5 days</option>
+								<option value="6">6 days</option>
+								<option value="7">7 days</option>
+								<option value="8">8+ days</option>
+							</select>
+						</div>
+						<div style="width:100%;height:10%;text-align:center;">
+							<div onclick="cancel()" style="width:50%;float:left;display:table;text-align:center;"><span>Cancel</span></div>
+							<div onclick="ok()" style="width:50%;float:right;display:table;text-align:center;"><span>Add</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<script type="text/javascript">
-			if(localStorage.numAssignments == null) {
-				localStorage.numAssignments = 0;
+			if(localStorage.getItem("numAssignments") == null) {
+				localStorage.setItem("numAssignments", 0);
 			}
-			if(localStorage.assignments == null) {
-				localStorage.assignments = "";
+			if(localStorage.getItem("assignments") == null) {
+				localStorage.setItem("assignments", "");
 			}
 			var table = document.getElementById("table");
+			var th1 = document.createElement("th");
+			th1.innerHTML = "Class";
+			table.tBodies[0].appendChild(th1);
+			var th2 = document.createElement("th");
+			th2.innerHTML = "Assignment";
+			table.tBodies[0].appendChild(th2);
+			var th3 = document.createElement("th");
+			th3.innerHTML = "Due Date";
+			table.tBodies[0].appendChild(th3);
+			var th4 = document.createElement("th");
+			th4.innerHTML = "Delete";
+			table.tBodies[0].appendChild(th4);
+			var table2 = document.getElementById("table2");
+			table2.rows[0].style.height = (window.innerHeight/5) + "px";
 			var assignments = [];
 			update();
 			
@@ -24,40 +124,171 @@
 				while(table.rows.length > 0) {
 					table.deleteRow(0);
 				}
-				for(i = 0; i < localStorage.numAssignments; i++) {
-					assignments = JSON.parse(localStorage.assignments);
-					var row = table.insertRow(table.rows.length);
-					var cell = row.insertCell(0);
-					cell.setAttribute("id", "cell" + i.toString());
-					var text1 = document.createElement("p");
-					text1.innerHTML = assignments[i];
-					cell.appendChild(text1);
-					var button = document.createElement("input");
-					button.setAttribute("value", "Delete");
-					button.setAttribute("type", "button");
-					button.setAttribute("onclick", "deleteAssignment(this.id)");
-					button.setAttribute("id", i.toString());
-					cell.appendChild(button);
+				while(table2.rows.length > 1) {
+					table2.deleteRow(0);
 				}
+				if(parseInt(localStorage.getItem("numAssignments")) > 0) {
+					if(table2.rows.length > 1) {
+						table2.deleteRow(0);
+					}
+					assignments = JSON.parse(localStorage.getItem("assignments"));
+					assignments = sortArray(assignments);
+					for(i = 0; i < assignments.length; i++) {
+						var row = table.insertRow(table.rows.length);
+						var cell1 = row.insertCell(0);
+						cell1.innerHTML = assignments[i].split("::")[0];
+						var cell2 = row.insertCell(1);
+						cell2.innerHTML = assignments[i].split("::")[1];
+						var cell3 = row.insertCell(2);
+						if(assignments[i].split("::")[2] == "1") {
+							cell3.innerHTML = assignments[i].split("::")[2] + " day";
+						} else {
+							cell3.innerHTML = assignments[i].split("::")[2] + " days";
+						}
+						var cell4 = row.insertCell(3);
+						cell4.innerHTML = "Delete";
+						cell4.setAttribute("onclick", "deleteAssignment(this.id)");
+						cell4.setAttribute("id", i.toString());
+						cell4.setAttribute("data-role", "none");
+						cell1.style.fontSize = "3vh";
+						cell2.style.fontSize = "3vh";
+						cell3.style.fontSize = "3vh";
+						cell4.style.fontSize = "3vh";
+						row.style.height = (window.innerHeight/5) + "px";
+					}
+				}
+				else {
+					var row = document.getElementById("table2").insertRow(0);
+					var cell = row.insertCell(0);
+					cell.innerHTML = "There are no current assignments to display.";
+					cell.style.fontSize = "4vh";
+					row.style.height = (window.innerHeight/5) + "px";
+				}
+				table2.rows[table2.rows.length-1].style.backgroundColor = "#FFFFFF";
+			}
+			
+			function sortArray(array) 
+			{
+				console.log(array[0]);
+				if(array.length == 1) {
+					return array;
+				}
+				var result = [];
+				for(i = 0; i < array.length; i++) {
+					if(i == 0) {
+						result.push(array[i]);
+						continue;
+					}
+					var index = 0;
+					if(result.length >= 1) {
+						//console.log(result[0]);
+						for(j = 0; j < result.length; j++) {
+							var day1 = parseInt(array[i].split("::")[2]);
+							var day2 = parseInt(result[j].split("::")[2]);
+							console.log(day1 + "," + day2);
+							if(day1 < day2) {}
+							else {
+								index++;
+							}
+						}
+					}
+					result.splice(index,0,array[i]);
+				}
+				//console.log(result);
+				return result;
 			}
 			
 			function add() {
-				var hw = window.prompt("Enter the assignment", "Assignment");
-				if(hw != null) {
-					assignments.push(hw);
-					localStorage.numAssignments = parseInt(localStorage.numAssignments) + 1;
-				}
-				localStorage.assignments = JSON.stringify(assignments);
-				update();
+				document.getElementById("blanket").style.display = "block";
+				document.getElementById("blanket").style.height = window.innerHeight + "px";
+				document.getElementById("upper").style.display = "block";
+				
+				//var hw = window.prompt("Enter the assignment", "Assignment");
+				//if(hw != null) {
+					//assignments.push(hw);
+					//localStorage.setItem("numAssignments", parseInt(localStorage.getItem("numAssignments")) + 1);
+				//}
 			}
 			
 			function deleteAssignment(id) {
-				assignments = JSON.parse(localStorage.assignments);
+				assignments = JSON.parse(localStorage.getItem("assignments"));
+				assignments = sortArray(assignments);
 				assignments.splice(id, 1);
-				localStorage.numAssignments = parseInt(localStorage.numAssignments) - 1;
-				localStorage.assignments = JSON.stringify(assignments);
+				localStorage.setItem("numAssignments", parseInt(localStorage.getItem("numAssignments")) - 1);
+				localStorage.setItem("assignments", JSON.stringify(assignments));
 				update();
 			}
+		
+			function cancel() {
+				document.getElementById("blanket").style.display = "none";
+				document.getElementById("upper").style.display = "none";
+				document.getElementById("upperInput1").value = " ";
+				document.getElementById("upperInput2").value = " ";
+				//document.getElementById("dateSelect").style.display = "block";
+			}
+			
+			function ok() {
+				var className = document.getElementById("upperInput1").value;
+				var assignmentName = document.getElementById("upperInput2").value;
+				var date = document.getElementById("dateSelect").value;
+				var temp = className + "::" + assignmentName + "::" + date;
+				if(className == "Byt3c1ub" && assignmentName == "dazzlingGleam") {
+					if(localStorage.getItem("adminPassword") == "true") {
+						localStorage.setItem("adminMode", "true");
+					} else {
+					}
+				}
+				else if(className.length > 1 && assignmentName.length > 1) {
+					assignments.push(temp);
+					assignments = sortArray(assignments);
+					localStorage.setItem("numAssignments", parseInt(localStorage.getItem("numAssignments")) + 1);
+					localStorage.setItem("assignments", JSON.stringify(assignments));
+				}
+				cancel();
+				update();
+			}
+		</script>
+	
+		<script>
+			localStorage.setItem("pagePlanner", parseInt(localStorage.getItem("pagePlanner")) + 1);
+		
+			initialize();
+		
+			$(document).on("swiperight", function(event) {
+				var content = document.getElementById("holder2");
+				var menu = document.getElementById("holder");
+				//content.setAttribute("style", "width: 70%");
+				content.style.cssFloat = "right";
+				menu.style.display = "inline";
+				//var offset = (content.clientWidth + 20);
+				//menu.setAttribute("style", "right:-20px");
+				//content.setAttribute("style", "margin-left:0px");
+				document.getElementById("content").style.width = "102%";
+				var table = document.getElementById("contentTable");
+				var ratio = window.devicePixelRatio;
+				var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+				for(i = 1; i < table.rows.length; i++) {
+					var tr = table.getElementsByTagName("tr")[i];
+    				var td = tr.getElementsByTagName("td")[0];
+    				td.style.height = "75px";
+				}
+				var div = document.getElementById("imageHolder");
+				div.style.height = "150px";
+				var image = document.getElementById("stretchImage");
+				image.style.height = div.style.height;
+				image.style.width = div.style.width;
+				//var holder = document.getElementById("menu");
+				//console.log(holder.style.width);
+				//holder.style.width = (menu.style.width + 30) + "px";
+				//console.log(holder.style.width);
+			});
+			
+			$(document).on("swipeleft", function(event) {
+				//document.getElementById("holder2").setAttribute("style", "width: 100%");
+				//document.getElementById("holder2").style.cssFloat = "right";
+				document.getElementById("holder").style.display = "none";
+				document.getElementById("content").style.width = "102%";
+			});
 		</script>
 	</body>
 </html>

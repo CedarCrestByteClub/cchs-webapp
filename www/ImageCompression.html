@@ -1,0 +1,200 @@
+<html>
+	<head>
+		<script src="js/lz-string.js"></script>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+	</head>
+	
+	<body>
+		<input type="button" value="Compress" onclick="compress()"/>
+		<br>
+		<canvas id="content"></canvas>
+		<img id="image" src="img/map.jpg">
+		
+		<script>
+			var ctx = document.getElementById("content");
+			var canvas = ctx.getContext("2d");
+			var image1 = document.getElementById("image");
+			//ctx.width = 1247;
+			//ctx.height = 697;
+			canvas.drawImage(image1,0,0,image1.width,image1.height,0,0,ctx.width,ctx.height);
+
+			function compress() {
+				var data = "";
+				data = canvas.getImageData(0,0,image1.width,image1.height);
+				
+				var other = "";
+				for(i = 0; i < data.data.length; i+=4) {
+					other += toHex(data.data[i+0]) + toHex(data.data[i+1]) + toHex(data.data[i+2]);
+				}
+
+				start(other);
+			}
+			
+			function toHex(a) {
+				var result = "";
+				if(a < 16) {
+					result += "0";
+					if(a < 10) {
+						result += a.toString();
+					} else {
+						switch(a) {
+							case 10:
+								result += "A";
+								break;
+							case 11:
+								result += "B";
+								break;
+							case 12:
+								result += "C";
+								break;
+							case 13:
+								result += "D";
+								break;
+							case 14:
+								result += "E";
+								break;
+							case 15:
+								result += "F";
+								break;
+							default:
+								break;
+						}
+					}
+				}
+				else {
+					var modulus = a % 16;
+					//console.log(modulus + ", " + a);
+					var next = (a - modulus)/16;
+					//console.log("next " + next);
+					if(next < 10) {
+						result += next.toString();
+					} else {
+						switch(next) {
+							case 10:
+								result += "A";
+								break;
+							case 11:
+								result += "B";
+								break;
+							case 12:
+								result += "C";
+								break;
+							case 13:
+								result += "D";
+								break;
+							case 14:
+								result += "E";
+								break;
+							case 15:
+								result += "F";
+								break;
+							default:
+								break;
+						}
+					}
+					
+					if(modulus < 10) {
+						result += modulus.toString();
+					} else {
+						switch(modulus) {
+							case 10:
+								result += "A";
+								break;
+							case 11:
+								result += "B";
+								break;
+							case 12:
+								result += "C";
+								break;
+							case 13:
+								result += "D";
+								break;
+							case 14:
+								result += "E";
+								break;
+							case 15:
+								result += "F";
+								break;
+							default:
+								break;
+						}
+					}
+				}
+				//console.log(a + "," + result);
+				return result;
+			}
+			
+			function fromHex(a) {
+				var result = 0;
+				result += 16 * stringToInt(a.substring(0,1));
+				result += stringToInt(a.substring(1,2));
+				return result;
+			}
+			
+			function stringToInt(datum) {
+				if(parseInt(datum) <= 9) {
+					return parseInt(datum);
+				} else {
+					switch(datum) {
+						case "A":
+							return 10;
+						case "B":
+							return 11;
+						case "C":
+							return 12;
+						case "D":
+							return 13;
+						case "E":
+							return 14;
+						case "F":
+							return 15;
+						default:
+							break;
+					}
+				}
+			}
+		</script>
+	
+		<script>
+			function start(test) {
+				var compressed = LZString144.compress(test);
+				//var decompressed = LZString144.decompress(compressed);
+				//console.log(compressed.length, compressed);
+				//console.log(decompressed.length, decompressed);
+				//localStorage.setItem("imageURLs", compressed);
+				
+				
+				//var newData = canvas.createImageData(image1.width,image1.height);
+				//var j = 0;
+				//for(i = 0; i < newData.data.length; i+=4) {
+					//newData.data[i+0] = fromHex(decompressed.substring(j,j+2));
+					//newData.data[i+1] = fromHex(decompressed.substring(j+2,j+4));
+					//newData.data[i+2] = fromHex(decompressed.substring(j+4,j+6));
+					//newData.data[i+3] = 255;
+					//j+=6;
+				//}
+				//canvas.putImageData(newData,0,0);
+				
+				var pClass = Parse.Object.extend("HomeScreenImages");
+				var imageData = new pClass();
+				imageData.set("Display", 1);
+				imageData.set("Order", 1);
+				imageData.set("Width", image1.width);
+				imageData.set("Height", image1.height);
+				imageData.set("Data", compressed);
+				imageData.save(null, {
+				  success: function(gameScore) {
+				    // Execute any logic that should take place after the object is saved.
+				    alert('New object created with objectId: ' + gameScore.id);
+				  },
+				  error: function(gameScore, error) {
+				    // Execute any logic that should take place if the save fails.
+				    // error is a Parse.Error with an error code and message.
+				    alert('Failed to create new object, with error code: ' + error.message);
+				  }
+				});
+			}
+		</script>
+	</body>
+</html>

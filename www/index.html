@@ -1,66 +1,107 @@
 <!DOCTYPE html>
-<!--
-This is the first page the user sees. It shows a nice little graphic to advertise Byte Club and then moves onto the login page
--->
 <html>
-	<title>The first page when the program runs</title>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/index.css" />
-		<audio src = "../sounds/bite.mp3" id = "sound"></audio>
-		<script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
-		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script src="js/index.js"></script>
 		<script src="js/login.js"></script>
+		<script src="js/delays.js"></script>
+		<script src="js/lz-string.js"></script>
 		<script type="text/javascript">app.initialize();</script>
+		<style>
+			html, body {
+				width:100%;
+				height:100%;
+				overflow:hidden;
+			}
+		</style>
 	</head>
-	<body>
-		<h1>Brought to you by...</h1>
-		<div class = "content">
-			<div class = "spacerT"> </div>
-			<div class = "spacerL"> </div>
-			<div class = "spacerR"> </div>
-			<div class = "center">
-				<img style = "position:absolute" src = "../img/EmptyB.png" id = "TheB">
-			</div>
-			<p style="float: center;">Byte Club</p>
-			<div class = "spacerB"> </div>
+	<body bgcolor="white">
+		<div style="width:100%;height:100%;overflow:hidden;">
+			<div style="width:100%;height:20%;"></div>
+			<img src="img/launch.jpg" id="pic" onclick="keepShown()" style="position:absolute;overflow:hidden;vertical-align:middle;height:60%;">	
 		</div>
-		<h1 class="bottomHeading">The CCHS Byte Club</h1>
-		<h6>This app is still a work in progress. If you find problems, report them to ccbyteclub@gmail.com or the CCHS Tech Team.</h6>
-		<script type="text/javascript">
-			var theb = document.getElementById("TheB");
-			var byteSound = document.getElementById("sound");
-			var curImg = 0;
-			
-			//runs switch image once a second.
-			var timer = setInterval(function() {
-				switchImage(curImg);
-			}, 1000);
-	
-			//switches the image to make it appear as if the B is filling up, the parameter is used to keep track of the current image.
-			function switchImage(num) {
-				switch(num) {
-				case 0: case 1: case 2: case 3: case 4:
-					curImg++;
-					theb.src = "img/B" + curImg.toString() + ".png";
-					break;
-				case 5:
-					curImg = 6;
-					byteSound.play();
-					theb.src = "img/ByteClubLogo.png";
-					break;
-				case 6:
-					/*if(localStorage.username != null && localStorage.password != null) {
-						autologin(localStorage.username, localStorage.password);
-					} else {
-						window.location = "login.html";
-					}*/
-					//window.location = "redesignedHome.html";
-					window.location = "home.html";
-					break;
-				default:
-					alert("Error, entered default switch in index.html!");
+		
+		<script>
+			localStorage.setItem("connection", "true");
+			localStorage.setItem("init", "true");
+			if(localStorage.getItem("firstTime") === null) {
+				localStorage.setItem("firstTime", "false");
+				localStorage.setItem("pageHome", 0);
+				localStorage.setItem("pageSport", 0);
+				localStorage.setItem("pageLunch", 0);
+				localStorage.setItem("pageStore", 0);
+				localStorage.setItem("pageClub", 0);
+				localStorage.setItem("pageCalendar", 0);
+				localStorage.setItem("pagePlanner", 0);
+				localStorage.setItem("pageTalon", 0);
+				localStorage.setItem("pageNews", 0);
+				localStorage.setItem("pageMap", 0);
+				localStorage.setItem("pageClosing", 0);
+				localStorage.setItem("pageFlappy", 0);
+				localStorage.setItem("pageAbout", 0);
+				localStorage.setItem("adminMode", "false");
+				localStorage.setItem("adminPassword", "false");
+				localStorage.setItem("adminCriteria1", "false");
+				localStorage.setItem("adminCriteria2", "false");
+				localStorage.setItem("adminCriteria3", "false");
+			}
+		
+			var image = document.getElementById("pic");
+			console.log(window.innerHeight);
+			image.style.width = (window.innerWidth) + "px";
+		
+			var proceed = 1;
+		
+			var count = 0;
+			timer = setInterval(function() {
+				count++;
+				if(count >= 3) {
+					change();
 				}
+			}, 1000);
+		
+			/*try {
+				Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+				/*var newImages = Parse.Object.extend("HomeScreenImages");
+				query = new Parse.Query(newImages);
+				query.find().then(function(results) {
+					var temp = "";
+					for(i = 0; i < results.length; i++) {
+						if(parseInt(results[i].get("Display")) == 1) {
+							temp = results[i].get("Data");
+							localStorage.setItem("newImageWidth", results[i].get("Width"));
+							localStorage.setItem("newImageHeight", results[i].get("Height"));
+						}
+					}
+					//console.log(temp);
+					//console.log(temp[0], JSON.stringify(temp));
+					start(temp);
+					//localStorage.setItem("imageURLs", temp);
+					console.log("done");
+					proceed = 1;
+				});
+				proceed = 1;
+				
+			} catch(e) {
+				localStorage.setItem("Delays", " ");
+				localStorage.setItem("imageURLs", "a");
+				proceed = 1;
+			}*/
+		
+			function change() {
+				clearInterval(timer);
+				window.location = "newHome.html";
+			}
+			
+			function keepShown() {
+				image.style.display = "block";
+			}
+			
+			function start(test) {
+				console.log(test);
+				var decompressed = LZString144.decompress(test);
+				console.log(decompressed);
+				localStorage.setItem("imageURLs", decompressed);
 			}
 		</script>
 	</body>

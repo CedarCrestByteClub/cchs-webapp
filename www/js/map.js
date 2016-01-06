@@ -1,16 +1,9 @@
-for(i = 0; i < 1; i++) {
-	//Create variables that need to be used globally
-	//Get original canvas and its height and width
-	var canvasstart = document.getElementById("drawCanvas");
-	var height = canvasstart.height - 10;
-	var width = canvasstart.width - 10;
-	//Get actual drawing surface
-	var canvas = canvasstart.getContext("2d");
-	//console.log("Got canvas");
+for(i=0;i<1;i++) {
 	var roomStart = "";
 	var roomEnd = "";
 	var path = [];
 	var directions = [];
+	var teachers = [];
 	var directionsIndex = 0;
 	var specialCase = 0;
 	var pressStart = false;
@@ -18,40 +11,48 @@ for(i = 0; i < 1; i++) {
 	var check2 = false;
 	var sClass = 0;
 	var eClass = 0;
-	var screenWidth = screen.width;
-	var screenHeight = screen.height;
+	var screenWidth = window.innerWidth;
+	var screenHeight = window.innerHeight;
 	var ratio = screenWidth / 250;
+	var canvasstart;
+	var height;
+	var width;
+	var canvas;
+	var originalWidth;
+}
+
+window.onload = function() {
+	//Create variables that need to be used globally
+	//Get original canvas and its height and width
+	canvasstart = document.getElementById("drawCanvas");
+	//Get actual drawing surface
+	canvas = canvasstart.getContext("2d");
+	//console.log("Got canvas");
 	//alert("" + ratio);
 	canvas.canvas.width = 250 * ratio;
-	canvas.canvas.height = 150 * ratio;
+	canvas.canvas.height = 400;
+	height = canvas.canvas.height;
+	width = canvas.canvas.width;
 	canvas.lineWidth = canvas.lineWidth * ratio;
-	var originalWidth = canvas.lineWidth;
-	
-}   
+	originalWidth = canvas.lineWidth;
+	var image = document.getElementById("mapImage");
+	canvas.drawImage(image,0,0,canvas.canvas.width,canvas.canvas.height);
+	teacherLoad();
+};
 //Searches teacher array and finds entries that match what the user types in and adds them to the select
 //For starting classroom
 function searchStart() {
+	var overall = [];
 	check1 = true;
-    var textBox = document.getElementById("startRoomInput");
+    var textBox = document.getElementById("upperInput");
     var text = textBox.value;
+    if(text.length == 0) {
+    	return [];
+    }
     var list = [];
     var names = [];
     var holder = [];
     var temp = [];
-    var select = document.getElementById("slistOfOptions");
-    if(pressStart == true) {
-    	text = select.options[select.selectedIndex].value;
-    } else {
-	    while(select.options.length > 0) {
-	        select.removeChild(select.options[0]);
-	    }
-	    var tempoption = document.createElement("option");
-    	tempoption.value = "";
-    	tempoption.innerHTML = "Select";
-    	select.appendChild(tempoption);
-    }
-    //console.log(text);
-    //console.log(parseInt(text));
     if(!isNaN(parseInt(text))) {
 	    for(i = 0; i < teachers.length; i++) {
 	        var Croom = "" + teachers[i].get("room");
@@ -76,13 +77,10 @@ function searchStart() {
 		}
 	    for(i = 0; i < list.length; i++) {
 	        var Croom = list[i];
-	        var option = document.createElement("option");
-	        option.value = Croom;
-	        option.innerHTML =Croom + " - " + names[i];
-	        select.appendChild(option);
+	        overall.push(Croom + " - " + names[i]);
 	    }
         if([1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 707, 103].indexOf(parseInt(text)) >= 0) {
-            roomStart = text;
+            //roomStart = text;
         } else {
             var room = parseInt(text);
             var index = 0;
@@ -93,7 +91,7 @@ function searchStart() {
                 }
             }
             //console.log(index);
-            roomStart = teachers[index].get("room");
+            //roomStart = teachers[index].get("room");
         }
     } else {
         var room = text.toLowerCase();
@@ -101,45 +99,32 @@ function searchStart() {
         for(i = 0; i < teachers.length; i++) {
         	//console.log(teachers[i].get("name").toLowerCase());
         	if(((teachers[i].get("name").toLowerCase()).indexOf(room) == 0 && room.length > 0)) {
-        		var option = document.createElement("option");
-	        	option.value = teachers[i].get("room");
-	        	option.innerHTML = teachers[i].get("room")+ " - " + teachers[i].get("name");
-	        	select.appendChild(option);
+	        	overall.push(teachers[i].get("room")+ " - " + teachers[i].get("name"));
         	} else if(teachers[i].get("name").substring(0,3).localeCompare("Mr.") == 0 && teachers[i].get("name").substring(4).toLowerCase().indexOf(room) == 0) {
-        		var option = document.createElement("option");
-	        	option.value = teachers[i].get("room");
-	        	option.innerHTML = teachers[i].get("room")+ " - " + teachers[i].get("name");
-	        	select.appendChild(option);
+	        	overall.push(teachers[i].get("room")+ " - " + teachers[i].get("name"));
         	} else if(teachers[i].get("name").substring(0,4).localeCompare("Mrs.") == 0 && teachers[i].get("name").substring(5).toLowerCase().indexOf(room) == 0) {
-        		var option = document.createElement("option");
-	        	option.value = teachers[i].get("room");
-	        	option.innerHTML = teachers[i].get("room")+ " - " + teachers[i].get("name");
-	        	select.appendChild(option);
+	        	overall.push(teachers[i].get("room")+ " - " + teachers[i].get("name"));
         	} else if(teachers[i].get("name").substring(0,4).localeCompare("Sra.") == 0 && teachers[i].get("name").substring(5).toLowerCase().indexOf(room) == 0) {
-        		var option = document.createElement("option");
-	        	option.value = teachers[i].get("room");
-	        	option.innerHTML = teachers[i].get("room")+ " - " + teachers[i].get("name");
-	        	select.appendChild(option);
+	        	overall.push(teachers[i].get("room")+ " - " + teachers[i].get("name"));
         	}
         }
     }
     var room = text.toLowerCase();
     var specialRooms = ["Auditorium", "LGI", "Cafeteria", "Library", "Gym A", "Gym B", "Weight Room", "Main Office", "Counseling Office", "Nurse", "Career Center", "Flex Lab"]; 
 	var specialValues = ["1006","707","1001","1002","1003","1004","1005","1008","1009","1010","1011","103"];
+	
 	for(i = 0; i < specialRooms.length; i++) {
 		if(specialRooms[i].toLowerCase().indexOf(room) == 0) {
-			var option = document.createElement("option");
-	        option.value = specialValues[i];
-	        option.innerHTML = specialRooms[i];
-	        select.appendChild(option);
+			overall.push(specialRooms[i]);
 		}
 	}
+	return overall;
 }
 //Searches teacher array and finds entries that match what the user types in and adds them to the select
 //For end classroom
 function searchEnd() {
 	check2 = true;
-    var textBox = document.getElementById("endRoomInput");
+    var textBox = document.getElementById("upperInput");
     var text = textBox.value;
     var list = [];
     var names = [];
@@ -306,8 +291,9 @@ function Teacher(name, room) {
 }
 //Create draw "method"
 Hallway.prototype.draw = function(x1, y1, x2, y2) {
-    canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-    canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	//console.log(y1 + ". " + canvas.height);
+    canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+    canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
     canvas.strokeStyle = "#858585";
     canvas.stroke();
 };
@@ -325,29 +311,29 @@ Teacher.prototype.get = function(param) {
 for(i = 0; i < 1; i++) {
     //Creates all of the hallways in the school
     var hall1 = new Hallway(.4,11.5,0,6,1,["301","302","304","305","306","307","308","310","311","312"], ["r1.0", "l1.0", "l1.5", "r3.5", "l3.5", "r4.0", "l4.0", "l6.5", "r6.5", "l7.0"]);
-    var hall2 = new Hallway(.4,9.4,1,4.5,2,["303","1001"], ["r3.5","l5.0"]);
-    var hall3 = new Hallway(.4,6.8,1,12.3,3,["309","313","315","317","417","415","413","412","411","410","409","408","407","406","405","404", "403", "402"], ["r1.5", "r2.5", "r3.0", "r4.0", "l1.5", "l3.0", "l4.0", "r6.0", "l6.0", "r7.0", "l7.5", "r8.5", "l8.0", "r9.0", "l9.5", "r10.5", "l11.0", "r11.0"]);
-    var hall4 = new Hallway(.4,5.6,1,4.7,4,["314","316","313","315","318","320","322","317"], ["r1.0", "r1.5", "l2.5", "l3.0", "r2.5", "r3.0", "r4.0", "l4.0"]);
-    var hall5 = new Hallway(5,9.5,0,4.8,5,[], []);
+    var hall2 = new Hallway(.4,9.0,1,4.5,2,["303","1001"], ["r3.5","l5.0"]);
+    var hall3 = new Hallway(.4,6.7,1,12.3,3,["309","313","315","317","417","415","413","412","411","410","409","408","407","406","405","404", "403", "402"], ["r1.5", "r2.5", "r3.0", "r4.0", "l1.5", "l3.0", "l4.0", "r6.0", "l6.0", "r7.0", "l7.5", "r8.5", "l8.0", "r9.0", "l9.5", "r10.5", "l11.0", "r11.0"]);
+    var hall4 = new Hallway(.4,5.8,1,4.7,4,["314","316","313","315","318","320","322","317"], ["r1.0", "r1.5", "l2.5", "l3.0", "r2.5", "r3.0", "r4.0", "l4.0"]);
+    var hall5 = new Hallway(5,9.4,0,4.5,5,[], []);
     var hall6 = new Hallway(6,6.8,0,5.3,6,[], []);
-    var hall7 = new Hallway(6,4.4,1,2.9,7,["213","212","211","209","207"], ["l0.2", "r1.5", "l1.5", "l2.0", "l2.5"]);
-    var hall8 = new Hallway(2,3.5,1,6.8,8,["221","219","217","215","210","208","206","204","1002"], ["l1.0", "l2.0", "l2.5", "l3.5", "r4.5", "r5.5", "r6.0", "r6.5","r1.0"]);
-    var hall9 = new Hallway(8.8,4.4,0,1,9,[], []);
-    var hall10 = new Hallway(1.5,1.4,1,9.3,10,["120","118","116","114","113","112","110","111","108","109","107","105","103"], ["r0.5", "r1.0", "r2.0", "r3.0", "l3.0", "r4.0", "r4.5", "l4.7", "r5.0", "l5.5", "l6.0", "l7.0", "l7.5"]);
-    var hall11 = new Hallway(10.9,5.7,0,4.7,11,["201","1010","1011"], ["r2.0","r3.5","l4.5"]);
+    var hall7 = new Hallway(6,4.7,1,2.9,7,["213","212","211","209","207"], ["l0.2", "r1.5", "l1.5", "l2.0", "l2.5"]);
+    var hall8 = new Hallway(2,4.0,1,6.8,8,["221","219","217","215","210","208","206","204","1002"], ["l1.0", "l2.0", "l2.5", "l3.5", "r4.5", "r5.5", "r6.0", "r6.5","r1.0"]);
+    var hall9 = new Hallway(8.8,4.6,0,1,9,[], []);
+    var hall10 = new Hallway(1.5,2.1,1,9.3,10,["120","118","116","114","113","112","110","111","108","109","107","105","103"], ["r0.5", "r1.0", "r2.0", "r3.0", "l3.0", "r4.0", "r4.5", "l4.7", "r5.0", "l5.5", "l6.0", "l7.0", "l7.5"]);
+    var hall11 = new Hallway(10.9,5.7,0,4.3,11,["201","1010","1011"], ["r2.0","r3.5","l4.5"]);
     var hall12 = new Hallway(12.7,6.9,0,5.8,12,["514","512","1014"], ["l2.5", "l3.0","l5.0"]);
-    var hall13 = new Hallway(10.8,5.7,1,7,13,["610","608","606","604","602"], ["r2.5", "r3.5", "r4.0", "r5.5", "r6.0"]);
-    var hall14 = new Hallway(12.7,3.5,1,5.2,14,["510","508","506","504","502"], ["l0.5", "l1.5", "l2.5", "l3.0", "l4.0"]);
-    var hall15 = new Hallway(17.8,13,0,12,15,["500","707","705","703","701","1005","1006","1013"], ["l8.0", "r5.5", "r4.5", "r4.0", "r3.5","r1.0","l11.5","l4.5"]);
-    var hall16 = new Hallway(12,10.7,1,5.8,16,["1003"], ["l4.5"]);
-    var hall17 = new Hallway(20.6,3.8,1,3.3,17,["809","808","807"], ["l0.5", "r1.0", "r2.5"]);
-    var hall18 = new Hallway(22.5,3.8,0,2.7,18,["806","805","804"], ["r2.5", "r3.0", "r3.5"]);
-    var hall19 = new Hallway(20.7,1.7,1,1.8,19,["803","802","801"], ["r1.0", "l1.0", "l0.5"]);
-    var hall20 = new Hallway(20.8,1.7,0,1.7,20,[], []);
-    var hall21 = new Hallway(5,4.7,1,1,21,["214"], ["r0.5"]);
-    var hall22 = new Hallway(10.8,1,1,7,22,["106","104","102","1008","1009","1012"],["r3.7", "r3.7", "r6.2","r9.0","r9.5","l1.0"]);
+    var hall13 = new Hallway(10.8,5.8,1,7,13,["610","608","606","604","602"], ["r2.5", "r3.5", "r4.0", "r5.5", "r6.0"]);
+    var hall14 = new Hallway(12.7,4.0,1,5.2,14,["510","508","506","504","502"], ["l0.5", "l1.5", "l2.5", "l3.0", "l4.0"]);
+    var hall15 = new Hallway(17.6,12.2,0,10.4,15,["500","707","705","703","701","1005","1006","1013"], ["l8.0", "r5.5", "r4.5", "r4.0", "r3.5","r1.0","l11.5","l4.5"]);
+    var hall16 = new Hallway(12,10,1,5.8,16,["1003"], ["l4.5"]);
+    var hall17 = new Hallway(20.6,4.2,1,3.3,17,["809","808","807"], ["l0.5", "r1.0", "r2.5"]);
+    var hall18 = new Hallway(22.2,4.2,0,2.7,18,["806","805","804"], ["r2.5", "r3.0", "r3.5"]);
+    var hall19 = new Hallway(20.6,2.4,1,1.8,19,["803","802","801"], ["r1.0", "l1.0", "l0.5"]);
+    var hall20 = new Hallway(20.6,2.4,0,1.7,20,[], []);
+    var hall21 = new Hallway(5,5.0,1,1,21,["214"], ["r0.5"]);
+    var hall22 = new Hallway(10.8,1.8,1,7,22,["106","104","102","1008","1009","1012"],["r3.7", "r3.7", "r6.2","r9.0","r9.5","l1.0"]);
     var hall23 = new Hallway(12.1,10.7,0,3.9,23,["401","1004"],["l3.5","r4.0"]);
-    var hall24 = new Hallway(8.8,4,1,2.1,24,["205","203","202"],["l0.5", "l1.0", "r0.5"]);
+    var hall24 = new Hallway(8.8,4.4,1,2.1,24,["205","203","202"],["l0.5", "l1.0", "r0.5"]);
     var halls = [hall1,hall2,hall3,hall4,hall5,hall6,hall7,hall8,hall9,hall10,hall11,hall12,hall13,hall14,hall15,hall16,hall17,hall18,hall19, hall20,hall21,hall22,hall23,hall24];
     
     var tstair1 = new Stair(12.7,6.8);
@@ -404,15 +390,19 @@ function sketch() {
 	   var a = halls[i];
 	   if(a.direc == 0) {
 	      var x1 = (a.x*10)+10;
-	      var y1 = height-(a.y*10);
+	      //var y1 = height-(a.y*10);
+	      var y1 = a.y;
 	      var x2 = (a.x*10)+10;
-	      var y2 = height-((a.y-a.length)*10);
+	      //var y2 = height-((a.y-a.length)*10);
+	      var y2 = a.y - a.length;
 	      a.draw(x1,y1,x2,y2);
 	   } else {
 	      var x1 = (a.x*10)+10;
-	      var y1 = height-(a.y*10);
+	      //var y1 = height-(a.y*10);
+	      var y1 =  a.y;
 	      var x2 = ((a.x+a.length)*10)+10;
-	      var y2 = height-(a.y*10);
+	      //var y2 = height-(a.y*10);
+	      var y2 = a.y;
 	      a.draw(x1,y1,x2,y2);
 	   }
 	}
@@ -427,12 +417,12 @@ function sketch() {
 }
 
 //Adds each teacher into an object and into an array
-for(c = 0; c < 1; c++) {
+function teacherLoad() {
 	sketch();
 	//var roomClass = Parse.Object.extend("Teachers");
 	//var roomQuery = new Parse.Query(roomClass);
 	//roomQuery.limit(300);
-	var teachers = [];
+	teachers = [];
 	var tNames = ["Bare", "Barnhart", "Battistelli", "Bielecki", "Boger", "Bott", "Campbell", "Chandler", "Chris", "Custer", "Dissinger", "Mrs. Dresch", "Mr. Dresch", "Eckert", "Engebretson", "Fried", "Gates", "Gebhard", "Gernert", "Gingrich", "Goodreau", "Grumbine", "Haines", "Hall", "Harris", "Haussener", "Heizman", "Hepler", "Hopwood", "Hostetter", "Hulme", "Hysick", "Isenberg", "Keath", "Keddie", "Keefer", "Kohr", "Lambros", "Mrs. Lebo", "Mr. Lebo", "Leiboff", "Leonard", "Light", "Lilley", "Lukridge", "Lumsden", "Lutz", "MacMillan", "Marzock", "Miller", "Muenz", "Mull", "O'Kane", "Oplinger", "Pierce", "Plichta", "Powers", "Reed", "Reisch", "Rhen", "Rhoades", "Mr. Risser", "Rita", "Schultheis", "Schwalm", "Shank", "Sides/T.Smith", "J.Smith", "Mr. Snyder", "Mrs. Snyder", "Sra. Snyder", "Spohn", "Steckbeck", "Stettner", "Strait", "Sullivan", "Mrs. Thomas", "Mr. Thomas", "Tobin", "C. Wagner", "J. Wagner", "Waranavage", "Weber", "Weitzel", "Welliver", "Wildasin", "Williams", "Zackey", "Zorrilla"];
 	var tLocations = [502, 206, 205, 500, 209, 305, 102, 318, 317, 212, 116, 305, 306, 313, 214, 412, 413, 307, 118, 606, 807, 403, 608, 308, 806, 409, 322, 120, 312, 217, 701, 304, 510, 512, 602, 114, 204, 107, 302, 402, 210, 417, 410, 514, 110, 508, 808, 705, 208, 405, 106, 506, 500, 404, 104, 804, 105, 803, 211, 203, 311, 112, 408, 201, 113, 604, 703, 406, 301, 415, 219, 802, 303, 804, 310, 809, 207, 213, 805, 215, 209, 109, 316, 407, 610, 801, 320, 314, 111];
 	for(i = 0; i < tNames.length; i++) {
@@ -1148,27 +1138,34 @@ function start() {
 	console.log(names);
 	console.log(locations);*/
 	//console.log("Path be " + path.length);
-	var tempselect = document.getElementById("slistOfOptions");
-	if(tempselect.options[tempselect.selectedIndex].value == "" || check1 == false) {
-		return;
-	}
-	tempselect = document.getElementById("elistOfOptions");
-	if(tempselect.options[tempselect.selectedIndex].value == "" || check2 == false) {
+	//var tempselect = document.getElementById("slistOfOptions");
+	//if(tempselect.options[tempselect.selectedIndex].value == "" || check1 == false) {
+		//return;
+	//}
+	//tempselect = document.getElementById("elistOfOptions");
+	//if(tempselect.options[tempselect.selectedIndex].value == "" || check2 == false) {
+		//return;
+	//}
+	if(roomStart.length < 1 || roomEnd.length < 1) {
 		return;
 	}
 	canvas.clearRect(0,0,width,height);
 	canvasstart.width = canvasstart.width;
+	var image = document.getElementById("mapImage");
+	canvas.drawImage(image,0,0,canvas.canvas.width,canvas.canvas.height);
 	sketch();
-	roomStart = "";
-	roomEnd = "";
+	//roomStart = "";
+	//roomEnd = "";
+	console.log(roomStart);
+	console.log(roomEnd);
 	path = [];
 	directions = [];
 	directionsIndex = 0;
 	specialCase = 0;
 	pressStart = false;
 	pressStart = true;
-    searchStart();
-    searchEnd();
+    //searchStart();
+    //searchEnd();
     pressStart = false;
     //console.log(roomStart);
     //console.log(roomEnd);
@@ -1295,12 +1292,14 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	            if(j == 0) {
 	            	//console.log("al-jazero");
 	                var cHall = halls[starting-1];
+	                //console.log(cHall.direc + "," + cHall.x + "," + cHall.y + "," + cHall.coords[sClass]);
+	                //console.log("h" + height);
 	                if(cHall.direc == 0) {
 	                    x1 = (cHall.x * 10) + 10;
-	                    y1 = height - ((cHall.y - parseFloat(cHall.coords[sClass].substring(1))) * 10);
+	                    y1 = cHall.y - parseFloat(cHall.coords[sClass].substring(1));
 	                } else {
 	                    x1 = ((cHall.x + parseFloat(cHall.coords[sClass].substring(1))) * 10) + 10;
-	                    y1 = height - (cHall.y * 10);
+	                    y1 = cHall.y;
 	                }
 	                var firstInt = 0;
 	                //console.log("AAAAA" + i);
@@ -1318,7 +1317,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                }
 	                //if(firstInt == 0) {console.log("failure");}
 	                x2 = (firstInt.x * 10) + 10;
-	                y2 = height - (firstInt.y * 10);
+	                y2 = firstInt.y;
 	            //For last line in path
 	            }
 	            else if(j == path.length - 1) {
@@ -1330,14 +1329,14 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                    }
 	                }
 	                x1 = (lastInt.x * 10) + 10;
-	                y1 = height - (lastInt.y * 10);
+	                y1 = lastInt.y;
 	                var cHall = halls[ending-1];
 	                if(cHall.direc == 0) {
 	                    x2 = (cHall.x * 10) + 10;
-	                    y2 = height - ((cHall.y - parseFloat(cHall.coords[eClass].substring(1))) * 10);
+	                    y2 = cHall.y - parseFloat(cHall.coords[eClass].substring(1));
 	                } else {
 	                    x2 = ((cHall.x + parseFloat(cHall.coords[eClass].substring(1))) * 10) + 10;
-	                    y2 = height - (cHall.y * 10);
+	                    y2 = cHall.y;
 	                }
 	                if(cHall.id == 16 && halls[chend-1].allRooms[eClass] == "1003" && path[path.length - 2] == 12) {
 	                    x2 = ((halls[11].x + 1.5) * 10) + 10;
@@ -1353,19 +1352,19 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                    }
 	                }
 	                x1 = (firstInt.x * 10) + 10;
-	                y1 = height - (firstInt.y * 10);
+	                y1 = firstInt.y;
 	                x2 = (halls[11].x * 10) + 10;
-	                y2 = height - (halls[2].y * 10);
+	                y2 = halls[2].y;
 	                canvas.globalAlpha = 1;
-	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+    				canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
 	                canvas.stroke();
 	                var ja = j + 2;
 	                x1 = (halls[19].x * 10) + 10;
-	                y1 = height - ((halls[19].y - halls[19].length) * 10);
+	                y1 = halls[19].y - halls[19].length;
 	                if(ja == path.length - 1) {
 	                    x2 = (parseFloat(halls[19].x + (halls[ending].coords[eClass].substring(1))) * 10) + 10;
-	                    y2 = height - (parseFloat(halls[19].y - (halls[ending].coords[eClass].substring(1))) * 10);
+	                    y2 = halls[19].y - parseFloat(halls[ending].coords[eClass].substring(1));
 	                } else {
 	                    var lastInt = 0;
 	                    for(i = 0; i < intersections.length; i++) {
@@ -1374,7 +1373,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                        }
 	                    }
 	                    x2 = (lastInt.x * 10) + 10;
-	                    y2 = height - (lastInt.y * 10);
+	                    y2 = lastInt.y;
 	                }
 	            //For going down either of the other two stairs
 	            }
@@ -1388,16 +1387,16 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                    }
 	                }
 	                x1 = (firstInt.x * 10) + 10;
-	                y1 = height - (firstInt.y * 10);
+	                y1 = firstInt.y;
 	                x2 = (halls[14].x * 10) + 10;
 	                if(path[j+1] == 200) {
-	                    y2 = height - (halls[12].y * 10);
+	                    y2 = halls[12].y;
 	                } else {
-	                    y2 = height - (halls[13].y * 10);
+	                    y2 = halls[13].y;
 	                }
 	                canvas.globalAlpha = 1;
-	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+   					canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
 	                canvas.stroke();
 	                var ja = j + 2;
 	                if(pathValue == 200) {
@@ -1405,10 +1404,10 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                } else {
 	                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
 	                }
-	                y1 = height - (halls[16].y * 10);
+	                y1 = halls[16].y;
 	                if(ja == path.length - 1) {
 	                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
-	                    y2 = height - (halls[16].y * 10);
+	                    y2 = halls[16].y;
 	                } else {
 	                    var lastInt = 0;
 	                    for(i = 0; i < intersections.length; i++) {
@@ -1417,19 +1416,19 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                        }
 	                    }
 	                    x2 = (lastInt.x * 10) + 10;
-	                    y2 = height - (lastInt.y * 10);
+	                    y2 = lastInt.y;
 	                }
 	            //If start room is in the same hall as the two non-down only stairs
 	            }
 	            else if(path[j+1] == 150) {
 	            	//console.log("al-ja150");
 	                x1 = (halls[14].x * 10) + 10;
-	                y1 = height - ((halls[14].y - parseFloat(halls[14].coords[sClass].substring(1))) * 10);
+	                y1 = halls[14].y - parseFloat(halls[14].coords[sClass].substring(1));
 	                x2 = x1;
 	                y2 = halls[12].y;
 	                canvas.globalAlpha = 1;
-	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+    				canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
 	                canvas.stroke();
 	                var ja = j + 2;
 	                if(pathValue == 200) {
@@ -1437,10 +1436,10 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                } else {
 	                    x1 = ((halls[16].x + halls[16].length) * 10) + 10;
 	                }
-	                y1 = height - (halls[16].y * 10);
+	                y1 = halls[16].y;
 	                if(ja == path.length - 1) {
 	                    x2 = ((halls[16].x + parseFloat(halls[16].coords[eClass].substring(1))) * 10) + 10;
-	                    y2 = height - (halls[16].y * 10);
+	                    y2 = halls[16].y;
 	                } else {
 	                    var lastInt = 0;
 	                    for(i = 0; i < intersections.length; i++) {
@@ -1449,7 +1448,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                        }
 	                    }
 	                    x2 = (lastInt.x * 10) + 10;
-	                    y2 = height - (lastInt.y * 10);
+	                    y2 = lastInt.y;
 	                }
 	            //For going up the two permissible up stairs
 	            }
@@ -1458,28 +1457,28 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                pathValue = path[j+1];
 	                if(path.length == 1) {
 	                    x1 = ((halls[16].x + parseFloat(halls[16].coords[sClass].substring(1))) * 10) + 10;
-	                    y1 = height - (halls[16].y * 10);
+	                    y1 = halls[16].y;
 	                } else {
 	                    x1 = (halls[17].x * 10) + 10;
-	                    y1 = height - (halls[16].y * 10);
+	                    y1 = halls[16].y;
 	                }
 	                if(pathValue == 400) {x2 = 245;}
 	                else {x2 = 215;}
 	                y2 = y1;
 	                canvas.globalAlpha = 1;
-	                canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-	                canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	                canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+    				canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
 	                canvas.stroke();
 	                var ja = j + 2;
 	                x1 = (halls[14].x * 10) + 10;
 	                if(pathValue == 500) {
-	                    y1 = height - (halls[12].y * 10);
+	                    y1 = halls[12].y;
 	                } else {
-	                    y1 = height - (halls[13].y * 10);
+	                    y1 = halls[13].y;
 	                }
 	                if(ja == path.length - 1) {
 	                    x2 = (halls[14].x * 10) + 10;
-	                    y2 = height - ((halls[14].y - parseFloat(halls[14].coords[eClass].substring(1))) * 10);
+	                    y2 = halls[14].y - parseFloat(halls[14].coords[eClass].substring(1));
 	                } else {
 	                    var lastInt = 0;
 	                    for(i = 0; i < intersections.length; i++) {
@@ -1488,7 +1487,7 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                        }
 	                    }
 	                    x2 = (lastInt.x * 10) + 10;
-	                    y2 = height - (lastInt.y * 10);
+	                    y2 = lastInt.y;
 	                }
 	            //For all other normal paths
 	            }
@@ -1512,9 +1511,9 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	                    }
 	                }
 	                x1 = (firstInt.x * 10) + 10;
-	                y1 = height - (firstInt.y * 10);
+	                y1 = firstInt.y;
 	                x2 = (lastInt.x * 10) + 10;
-	                y2 = height - (lastInt.y * 10);
+	                y2 = lastInt.y;
 	                //console.log("rAlp LarEn" + j);
 	            }
 	            
@@ -1522,8 +1521,12 @@ function checkIntersect(starting,ending,sClass,eClass) {
 	            //console.log("drAw" + j + "  " + path.length);
 	            canvas.strokeStyle = "#FF0000";
 	            canvas.globalAlpha = 1;
-	            canvas.moveTo(x1 * ratio + screenWidth/300,y1 * ratio - screenHeight/9);
-	            canvas.lineTo(x2 * ratio + screenWidth/300,y2 * ratio - screenHeight/9);
+	            //canvas.lineWidth = 5;
+	            //console.log("firstx " + x1 + "," + y1);
+	            //console.log("first" + (x1 * ratio + screenWidth/300) + "," + (y1 * ratio - screenHeight/9));
+	            //console.log("second" + (x2 * ratio + screenWidth/300) + "," + (y2 * ratio - screenHeight/9));
+	            canvas.moveTo(x1 * ratio + screenWidth/300, 400 - (y1 * (400/13)));
+    			canvas.lineTo(x2 * ratio + screenWidth/300, 400 - (y2 * (400/13)));
 	            canvas.stroke();
             }
         }
@@ -1541,12 +1544,12 @@ function checkIntersect(starting,ending,sClass,eClass) {
     var centerX = 0, centerY = 0;
     if(halls[shall-1].direc == 0) {
     	centerX = halls[shall-1].x * 10 + 10;
-    	centerY = height - ((halls[shall-1].y - parseFloat(halls[shall-1].coords[sClass].substring(1))) * 10);
+    	centerY = halls[shall-1].y - parseFloat(halls[shall-1].coords[sClass].substring(1));
     } else {
     	centerX = (halls[shall-1].x + parseFloat(halls[shall-1].coords[sClass].substring(1))) * 10 + 10;
-    	centerY = height - (halls[shall-1].y * 10);
+    	centerY = halls[shall-1].y;
     }
-    canvas.arc(centerX * ratio + screenWidth/300,centerY * ratio - screenHeight/9,3 * ratio,0,2*Math.PI);
+    canvas.arc(centerX * ratio + screenWidth/300,400 - (centerY * (400/13)),3 * ratio,0,2*Math.PI);
     canvas.fillStyle = "green";
     canvas.fill();
     //canvas.lineWidth = 5;
@@ -1556,12 +1559,12 @@ function checkIntersect(starting,ending,sClass,eClass) {
     canvas.beginPath();
     if(halls[ehall-1].direc == 0) {
     	centerX = halls[ehall-1].x * 10 + 10;
-    	centerY = height - ((halls[ehall-1].y - parseFloat(halls[ehall-1].coords[eClass].substring(1))) * 10);
+    	centerY = halls[ehall-1].y - parseFloat(halls[ehall-1].coords[eClass].substring(1));
     } else {
     	centerX = (halls[ehall-1].x + parseFloat(halls[ehall-1].coords[eClass].substring(1))) * 10 + 10;
-    	centerY = height - (halls[ehall-1].y * 10);
+    	centerY = halls[ehall-1].y;
     }
-    canvas.arc(centerX * ratio + screenWidth/300,centerY * ratio - screenHeight/9,3 * ratio,0,2*Math.PI);
+    canvas.arc(centerX * ratio + screenWidth/300,400 - (centerY * (400/13)),3 * ratio,0,2*Math.PI);
     canvas.fillStyle = "red";
     canvas.fill();
     //canvas.lineWidth = 5;
@@ -1603,7 +1606,7 @@ function search(current, chend, eClass) {
                 } else {
                     var twoBack = path[path.length-2];
                     //console.log("twoBack " + twoBack);
-                    if(halls[twoBack].id == 16 || halls[twoBack].id == 13) {
+                    if(halls[twoBack-1].id == 16 || halls[twoBack-1].id == 13) {
                         path.push(200);
                     } else {
                         path.push(300);
@@ -1645,6 +1648,7 @@ function search(current, chend, eClass) {
     }
     //Proceed is to make sure some special cases don't run this afterwards instead of using a continue statement
     if(proceed == true) {
+    	console.log((parseInt(halls[chend-1].coords[eClass].substring(1)) + halls[chend-1].x) + "," + halls[8].x);
         if(current == 3 && chend == 10) {
             path.push(6);
             return 6;
@@ -1662,6 +1666,9 @@ function search(current, chend, eClass) {
         } else if(current == 3 && chend == 12) {
         	path.push(12);
         	return 12;
+        } else if (current == 9 && (chend == 12 || chend == 15 || (parseInt(halls[chend-1].coords[eClass].substring(1))) + halls[chend-1].x) >= halls[8].x) {
+        	path.push(24);
+        	return 24;
         } else if(chend == 12 && halls[current-1].x <= halls[11].x) {
         	//chend = 3;
         } else if(current == 15 && [1,2,3,4,5,6,7,8,9,11,21,24].indexOf(chend) >= 0) {
@@ -1733,7 +1740,7 @@ function search(current, chend, eClass) {
         for(z = 0; z < path.length; z++) {
             //console.log(path[z]);
         }
-        //Finds hall closest to the destination's y coordinates
+        //Finds hall closest to the destination's x coordinates
         if(halls[current-1].direc == 1) {
             for(i = 0; i < options.length; i++) {
                 var now = options[i].x;
@@ -1749,7 +1756,7 @@ function search(current, chend, eClass) {
                     hNum = options[i].id;
                 }
             }
-        //Finds hall closest to the destination's x coordinates
+        //Finds hall closest to the destination's y coordinates
         } else {
             for(i = 0; i < options.length; i++) {
                 var now = options[i].y;

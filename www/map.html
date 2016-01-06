@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<!--
-		<script src="//www.parsecdn.com/js/parse-1.3.5.min.js"></script>
-		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
-		-->
+		<script src="js/map.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
+		<script src="js/map.js"></script>
 		<style type="text/css">
 			html,body {
-				width:100%;
+				overflow:hidden;
+			}
+			span {
+				display:table-cell;
 				height:100%;
-				margin:0px;
+				width:100%;
+				padding:0;
+				margin:0;
+				text-align:center;
 			}
 			textarea{
    				font-size: 7pt;
@@ -17,9 +26,6 @@
    				width: 75px;
    				height: 15px;
    				resize: none;
-			} 
-			p {
-				display: inline;
 			}
 			img {
 				width:100%;
@@ -37,47 +43,275 @@
 				font-size: 6pt;
 				display: inline-block;
 			}
+			#blanket {
+			   background-color:#111111 !important;
+			   opacity: 0.90 !important;
+			   position:absolute !important;
+			   z-index: 100 !important;
+			   top:0px !important;
+			   left:0px !important;
+			   width:100% !important;
+			}
+			#upper {
+				position:absolute !important;
+				height:100% !important;
+				width:100% !important;
+				z-index:101 !important;
+			}
+			.whiteCell {
+				font-family: "Agency FB", "Century Gothic" !important;
+				background-color: #FFFFFF !important;
+				color: #000000 !important;
+				/*max-height: 20% !important;*/
+				text-align: center !important;
+				vertical-align: middle !important;
+				font-size:4vh;
+			}
 		</style>
 	</head>
 	
-	<body style="background-color:#0072ff">
-		<!-- button to return to home and table to store clubs -->
-		<div style = "text-align: left; background-color:#696969; ">
-   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
-   		</div>
-		<p>From:</p>
-		<textarea rows="1" cols="20" placeholder="Search" onchange = "searchStart()" maxlength="20" id="startRoomInput"></textarea>
-		<p>To:</p>
-		<textarea rows="1" cols="20" placeholder="Search" onchange = "searchEnd()" maxlength="20" id="endRoomInput"></textarea>
-		<input type="button" id="searchButton" onclick="start()" value="Start"></input>
-		</br>
-		<select id="slistOfOptions" onchange="changeStart(this.value)" oninput="changeStart(this.value)">
-		    <option value="">Select</option>
-		</select>
-		<select id="elistOfOptions" onchange="changeEnd(this.value)" oninput="changeStart(this.value)">
-		    <option value="">Select</option>
-        </select>
-		</br>
-
-		<div>
-			<!-- Canvas to draw stuff on -->
-			<img src="img/School_Map_Smaller.png"/>
-			<canvas id="drawCanvas" width="100%" height="200px"></canvas>
+	<body>
+		<div data-role="none" style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="display:none;z-index:1000;width:50%;height:100%;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage" style="position:relative;"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="position:absolute;overflow-y:hidden;overflow-x:hidden;width:102%;height:100%;text-align:center;">
+					<div id="lower" style="position:absolute;z-index:1;height:100%;width:100%;">
+						<div style="width:100%;height:225px;text-align:center;display:table;">
+							<div style="background-color:#9A9A9A;width:100%;height:75px;text-align:center;display:table;" onclick="chooseStart()"><span id="startText" style="font-size:3vh;background-color:#FFFFFF;color:#000000;">Starting Room: Tap to pick room<br></span></div>
+							<div style="background-color:#9A9A9A;width:100%;height:75px;text-align:center;display:table;" onclick="chooseEnd()"><span id="endText" style="font-size:3vh;background-color:#9A9A9A;">Ending Room: Tap to pick room<br></span></div>
+							<div style="width:100%;height:75px;display:table;" onclick="start()"><span style="font-size:3vh;padding:0;margin:0;height:100%;">Tap to Find Route</span></div>
+						</div>
+						
+						<div style="width:100%;height:300px;">
+							<!-- Canvas to draw stuff on -->
+							<img src="img/map.jpg" id="mapImage" style="display:none;"/>
+							<canvas id="drawCanvas" style="width:100%;height:100%;"></canvas>
+						</div>
+						
+						<div style="width:100%;text-align:center;position:absolute;top:525px;bottom:0px;">
+							<input type="button" id="leftScrollButton" data-role="none" style="width:15%;height:100%;" onclick="goLeft()" value="<"></input>
+							<label class="input" id="directionsLabel" style="width:67%;height:100%;font-size:3vh;text-align:center;">Directions will appear here</label>
+							<input type="button" id="rightScrollButton" data-role="none" style="width:15%;height:100%;" onclick="goRight()" value=">"></input>
+						</div>
+					</div>
+					<div id="blanket" style="display:none;"></div>
+					<div id="upper" style="display:none;text-align:center;overflow:hidden;">
+						<div style="width:100%;height:5%;background:none;text-align:center;border:1px solid white;display:table;" onclick="exit()"><p style="margin:0;padding:0;text-align:center;vertical-align:middle;font-size:3vh;display:table-cell;">Exit</span></div>
+						<p id="adminTouch" style="height:10%;font-size:3vh;padding:0;text-align:center;margin:0;">Start typing the teacher's name or room number in the box below.</p>
+						<textarea data-role="none" style="height:10%;font-size:3vh;resize:none;width:100%;" rows="1" cols="20" placeholder=" " onkeyup="updateList()" maxlength="20" id="upperInput"></textarea>
+						<div style="overflow:auto;height:85%;"><table id="nameTable" style="width:100%;"></table></div>
+						<!--<p id="selection" style="font-size:3vh;height:7%;width:100%;padding:0;">No selection made.</p>
+						<input data-role="none" type="button" style="height:10%;text-align:center;width:100%;" onclick="updateTeacher()" value="Finish">-->
+					</div>
+				</div>
+			</div>
 		</div>
-		<script src="js/map.js"></script>
 		
-		<script type="text/javascript">
-			function toHome()
-			{
-				window.location = "home.html";
+		<script>
+			localStorage.setItem("pageMap", parseInt(localStorage.getItem("pageMap")) + 1);
+		
+			//localStorage.setItem("adminMode", "false");
+			//localStorage.setItem("adminPassword", "false");
+			//localStorage.setItem("adminCriteria1", "false");
+			//localStorage.setItem("adminCriteria2", "false");
+			//localStorage.setItem("adminCriteria3", "false");
+		
+			var count = 0;
+			$("#adminTouch").on("tap", function() {
+				count++;
+				if(count >= 15) {
+					localStorage.setItem("adminCriteria2", "true");
+					if(localStorage.getItem("adminCriteria1") == "true" && localStorage.getItem("adminCriteria2") == "true" && localStorage.getItem("adminCriteria3") == "true") {
+						localStorage.setItem("adminPassword", "true");	
+					}
+				}
+			});
+		
+			var chosen = "";
+			var which = 0;
+		
+			function chooseStart() {
+				which = 0;
+				document.getElementById("blanket").style.display = "block";
+				document.getElementById("blanket").style.height = window.innerHeight + "px";
+				document.getElementById("upper").style.display = "block";
+				//console.log("went");
+			}
+			
+			function chooseEnd() {
+				which = 1;
+				document.getElementById("blanket").style.display = "block";
+				document.getElementById("blanket").style.height = window.innerHeight + "px";
+				document.getElementById("upper").style.display = "block";
+			}	
+			
+			function updateList() {
+				//console.log("called");
+				var table = document.getElementById("nameTable");
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+				var overall = searchStart();
+				//console.log(overall.length);
+				for(i = 0; i < overall.length; i++) {
+					var tr = table.insertRow(-1);
+					var cell = document.createElement("td");
+					cell.innerHTML = overall[i];
+					cell.setAttribute("class", "whiteCell");
+					cell.setAttribute("onclick", "selectTeacher(this.innerHTML)");
+					cell.style.fontSize = "4vh";
+					tr.style.height = (window.innerHeight / 6) + "px";
+					tr.appendChild(cell);
+					//console.log(overall[i]);
+				}
+			}
+			
+			function selectTeacher(name) {
+				//document.getElementById("selection").innerHTML = "Selection: " + name;
+				chosen = name;
+				updateTeacher();
+			}
+			
+			function updateTeacher() {
+				//console.log(chosen.length);
+				if(chosen.length > 0) {
+					document.getElementById("blanket").style.display = "none";
+					document.getElementById("upper").style.display = "none";
+					if(which == 0) {
+						document.getElementById("startText").innerHTML = "Starting Room: " + chosen + "<br>Tap to change";
+						//console.log(chosen + ", " + chosen.substring(0,3));
+						if(!isNaN(parseInt(chosen.substring(0,3)))) {
+							roomStart = chosen.substring(0,3);
+						} else {
+							switch(chosen) {
+								case "Cafeteria":
+									roomStart = "1001";
+									break;
+								case "Library":
+									roomStart = "1002";
+									break;
+								case "Gym A":
+									roomStart = "1003";
+									break;
+								case "Gym B":
+									roomStart = "1004";
+									break;
+								case "Weight Room":
+									roomStart = "1005";
+									break;
+								case "Auditorium":
+									roomStart = "1006";
+									break;
+								case "Main Office":
+									roomStart = "1008";
+									break;
+								case "Counseling Office":
+									roomStart = "1009";
+									break;
+								case "Nurse":
+									roomStart = "1010";
+									break;
+								case "Career Center":
+									roomStart = "1011";
+									break;
+								case "LGI":
+									roomStart = "707";
+									break;
+								case "Flex Lab":
+									roomStart = "103";
+									break;
+							}
+						}
+					} else {
+						document.getElementById("endText").innerHTML = "Ending Room: " + chosen + "<br>Tap to change";
+						if(!isNaN(parseInt(chosen.substring(0,3)))) {
+							roomEnd = chosen.substring(0,3);
+						}
+					}
+				} else {
+					document.getElementById("blanket").style.display = "none";
+					document.getElementById("upper").style.display = "none";
+				}
+				document.getElementById("upperInput").value = "";
+				overall = [];
+				var table = document.getElementById("nameTable");
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+			}
+			
+			function exit() {
+				document.getElementById("blanket").style.display = "none";
+				document.getElementById("upper").style.display = "none";
+				document.getElementById("upperInput").value = "";
+				overall = [];
+				var table = document.getElementById("nameTable");
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
 			}
 		</script>
 		
-		<div>
-			<input type="button" id="leftScrollButton" onclick="goLeft()" value="<"></input>
-			<label class="input" id="directionsLabel">Directions will appear here</label>
-			<input type="button" id"rightScrollButton" onclick="goRight()" value=">"></input>
-		</div>
+		<script>
+			initialize();
+		
+			$(document).on("swiperight", function(event) {
+				var content = document.getElementById("holder2");
+				var menu = document.getElementById("holder");
+				//content.setAttribute("style", "width: 70%");
+				content.style.cssFloat = "right";
+				menu.style.display = "inline";
+				//var offset = (content.clientWidth + 20);
+				//menu.setAttribute("style", "right:-20px");
+				//content.setAttribute("style", "margin-left:0px");
+				document.getElementById("content").style.width = "102%";
+				var table = document.getElementById("contentTable");
+				var ratio = window.devicePixelRatio;
+				var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+				for(i = 1; i < table.rows.length; i++) {
+					var tr = table.getElementsByTagName("tr")[i];
+    				var td = tr.getElementsByTagName("td")[0];
+    				td.style.height = "75px";
+				}
+				var div = document.getElementById("imageHolder");
+				div.style.height = "150px";
+				var image = document.getElementById("stretchImage");
+				image.style.height = div.style.height;
+				image.style.width = div.style.width;
+				//var holder = document.getElementById("menu");
+				//console.log(holder.style.width);
+				//holder.style.width = (menu.style.width + 30) + "px";
+				//console.log(holder.style.width);
+			});
+			
+			$(document).on("swipeleft", function(event) {
+				//document.getElementById("holder2").setAttribute("style", "width: 100%");
+				//document.getElementById("holder2").style.cssFloat = "right";
+				document.getElementById("holder").style.display = "none";
+				document.getElementById("content").style.width = "102%";
+			});
+		</script>
 	</body>
 </html>
 

@@ -1,32 +1,64 @@
 <!DOCTYPE HTML>
-<!--Lauren Johnston displays lunch menu for current month LEJ-->
 <html>
 	<head>
 		<title>Calendar</title>
-		<link rel="stylesheet" type="text/css" href="css/calendar.css">
 		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
 	</head>
 	
-	<body bgcolor="#0072ff">
-		
-		<div style = "text-align: left; background-color:#696969; ">
-   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
-   		</div>
-		
-		<table id="calendar" width="100%" border="1px solid">
-			<tr>
-				<td>Sunday</td>
-				<td>Monday</td>
-				<td>Tuesday</td>
-				<td>Wednesday</td>
-				<td>Thursday</td>
-				<td>Friday</td>
-				<td>Saturday</td>
-			</tr>
-		</table>
+	<body>
+		<div style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="display:none;width:50%;height:100%;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="overflow-y:auto;overflow-x:auto;width:102%;height:100%;">
+					<div style="width:100%;height:10%;">
+					<table style="width:100%;border:0;height:100%;"><tr style="width:100%;height:100%;border:0;">
+						<td style="width:25%;height:100%;"><input id="button1" type="button" style="width:100%;height:100%;" data-role="none" class="buttonBackground" value="Previous" onclick="switchWeek(0)"></td>
+						<td style="background-color:#4169E1;height:100%;vertical-align:middle;width:50%;"><div style="width:100%;height:100%;display:table;"><span style="width:100%;height:100%;text-align:center;display:table-cell;vertical-align:middle;margin:0;padding:0;background-color:#4169E1;color:#FFFFFF;">Tap these buttons to change weeks.</span></div></td>
+						<td style="width:25%;height:100%;"><input id="button2" type="button" style="width:100%;height:100%;" data-role="none" class="buttonBackground" value="Next" onclick="switchWeek(1)"></td>
+					</tr></table></div>
+					<table id="calendar" class="sevenCalendar"></table>
+				</div>
+			</div>
+		</div>
 		
 		<script type="text/javascript">
+			localStorage.setItem("pageCalendar", parseInt(localStorage.getItem("pageCalendar")) + 1);
+		
+			window.onload = function() {
+				document.getElementById("button1").style.width = document.getElementById("button2").style.width;
+			};
+			
+			var week = 1;
+			var totalWeeks = 0;
+			var count = 0;
+		
 			//get table from html
 			var table = document.getElementById("calendar");
 		
@@ -40,9 +72,7 @@
 			//Allows up to 1000 objects to be received from the database, up from the default 100
 			query.limit(1000);
 			//Returns all objects in an array
-			query.find({
-				success: function(results) 
-				{
+			query.find().then(function(results) {
 					lengthOfResults = results.length;
 					for(var i = 0; i < results.length; i++) 
 					{
@@ -50,64 +80,70 @@
 						objects.push(results[i]);
 					}
 					bubbleSort();
-					populate();
-				},
-				error: function(error) 
-				{
-					alert(error);
-				}
+					count = 0;
+					switch(objects[0].get("name")) {
+						case "Monday":
+							count = 1;
+							break;
+						case "Tuesday":
+							count = 2;
+							break;
+						case "Wednesday":
+							count = 3;
+							break;
+						case "Thursday":
+							count = 4;
+							break;
+						case "Friday":
+							count = 5;
+							break;
+						case "Saturday":
+							count = 6;
+							break;
+						default:
+							break;
+					}
+					var temp = objects.length;
+					totalWeeks = 1;
+					temp -= (7 - count);
+					while(temp > 0) {totalWeeks++;temp-=7;}
+					var day = (new Date()).getDate();
+					week = 1;
+					temp = day;
+					//temp -= (temp+count-7) % 7;
+					temp -= (7-count);
+					week += (temp-(temp%7)) / 7;
+					if(temp % 7 > 0) {
+						week++;
+					}
+					console.log(week);
+					switchWeek(1);
+					//populate(0, 7-count);
 			});
 			
-			function populate()
+			function populate(start,end)
 			{
-				var count = 0;
+				console.log(start + ", " + end);
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+				var counter = 0;
+				var cells = [];
 				var row = document.createElement("tr");
-				switch(objects[0].get("name")) {
-					case "Monday":
-						count = 1;
-						break;
-					case "Tuesday":
-						count = 2;
-						break;
-					case "Wednesday":
-						count = 3;
-						break;
-					case "Thursday":
-						count = 4;
-						break;
-					case "Friday":
-						count = 5;
-						break;
-					case "Saturday":
-						count = 6;
-						break;
-					default:
-						break;
-				}
-				for(i = 0; i < count; i++) {
-					var cell = document.createElement("td");
-					cell.setAttribute("class", "noPad");
-					row.appendChild(cell);
-				}
-				for(var i = 0; i < objects.length; i++)
-				{
-					//reset vars
-					if(count == 7)
-					{
-						count = 0;
-						table.appendChild(row);
-						row = document.createElement("tr");
-					}
-					
+				for(var i = start; i < end; i++)
+				{	
 					//create new cell to put info in and gets the content
 					var cell = document.createElement("td");
 					cell.setAttribute("class", "noPad");
 					var content = objects[i].get("cell");
 					
-					var para = document.createElement("p");
-					para.setAttribute("class", "noPad");
-					para.innerHTML = objects[i].get("date");
-					cell.appendChild(para);
+					var innerTable = document.createElement("table");
+					var innerTR = document.createElement("tr");
+					var innerTD = document.createElement("td");
+					
+					var innerTH = document.createElement("th");
+					innerTH.innerHTML = objects[i].get("name") + ", " + month[d.getMonth()] + " " + objects[i].get("date");
+					innerTable.appendChild(innerTH);
 					
 					//formats the cell so that new lines actually happen
 					for(var j = 0; j < content.split("\n").length; j++)
@@ -119,14 +155,31 @@
 						var para = document.createElement("p");
 						para.setAttribute("class", "noPad");
 						para.innerHTML = line;
-						cell.appendChild(para);
+						innerTD.appendChild(para);
 					}
 					
+					if(content.split("\n").length <= 2) {
+						var para = document.createElement("p");
+						para.setAttribute("class", "noPad");
+						para.innerHTML = "No events scheduled for this day.";
+						innerTD.appendChild(para);
+					}
+					
+					innerTable.style.width = "100%";
+					innerTR.style.width = "100%";
+					innerTD.style.width = "100%";
+					cell.style.width = "100%";
+					row.style.width = "100%";
+					innerTR.appendChild(innerTD);
+					innerTable.appendChild(innerTR);
+					cell.appendChild(innerTable);
 					//adds cell to row and increments to keep track of weeks
 					row.appendChild(cell);
-					count++;
+					cells.push(cell);
+					counter++;
+					table.appendChild(row);
+					row = document.createElement("tr");
 				}
-				table.appendChild(row);
 			}
 			
 			function bubbleSort() {
@@ -141,10 +194,95 @@
 				objects = temp;
 			}
 			
-			function toHome()
-			{
-				window.location = "home.html";
+			function switchWeek(x) {
+				console.log(week + ", " + totalWeeks);
+				if(x == 0) {
+					if(week == 2) {return;}
+					week -= 1;
+					if(week == 2) {
+						populate(0,7-count);
+					} else {
+						var temp1 = (7-count) + 7*(week-3);
+						if(temp1+7 > objects.length) {
+							populate(temp1, objects.length);
+						} else {
+							populate(temp1, temp1+7);
+						}
+					}
+				} else {
+					if(week == totalWeeks + 1) {return;}
+					week += 1;
+					if(week == 2) {
+						populate(0,7-count);
+						return;
+					}
+					if(week == totalWeeks + 1) {
+						populate(objects.length-(objects.length-7+count-(totalWeeks-2)*7), objects.length);
+					} else {
+						var temp1 = (7-count) + 7*(week-3);
+						if(temp1+7 > objects.length) {
+							populate(temp1, objects.length);
+						} else {
+							populate(temp1, temp1+7);
+						}
+					}
+				}
 			}
+			
+			var d = new Date();
+			var month = new Array();
+			month[0] = "January";
+			month[1] = "February";
+			month[2] = "March";
+			month[3] = "April";
+			month[4] = "May";
+			month[5] = "June";
+			month[6] = "July";
+			month[7] = "August";
+			month[8] = "September";
+			month[9] = "October";
+			month[10] = "November";
+			month[11] = "December";
+		</script>
+	
+		<script>	
+			initialize();
+		
+			$(document).on("swiperight", function(event) {
+				var content = document.getElementById("holder2");
+				var menu = document.getElementById("holder");
+				//content.setAttribute("style", "width: 70%");
+				content.style.cssFloat = "right";
+				menu.style.display = "inline";
+				//var offset = (content.clientWidth + 20);
+				//menu.setAttribute("style", "right:-20px");
+				//content.setAttribute("style", "margin-left:0px");
+				document.getElementById("content").style.width = "102%";
+				var table = document.getElementById("contentTable");
+				var ratio = window.devicePixelRatio;
+				var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+				for(i = 1; i < table.rows.length; i++) {
+					var tr = table.getElementsByTagName("tr")[i];
+    				var td = tr.getElementsByTagName("td")[0];
+    				td.style.height = "75px";
+				}
+				var div = document.getElementById("imageHolder");
+				div.style.height = "150px";
+				var image = document.getElementById("stretchImage");
+				image.style.height = div.style.height;
+				image.style.width = div.style.width;
+				//var holder = document.getElementById("menu");
+				//console.log(holder.style.width);
+				//holder.style.width = (menu.style.width + 30) + "px";
+				//console.log(holder.style.width);
+			});
+			
+			$(document).on("swipeleft", function(event) {
+				//document.getElementById("holder2").setAttribute("style", "width: 100%");
+				//document.getElementById("holder2").style.cssFloat = "right";
+				document.getElementById("holder").style.display = "none";
+				document.getElementById("content").style.width = "102%";
+			});
 		</script>
 	</body>
 </html>

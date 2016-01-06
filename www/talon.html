@@ -4,29 +4,56 @@
 	<head>
 		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
 		<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
-		<link rel="stylesheet" type="text/css" href="css/talon.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
 		<title>Talon Page</title>
 	</head>
 	
-	<body bgcolor="#0072ff">
-		
-		<div style = "text-align: left; background-color:#696969; ">
-   			<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
-   		</div>
-		
-		<label id="loadingLabel">Loading...</label>
-		<table id="linkTable" bgcolor="white" width="100%"></table>
-		
-		<iframe id="frame" style="width:100%;height:100%;visibility:hidden;"></iframe>
+	<body>
+   		<label id="loadingLabel">Loading...</label>
+   		
+   		<div style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="display:none;width:50%;height:100%;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="overflow-y:auto;overflow-x:hidden;width:102%;height:100%;">
+					<div id="backButton" style="width:100%;height:10%;text-align:center;display:none;" onclick="toHome()"><span style="vertical-align:middle;text-align:center;">Back</span></div>
+					<iframe id="frame" style="width:100%;height:90%;display:none;"></iframe>
+				</div>
+			</div>
+		</div>
 				
 		<script type="text/javascript">
-			//var loaded = 0;
+			localStorage.setItem("pageTalon", parseInt(localStorage.getItem("pageTalon")) + 1);
 		
 			//Regulates whether to show iframe or list
 			var frame = document.getElementById("frame");
 			var frameShowing = false;
-			var numIssuesLoaded = 2;
-			var lengthOfResults  = 0;
+			var numIssuesLoaded = 5;
+			var lengthOfResults  = 100;
 			//Store the database stuff
 			var TalonObjects = [];
 			//Connect to database class
@@ -34,66 +61,53 @@
 			var query = new Parse.Query(TalonLinks);
 			//Allows up to 1000 objects to be received from the database, up from the default 100
 			query.limit(1000);
-			//Returns all objects in an array
-			query.find({
-				success: function(results) {
-					lengthOfResults = results.length;
-					for(var i = 0; i < results.length; i++) {
-						//Transfer results to earlier array
-						TalonObjects.push(results[i]);
-					}
-				},
-				error: function(error) {
-					alert(error);
+			query.find().then(function(results){
+				lengthOfResults = results.length;
+				console.log(lengthOfResults);
+				for(var i = 0; i < results.length; i++) {
+					//Transfer results to earlier array
+					TalonObjects.push(results[i]);
 				}
+				var label = document.getElementById("loadingLabel");
+				label.style.display = "none";
+				//sorts issues and creates table that will display issues
+				TalonObjects = sortArray(TalonObjects);
+				console.log(TalonObjects.length);
+				loadList(0);
 			});
-			//loads the talon issues
-			interval = setInterval(function() 
-			{
-				//if(TalonObjects.length >= loaded + 10) {
-					//loaded += 10;
-					//alert("" + TalonObjects.length);
-				//}
-				//Waits until all objects are loaded to prevent undefined objects from appearing
-				if(TalonObjects.length >= lengthOfResults) 
-				{
-					var label = document.getElementById("loadingLabel");
-					label.style.display = "none";
-					//sorts issues and creates table that will display issues
-					TalonObjects = sortArray(TalonObjects);
-					loadList(0);
-					stopInterval();
-				}
-			}, 250);
-			function stopInterval() 
-			{
-				clearInterval(interval);
-			}
 			//Clears list and shows frame
 			function loadView(id, TalonObjects) 
 			{
 				frameShowing = true;
+				var button = document.getElementById("backButton");
+				button.style.display = "table";
+				button.style.height = "50px";
 				var issueNum = id.substring(11);
 				var url = TalonObjects[issueNum].get("Link");
 				var body = document.getElementsByTagName("body")[0];
 				frame = document.getElementById("frame");
 				var table = document.getElementById("linkTable");
+				table.style.visibility = "hidden";
 				while(table.rows.length > 1) {
 					table.deleteRow(0);
 				}
 				/*for(var i = 0; i < numIssuesLoaded; i++) {
 					var cell = document.getElementById("cell" + i.toString());
+					console.log(i);
 					cell.parentNode.removeChild(cell);
 				}*/
 				var loadMore = document.getElementById("loadMore");
-				loadMore.style.visibility="hidden";
+				loadMore.parentNode.removeChild(loadMore);
+				table.parentNode.removeChild(table);
 				//frame.style.visible="visible";
 				//frame.style.width = 5000 + "px";
-				frame.style.height = window.innerHeight + "px";
+				frame.style.height = (window.innerHeight-50) + "px";
 				frame.src = url;
+				frame.setAttribute("id", "frame");
+				//frame.setAttribute("style", "vertical-align:bottom");
 				//frame.setAttribute("seamless", "seamless");
-				frame.style.visibility = "visible";
-				document.body.appendChild(frame);
+				frame.style.display = "block";
+				document.getElementById("content").appendChild(frame);
 			}
 			//this is bubble sort, very ineffective, should reconstruct
 			function sortArray(array) 
@@ -126,15 +140,12 @@
 			//Shows 5 more issues
 			function addMore() {
 				numIssuesLoaded += 5;
-				var button = document.getElementById("loadMore");
-				button.parentNode.removeChild(button);
-				loadList(numIssuesLoaded-5);
-			}
-			//Displays list
-			function loadList(start) {
 				var table = document.getElementById("linkTable");
+				var loadMore = document.getElementById("loadMore");
+				loadMore.parentNode.removeChild(loadMore);
+				table.deleteRow(table.rows.length-1);
 				//adds all of the issues to the table and a button to view the issues
-				for(var i = start; i < numIssuesLoaded; i++) 
+				for(var i = numIssuesLoaded-5; i < numIssuesLoaded; i++) 
 				{
 					var row = table.insertRow(table.rows.length);
 					var cell = row.insertCell(0);
@@ -164,20 +175,88 @@
 				button.setAttribute("onclick", "addMore()");
 				cell.appendChild(button);
 			}
+			//Displays list
+			function loadList(start) {
+				var button = document.getElementById("backButton");
+				button.style.display = "none";
+				var table = document.createElement("table");
+				table.setAttribute("id", "linkTable");
+				table.style.visibility = "visible";
+				//adds all of the issues to the table and a button to view the issues
+				for(var i = start; i < numIssuesLoaded; i++) 
+				{
+					var row = table.insertRow(table.rows.length);
+					var cell = row.insertCell(0);
+					cell.setAttribute("id", "cell" + i.toString());
+					//alert(TalonObjects[i]);
+					var text1 = document.createElement("p");
+					var text2 = document.createElement("p");
+					text1.innerHTML = ("Issue " + (TalonObjects[i].get("Issue")).toString());
+					text2.innerHTML = ("\n" + (TalonObjects[i].get("Year")).toString() + "-" + (TalonObjects[i].get("Year") + 1).toString() + " School Year\n");
+					cell.appendChild(text1);
+					cell.appendChild(text2);
+					var button = document.createElement("input");
+					button.setAttribute("value", "View");
+					button.setAttribute("type", "button");
+					button.setAttribute("onclick", "loadView(this.id, TalonObjects)");
+					button.setAttribute("id", "issueButton" + i.toString());
+					//console.log(i.toString());
+					cell.appendChild(button);
+				}
+				//adds a button to load more issues
+				var row = table.insertRow(table.rows.length);
+				var cell = row.insertCell(0);
+				var button = document.createElement("input");
+				button.setAttribute("value", "More");
+				button.setAttribute("type", "button");
+				button.setAttribute("id", "loadMore");
+				button.setAttribute("onclick", "addMore()");
+				cell.appendChild(button);
+				document.getElementById("content").appendChild(table);
+			}
 			function toHome()
 			{
 				if(frameShowing) {
+					console.log("hide frame");
 					//Removes iframe and shows list
 					frame = document.getElementById("frame");
 					//frame.parentNode.removeChild(frame);
 					//frame = document.createElement("iframe");
-					frame.style.visibility = "hidden";
+					frame.style.display = "none";
 					loadList(0);
 					frameShowing = false;
-				} else {
-					window.location = "news.html";
 				}
 			}
+		</script>
+		
+		<script>
+			initialize();
+		
+			$(document).on("swiperight", function(event) {
+				var content = document.getElementById("holder2");
+				var menu = document.getElementById("holder");
+				content.style.cssFloat = "right";
+				menu.style.display = "inline";
+				document.getElementById("content").style.width = "102%";
+				var table = document.getElementById("contentTable");
+				var ratio = window.devicePixelRatio;
+				var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+				for(i = 1; i < table.rows.length; i++) {
+					var tr = table.getElementsByTagName("tr")[i];
+    				var td = tr.getElementsByTagName("td")[0];
+    				td.style.height = "75px";
+				}
+				var div = document.getElementById("imageHolder");
+				div.style.height = "150px";
+				var image = document.getElementById("stretchImage");
+				image.style.height = div.style.height;
+				image.style.width = div.style.width;
+			});
+			
+			$(document).on("swipeleft", function(event) {
+				document.getElementById("holder").style.display = "none";
+				document.getElementById("content").style.width = "102%";
+			});
 		</script>
 		
 	</body>

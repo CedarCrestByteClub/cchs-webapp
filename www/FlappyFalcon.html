@@ -1,27 +1,203 @@
-<!--Credit for this code goes to blog.lessmilk.com -->
-<!DOCTYPE html>  
+<!--Created by Max Wihlborg-->
+<!doctype html>
 <html>
+	<head>
+		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
+	</head>
+	<body>
+		<div style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="display:none;z-index:1000;width:50%;height:100%;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;z-index:10;position:absolute;display:inline;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="overflow-y:auto;overflow-x:hidden;width:102%;height:100%;">
+					<table id="choices" style="width:100%;height:100%;">
+						<tr style="height:33%;width:100%;" onclick="toGame()"><td style="text-align:center;width:100%;font-size:3vh;">Play Flappy Falcon</td></tr>
+						<tr style="height:33%;width:100%;" onclick="toSubmit()"><td style="text-align:center;width:100%;font-size:3vh;">Submit High Score to Leaderboard</td></tr>
+						<tr style="height:33%;width:100%;" onclick="toLeaderboard()"><td style="text-align:center;width:100%;font-size:3vh;">View Leaderboard</td></tr>
+					</table>
+					<iframe id="game" style="display:none;width:100%;height:100%;"></iframe>
+					<div id="backButton" style="width:100%;height:10%;text-align:center;display:none;font-size:3vh;" onclick="toHome()"><span style="vertical-align:middle;text-align:center;">Back</span></div>
+					<div id="submitScore" style="display:none;width:100%;height:100%;">
+						<span style="height:10%;font-size:3vh;padding:0;text-align:center;margin:0;">Enter your name:</span>
+						<textarea data-role="none" style="height:10%;font-size:3vh;resize:none;width:100%;" rows="1" cols="20" placeholder=" " maxlength="30" id="upperInput1"></textarea>
+						<span id="scoreLabel" style="height:10%;font-size:3vh;padding:0;text-align:center;margin:0;">Your high score:</span>
+						<div style="width:100%;height:10%;text-align:center;">
+							<div onclick="ok()" style="width:100%;display:table;text-align:center;"><span style="text-align:center;font-size:3vh;display:table-cell;">Submit</span></div>
+						</div>
+					</div>
+					<div id="viewLeaderboard" style="display:none;width:100%;height:100%;">
+						<table id="leaderTable" style="width:100%;"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			localStorage.setItem("pageFlappy", parseInt(localStorage.getItem("pageFlappy")) + 1);
+			var table = document.getElementById("leaderTable");
+			var th = document.createElement("th");
+			th.innerHTML = "Name";
+			table.appendChild(th);
+			var th1 = document.createElement("th");
+			th1.innerHTML = "Score";
+			table.appendChild(th1);
 
-<head>  
-    <meta charset="utf-8" />
-    <title> Flappy Falcon </title>
-
-    <script type="text/javascript" src="js/phaser.min.js"></script>
-    <script type="text/javascript" src="js/FlappyFalcon.js"></script>
-</head>
-
-<body>
-	<div style = "text-align: left; background-color:#696969; ">
-   		<input type="button" style="width:60px;height:40px;" onclick="toHome()" value="Back">
-   	</div>
-   		
-    <div id="gameDiv"> </div>
-
-	<script>
-		function toHome() {
-			window.location = "home.html";
-		}
-	</script>
-	
-</body>  
-</html> 
+			if(localStorage.getItem("connection") == "false") {
+				toGame();
+			} else {
+				console.log("init parse");
+				Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+			}
+			
+			function toGame() {
+				document.getElementById("choices").style.display = "none";
+				document.getElementById("game").style.display = "block";
+				document.getElementById("game").setAttribute("src", "FFGame.html");
+			}
+			
+			function toSubmit() {
+				document.getElementById("choices").style.display = "none";
+				document.getElementById("backButton").style.display = "table";
+				document.getElementById("submitScore").style.display = "block";
+				document.getElementById("scoreLabel").innerHTML = "Your high score: " + localStorage.getItem("best").toString();
+			}
+			
+			function toLeaderboard() {
+				document.getElementById("choices").style.display = "none";
+				document.getElementById("backButton").style.display = "table";
+				document.getElementById("viewLeaderboard").style.display = "block";
+				
+				var entries = [];
+				var table = document.getElementById("leaderTable");
+				while(table.rows.length > 0) {
+					table.deleteRow(0);
+				}
+				var pClass = Parse.Object.extend("Leaderboard");
+				var query = new Parse.Query(pClass);
+				query.equalTo("Display", 1);
+				query.find().then(function(results) {
+					for(i = 0; i < results.length; i++) {
+						entries.push(results[i]);
+					}
+					entries = sortArray(entries);
+					for(i = 0; i < entries.length; i++) {
+						var tr = document.createElement("tr");
+						var td1 = document.createElement("td");
+						var td2 = document.createElement("td");
+						td1.innerHTML = entries[i].get("Name");
+						td2.innerHTML = entries[i].get("Score");
+						tr.appendChild(td1);
+						tr.appendChild(td2);
+						table.appendChild(tr);
+					}
+				});
+			}
+			
+			function sortArray(arr) {
+				var result = [];
+				for(i = 0; i < arr.length; i++) {
+					if(i == 0) {
+						result.push(arr[i]);
+						continue;
+					}
+					var index = 0;
+					for(j = 0; j < result.length; j++) {
+						var score1 = arr[i].get("Score");
+						var score2 = result[j].get("Score");
+						if(score1 > score2) {}
+						else {
+							index++;
+						}
+					}
+					result.splice(index,0,arr[i]);
+				}
+				
+				return result;
+			}
+		
+			function ok() {
+				var name = document.getElementById("upperInput1").value;
+				var score = parseInt(localStorage.getItem("best"));
+				if(name.length > 1) {
+					var pClass = Parse.Object.extend("Leaderboard");
+					var addition = new pClass();
+					addition.set("Name", name);
+					addition.set("Display", 0);
+					addition.set("Score", score);
+					addition.save().then(
+						function(result) {
+							alert("Your score has been submitted to the leaderboard. It will be added soon, after a brief review.");
+							toHome();
+						},
+						function(error) {
+							alert("Your score could not be submitted at this time.");
+						}
+					);
+				}
+			}
+		
+			function toHome() {
+				document.getElementById("choices").style.display = "table";
+				document.getElementById("backButton").style.display = "none";
+				document.getElementById("submitScore").style.display = "none";
+				document.getElementById("viewLeaderboard").style.display = "none";
+				document.getElementById("game").style.display = "none";
+			}
+		</script>
+		
+		<script>
+				initialize();
+			
+				$(document).on("swiperight", function(event) {
+					var content = document.getElementById("holder2");
+					var menu = document.getElementById("holder");
+					content.style.cssFloat = "right";
+					menu.style.display = "inline";
+					document.getElementById("content").style.width = "102%";
+					var table = document.getElementById("contentTable");
+					var ratio = window.devicePixelRatio;
+					var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+					for(i = 1; i < table.rows.length; i++) {
+						var tr = table.getElementsByTagName("tr")[i];
+	    				var td = tr.getElementsByTagName("td")[0];
+	    				td.style.height = "75px";
+					}
+					var div = document.getElementById("imageHolder");
+					div.style.height = "150px";
+					var image = document.getElementById("stretchImage");
+					image.style.height = div.style.height;
+					image.style.width = div.style.width;
+				});
+				
+				$(document).on("swipeleft", function(event) {
+					document.getElementById("holder").style.display = "none";
+					document.getElementById("content").style.width = "102%";
+				});
+			</script>
+	</body>
+</html>

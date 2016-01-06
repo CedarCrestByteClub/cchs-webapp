@@ -1,0 +1,46 @@
+<html>
+<head>
+	<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
+	<script type="text/javascript">Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");</script>
+</head>
+
+<body>
+	<h1>Send Cedar Crest Closing Information</h1>
+	<br>
+	<form id="inputForm">
+  		Please enter the type of closing or delay:<br>
+  		<input type="text" name="type">
+ 		<br>
+ 		Please enter today's date (ex. 1/1/15):<br>
+  		<input type="text" name="date">
+		<input type="button" onclick="send()" value="Submit">
+	</form>
+
+	<script>
+		function send() {
+			var parseClass = Parse.Object.extend("SchoolAlert");
+			var object = new parseClass();
+
+			var form = document.getElementById("inputForm");
+
+			var dates = form.elements[1].value.split("/");
+
+			var year = parseInt(dates[2]);
+			var month = parseInt(dates[0]);
+			var day = parseInt(dates[1]);
+			console.log(year + "/" + month + "/" + day);
+
+			object.set("Event", form.elements[0].value);
+			object.set("Year", year);
+			object.set("Month", month);
+			object.set("Day", day);
+			object.set("Type", 1);
+			object.save({
+				success: function() {
+					alert("Thank you. The information was entered successfully.");
+				}
+			});
+		}
+	</script>
+</body>
+</html>

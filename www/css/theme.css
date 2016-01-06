@@ -1,0 +1,223 @@
+html, body {
+  background-attachment:fixed !important;
+  background-size: 100% !important;
+  /*background-color: #4169E1 !important;*/ 
+  background-image: linear-gradient(#4169E1, #708090) !important;
+  height:100% !important;
+  max-height:100% !important;
+  overflow: hidden !important;
+}
+
+div{
+ text-align: left !important;
+ vertical-align: middle !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+ color: #FFFFFF !important;
+ background: none !important;
+ font-size: 3vh;
+ word-wrap: break-word;
+}
+
+p{
+ font-family: "Agency FB". "Century Gothic", sans-serif !important;
+ font-size: 3vh;
+ word-wrap: break-word;
+}
+
+h1{
+ size: 50% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+h2{
+ size: 35% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+h3{
+ size: 20% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+h4{
+ size: 25% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+h5{
+ size: 15% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+h6{
+ size: 10% !important;
+ font-family: "Agency FB", "Century Gothic", sans-serif !important;
+}
+
+a:link {
+   text-decoration: none;
+   display: block !important;
+   width:100% !important;
+   height:100% !important;
+   font-family: "Agency FB", "Century Gothic" !important;
+}
+
+thead{
+ color: silver !important;
+ background: #FFFFFF !important;
+ font-family: "Agency FB", "Century Gothic" !important;
+ /*border: thick !important;
+ border: white !important;*/
+}
+tfoot{
+ font-family: "Agency FB", "Century Gothic" !important;
+ color: silver !important;
+ background: rgba(21,21,21, .7) !important;
+ border: thick !important;
+ border: white !important;
+}
+th{
+ font-family: "Agency FB", "Century Gothic" !important;
+ background: #4A4A4A !important;
+ color: #FFFFFF !important;
+ font-weight: normal !important;
+ font-size: 3vh;
+ word-wrap: break-word;
+ /*border: 1px solid white !important;*/
+}
+tr{
+ font-family: "Agency FB", "Century Gothic" !important;
+ border: 1px solid white !important;
+}
+
+td{
+ font-family: "Agency FB", "Century Gothic" !important;
+ background-color: #C0C0C0 !important;
+ color: #000000 !important;
+ /*border: 1px solid white !important;*/
+ max-height: 35% !important;
+ max-width: 35% !important;
+ text-align: center !important;
+ vertical-align: middle !important;
+ font-size: 3vh;
+ word-wrap: break-word;
+}
+table{
+  table-layout: fixed;
+  text-align: center !important;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+span{
+ font-family: "Agency FB", "Century Gothic" !important;
+  display: table-cell !important;
+  vertical-align: middle !important;
+  word-wrap: break-word;
+  line-height: normal !important;      
+}
+
+font {
+	height: 100%;
+	width: 100%;
+	vertical-align: middle !important;
+	font-family: "Agency FB", "Century Gothic" !important;
+	text-align: center !important;
+	word-wrap: break-word;
+}
+
+.noPad
+{
+	padding: 0 0 0 0 !important;	
+}
+
+.delayCell {
+	font-family: "Agency FB", "Century Gothic" !important;
+	background-color: #FFFFFF !important;
+	color: #000000 !important;
+	/*border: 1px solid white !important;*/
+	max-height: 35% !important;
+	max-width: 35% !important;
+	text-align: center !important;
+	vertical-align: middle !important;
+	word-wrap: break-word;
+}
+
+.sevenCalendar {
+	text-align: center !important;
+	padding: 0 0 0 0 !important;
+	width:100% !important;
+	font-size: 100% !important;
+	word-wrap: break-word;
+}
+
+#menu {
+	background-color: white !important;
+}
+
+.sideMenu td {
+	background-color: white !important;
+	color:#000000 !important;
+	word-wrap: break-word;
+}
+
+.rows {
+	/*border-style: solid !important;
+    border-width: medium !important;
+    border-color: #0000FF !important;*/
+   outline: thin solid blue;
+}
+
+.menuItem {
+	background-color: white !important;
+	color:#000000 !important;
+	text-align: center !important;
+	height:100% !important;
+	width:100% !important;
+	display: table !important;
+	word-wrap: break-word;
+	/*align-items: center !important;*/
+}
+
+span::-moz-selection,div::-moz-selection,p::-moz-selection,td::-moz-selection{
+	background-color:transparent;
+}
+
+::-webkit-scrollbar {
+ display: none;
+}
+
+/*
+ * Children classes of the default CSS
+ * For The Tron Theme
+ */
+
+
+.buttonBackground{
+ display: block !important;
+ /*text-shadow: 1px 1px 0px silver, 1px 1px 0px silver !important;*/
+ color: #000088 !important;
+ border-color: silver !important;
+ border: thin !important;
+ vertical-align: middle !important;
+ font-family: "Agency FB", "Century Gothic" !important;
+ text-decoration: none !important;
+ text-align: center !important;
+ /*size: block !important;*/
+ background: #FFFFFF !important;
+}
+.buttonNoBackground{
+ display: block !important;
+ text-shadow: 1px 1px 0px silver, 1px 1px 0px silver !important;
+ color: #000066 !important;
+ border-color: silver !important;
+ border: thick !important;
+ padding: 1% 1% !important;
+ vertical-align: middle !important;
+ font-family: "Agency FB", "Century Gothic" !important;
+ text-decoration: none !important;
+ background: none !important;
+ border-radius: 8px !important;
+ text-align: center !important;
+ font-size: medium !important;
+}

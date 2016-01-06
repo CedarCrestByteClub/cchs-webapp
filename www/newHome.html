@@ -4,168 +4,253 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="http://www.parsecdn.com/js/parse-1.6.2.min.js"></script>
-		<!--<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
 		<script src="js/jquery-2.1.4.min.js"></script>
-		<script src="js/jquery.mobile-1.4.5.js"></script>-->
-		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-  		<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/redesignedHome.css">
-		<style>
-			#outer {
-				height:30%;
-				width:25%;
-				position:relative;
-				max-height:30%;
-				max-width:30%;
-				float:left;
-				/*transition: display 2s;*/
-			}
-			#left-panel {
-				display:none;
-			}
-			img {
-				-webkit-user-select: none;
-				-khtml-user-select: none;
-				-moz-user-select: none;
-				-o-user-select: none;
-				user-select: none;
-			}
-		</style>
+		<script src="js/jquery.mobile-1.4.5.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/theme.css">
+		<script src="js/menu.js"></script>
+		<script src="js/delays.js"></script>
+		<script src="js/lz-string.js"></script>
 	</head>
-	<body background="img/Gradient.PNG">
-		<!--<canvas id="drawCanvas" width="100%" height="100%"></canvas>
-		<div class="content">
-		</div>-->
-		<div style="height:100%;width:100%;overflow:hidden;">
-		<!--<img src="img/Gradient.PNG" id="bg">-->
-		<div id="rotationDiv" align="center">
-			<img id="mainContent" src="img/CCHS 1.png" align="top" style="height:100%;max-width:100%;">
-		</div>
-		
-		<!--<input data-role="none" type="button" value="Toggle" style="margin: 0 auto;" id="toggle" onclick="toggle()">-->
-		
-		<div style="width:100%;min-width:100%;overflow:auto;">
-			<img src="img/CCHS 14.png" id="placeholder" style="width:100%;float:right;">
-		</div>
-		
-		</div>
-		
-		<div id="left-panel" data-role="panel" style="height:100%;width:100%;overflow:auto;padding-right:25px;">
-			<table id="contentTable" width="100%" align="center">
-				<tr><td><a href="score.html"><div id="cell"><font size="24" color="white">Score</font></div></a></td></tr>
-				<tr><td><a href="lunches.html"><div id="cell"><font size="24" color="white">Lunches</font></div></a></td></tr>
-				<tr><td><a href="store.html"><div id="cell"><font size="24" color="white">Store</font></div></a></td></tr>
-				<tr><td><a href="news.html"><div id="cell"><font size="24" color="white">News</font></div></a></td></tr>
-				<tr><td><a href="club.html"><div id="cell"><font size="24" color="white">Clubs</font></div></a></td></tr>
-				<tr><td><a href="map.html"><div id="cell"><font size="24" color="white">Map</font></div></a></td></tr>
-				<tr><td><a href="calendar.html"><div id="cell"><font size="24" color="white">Calendar</font></div></a></td></tr>
-				<tr><td><a href="info.html"><div id="cell"><font size="24" color="white">Info</font></div></a></td></tr>
-				<tr><td><a href="notif.html"><div id="cell"><font size="24" color="white">Closings</font></div></a></td></tr>
-				<tr><td><a href="FlappyFalcon.html"><div id="cell"><font size="24" color="white">Flappy Falcon</font></div></a></td></tr> 
-			</table>
+	
+	<body>
+		<div style="height:100%;width:100%;min-height:100%;position:absolute;">
+			<div id="holder" style="display:none;width:50%;height:100%;z-index:10;overflow-y: hidden;overflow-x:hidden;position:fixed;">
+				<div id="menu" align="center" style="overflow-y:auto;overflow-x:hidden;width:105%;height:100%;min-height:100%;background-color:white;">
+					<table id="contentTable" class="sideMenu">
+						<tr><td><div id="imageHolder" style="width:100%;height:200px;"><img src="img/launch.jpg" id="stretchImage"></div></td></tr>
+						<tr class="rows"><td><a id="linkOne" data-ajax="false"><div class="menuItem"><span id="spanOne"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwo" data-ajax="false"><div class="menuItem"><span id="spanTwo"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThree" data-ajax="false"><div class="menuItem"><span id="spanThree"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFour" data-ajax="false"><div class="menuItem"><span id="spanFour"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFive" data-ajax="false"><div class="menuItem"><span id="spanFive"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSix" data-ajax="false"><div class="menuItem"><span id="spanSix"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkSeven" data-ajax="false"><div class="menuItem"><span id="spanSeven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEight" data-ajax="false"><div class="menuItem"><span id="spanEight"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkNine" data-ajax="false"><div class="menuItem"><span id="spanNine"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTen" data-ajax="false"><div class="menuItem"><span id="spanTen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkEleven" data-ajax="false"><div class="menuItem"><span id="spanEleven"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkTwelve" data-ajax="false"><div class="menuItem"><span id="spanTwelve"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkThirteen" data-ajax="false"><div class="menuItem"><span id="spanThirteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFourteen" data-ajax="false"><div class="menuItem"><span id="spanFourteen"></span></div></a></td></tr>
+						<tr class="rows"><td><a id="linkFifteen" data-ajax="false"><div class="menuItem"><span id="spanFifteen"></span></div></a></td></tr>
+					</table>
+				</div>
+			</div>
+			<div id="holder2" style="width:100%;display:inline;z-index:1;overflow-y:hidden;overflow-x:hidden;height:100%;min-height:100%;background-color:#4A4A4A;">
+				<div id="content" style="overflow-y:auto;overflow-x:hidden;width:102%;height:100%;">
+					<div id="mainContent" style="height:40%;width:100%;max-height:40%;">
+						<img id="image1" src="img/CCHS 1.jpg" style="display:block;height:100%;width:90%;max-width:90%;margin-left:auto;margin-right:auto;">
+						<img id="image2" src="img/CCHS 2.jpg" style="display:none;height:100%;width:90%;max-width:90%;margin-left:auto;margin-right:auto;">
+						<img id="image3" src="img/CCHS 9.jpg" style="display:none;height:100%;width:90%;max-width:90%;margin-left:auto;margin-right:auto;">
+						<img id="image4" src="img/CCHS 13.jpg" style="display:none;height:100%;width:90%;max-width:90%;margin-left:auto;margin-right:auto;">
+						<img id="image5" src="img/CCHS 14.jpg" style="display:none;height:100%;width:90%;max-width:90%;margin-left:auto;margin-right:auto;">
+					</div>
+					<div style="width:100%;text-align:center;height:30%;">
+						<p style="text-align:center;">Welcome to the CCHS App!</p>
+						<p id="tempPara" style="text-align:center;">Swipe to the right to get started.</p>
+						<div id="hiddenDelay" style="width:100%;height:15%;background-color:#FFFFFF;display:none;">
+							<span id="delayPara" style="text-align:center;background-color:#FFFFFF;color:#000000;display:table-cell;width:100%;"></span>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<script type="text/javascript">
-			//document.addEventListener("offline", offlineCheck);
-			//document.addEventListener("online", onlineCheck);
-			
-			//$("#outer").on("swiperight", function(event) {
-				//$("#inner").fadeIn("slow");
-			//});
-			
-			/*function toggle() {
-				if(document.getElementById("inner").style.display == "none") {
-					$("#inner").fadeOut("slow");
-				} else {
-					$("#inner").fadeIn("slow");
+			var versionNumber = 2.0;
+			checkConnection();
+			localStorage.setItem("init", "false");
+		
+			if(localStorage.getItem("timesViewed") === null) {
+				localStorage.setItem("timesViewed", 0);
+			} else {
+				localStorage.setItem("timesViewed", localStorage.getItem("timesViewed") + 1);
+				if(localStorage.getItem("timesViewed") >= 5) {
+					document.getElementById("tempPara").style.display = "none";
 				}
-			}*/		
-			/*$(document).on('pageinit', function(event){
-				$( document ).on( "swiperight", function( e ) {
-					console.log("test");
-					// We check if there is no open panel on the page because otherwise
-					// a swipe to close the left panel would also open the right panel (and v.v.).
-					// We do this by checking the data that the framework stores on the page element (panel: open).
-					if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
-						$( "#left-panel" ).panel( "open" );
-					}
-				});
-			});*/
-			
-			function checkConnection(){
-				
-				var connection = navigator.connection.type;
-				if (networkState == Connection.NONE) {
-        			offlineCheck();
-    			} else {
-    				onlineCheck();
-    			}
 			}
 			
-			//checkConnection();
+			function checkConnection(){
+				try {
+					Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+					var parseClass = Parse.Object.extend("SchoolAlert");
+					var query = new Parse.Query(parseClass);
+					query.limit(1);
+					query.find().then(function(results) {
+						onlineCheck();
+						return;
+					}, function(error) {
+						offlineCheck();
+						return;
+					});
+				} catch(e) {
+					offlineCheck();
+					return;
+				}
+			}
 			
 			function offlineCheck() {
-				alert("Can't connect to CCHS App. Continuing in offline mode.");
+				console.log("offline");
+				if(localStorage.getItem("connection") == "true") {
+					alert("Can't connect to CCHS App. Continuing in offline mode.");
+				}
+				localStorage.setItem("connection", "false");
+				console.log(localStorage.getItem("connection"));
 				var table = document.getElementById("contentTable");
-				table.deleteRow(8);
-				table.deleteRow(6);
-				table.deleteRow(4);
-				table.deleteRow(3);
-				table.deleteRow(2);
-				table.deleteRow(1);
-				table.deleteRow(0);
+				initialize();
 			} 
 			
 			function onlineCheck() {
-				console.log("online");
-				Parse.initialize("1nbCZcm4WHUpYs0C89oTo231mhcpL2LRa5KfsYtw", "nNWuXfGI2ujbWBzxd5Om3F3OgFIIZRfvonOxfdEc");
+				console.log("online");			
+				localStorage.setItem("connection", "true");
+				initialize();
 				var UUID = Parse.Object.extend("UserIDs");
-				if(localStorage.getItem("uuid") === null || localStorage.getItem("uuid").length != 8) {
+				if(localStorage.getItem("uuid") === null || (localStorage.getItem("uuid") != null && localStorage.getItem("uuid").length != 8)) {
 					var id = "" + parseInt(Math.random() * 100000000, 10).toString();
 					localStorage.setItem("uuid", id);
 					var UserId = new UUID();
 					UserId.set("uuid", localStorage.getItem("uuid"));
-					alert(UserId.get("uuid"));
+					UserId.set("version", versionNumber);
+					//alert(UserId.get("uuid"));
 					UserId.save();
 				}
 				
 				var query = new Parse.Query(UUID);
-				query.equalTo("uuid", localStorage.uuid);
+				query.equalTo("uuid", localStorage.getItem("uuid"));
 				query.first({
 					success: function(object) {
 						var today = new Date();
-						var dd = today.getDate();
-						var mm = today.getMonth()+1; //January is 0!
-						var yyyy = today.getFullYear();
-						if(dd<10) {dd='0'+dd;} 	
-						if(mm<10) {mm='0'+mm;}
+						var dd = today.getDate().toString();
+						var mm = (today.getMonth()+1).toString(); //January is 0!
+						var yyyy = today.getFullYear().toString();
+						if(parseInt(dd)<10) {dd='0'+dd;} 	
+						if(parseInt(mm)<10) {mm='0'+mm;}
 						today = mm+'/'+dd+'/'+yyyy;
 						object.set("active", today);
+						object.set("version", versionNumber);
 						object.save();
 					}
 				});
-			}
-		
-			var image = document.getElementById("mainContent");
-			var count = 0;
-			var pics = ["img/CCHS 1.png", "img/CCHS 2.png", "img/CCHS 9.png", "img/CCHS 13.png", "img/CCHS 14.png"];
-			var interval = setInterval(function() {
-				count++;
-				if(count == pics.length) {
-					count = 0;
-				}
-				//alert("about to transition");
-				/*$("#mainContent").animate({opacity:0}, "slow", function() {
-					image.setAttribute("src", pics[count]);
-					//alert("transition");
-					$("#mainContent").animate({opacity:1}, "slow");
-				});*/
-				$("#mainContent").fadeOut("slow", function() {
-					image.setAttribute("src", pics[count]);
-					//alert("transition");
-					$("#mainContent").fadeIn("slow");
+
+				var AlertObjects = [];
+				var delays = [];
+				var parseClass = Parse.Object.extend("SchoolAlert");
+				var query = new Parse.Query(parseClass);
+				query.limit(1000);
+				query.find().then(function(results) {
+					lengthOfResults = results.length;
+					for(var i = 0; i < results.length; i++) {
+						//Transfer results to earlier array
+						AlertObjects.push(results[i]);
+					}
+					console.log(AlertObjects.length);
+					delays = parseArray(AlertObjects);
+					console.log(delays.length);
+					var d = new Date();
+					if(delays.length > 0) {
+						var date = (d.getMonth()+1).toString() + "/" + d.getDate().toString() + "/" + d.getFullYear().toString();
+						document.getElementById("hiddenDelay").style.display = "block";
+						document.getElementById("delayPara").style.height = (window.innerHeight/5) + "px";
+						document.getElementById("delayPara").style.width = (window.innerWidth) + "px";
+						document.getElementById("delayPara").innerHTML = "Attention! There is a " + delays[0].get("Event") + " today, " + date + ".";
+					}
 				});
-			}, 3000);
+					
+				var image = document.getElementById("mainContent");
+				var count = 0;
+				var pic1 = document.getElementById("image1");
+				var pic2 = document.getElementById("image2");
+				var pic3 = document.getElementById("image3");
+				var pic4 = document.getElementById("image4");
+				var pic5 = document.getElementById("image5");
+				var pics = [pic1, pic2, pic3, pic4, pic5];
+				var interval = setInterval(function() {
+						count++;
+						if(count == pics.length) {
+							count = 0;
+						}
+						$("#mainContent").fadeOut("slow", function() {
+							if(count == 0) {
+								pics[pics.length-1].style.display = "none";
+							} else {
+								pics[count-1].style.display = "none";	
+							}
+							pics[count].style.display = "block";
+							$("#mainContent").fadeIn("slow");
+						});
+					}, 5000);		
+			
+				if(localStorage.getItem("init") == "true") {
+					sendReports();
+				}
+			}
+			
+			function sendReports() {
+				console.log("started report");
+				var pClass = Parse.Object.extend("PageAnalytics");
+				var data = new pClass();
+				data.set("Home", parseInt(localStorage.getItem("pageHome")));
+				data.set("Sport", parseInt(localStorage.getItem("pageSport")));
+				data.set("Lunch", parseInt(localStorage.getItem("pageLunch")));
+				data.set("Store", parseInt(localStorage.getItem("pageStore")));
+				data.set("Club", parseInt(localStorage.getItem("pageClub")));
+				data.set("Calendar", parseInt(localStorage.getItem("pageCalendar")));
+				data.set("Planner", parseInt(localStorage.getItem("pagePlanner")));
+				data.set("Talon", parseInt(localStorage.getItem("pageTalon")));
+				data.set("News", parseInt(localStorage.getItem("pageNews")));
+				data.set("Map", parseInt(localStorage.getItem("pageMap")));
+				data.set("Closing", parseInt(localStorage.getItem("pageClosing")));
+				data.set("Flappy", parseInt(localStorage.getItem("pageFlappy")));
+				data.set("About", parseInt(localStorage.getItem("pageAbout")));
+				data.set("Final", 0);
+				console.log("about to start");
+				data.save().then(function() {
+					console.log("success");
+					localStorage.setItem("pageHome", 0);
+					localStorage.setItem("pageSport", 0);
+					localStorage.setItem("pageLunch", 0);
+					localStorage.setItem("pageStore", 0);
+					localStorage.setItem("pageClub", 0);
+					localStorage.setItem("pageCalendar", 0);
+					localStorage.setItem("pagePlanner", 0);
+					localStorage.setItem("pageTalon", 0);
+					localStorage.setItem("pageNews", 0);
+					localStorage.setItem("pageMap", 0);
+					localStorage.setItem("pageClosing", 0);
+					localStorage.setItem("pageFlappy", 0);
+					localStorage.setItem("pageAbout", 0);
+					localStorage.setItem("pageHome", parseInt(localStorage.getItem("pageHome")) + 1);
+				});
+			}
+		</script>
+	
+		<script>
+			$(document).on("swiperight", function(event) {
+				var content = document.getElementById("holder2");
+				var menu = document.getElementById("holder");
+				content.style.cssFloat = "right";
+				menu.style.display = "inline";
+				document.getElementById("content").style.width = "102%";
+				var table = document.getElementById("contentTable");
+				var ratio = window.devicePixelRatio;
+				var rHeight = $(window).height() - (window.outerHeight - $(window).height());
+				for(i = 1; i < table.rows.length; i++) {
+					var tr = table.getElementsByTagName("tr")[i];
+    				var td = tr.getElementsByTagName("td")[0];
+    				td.style.height = "75px";
+				}
+				var div = document.getElementById("imageHolder");
+				div.style.height = "150px";
+				var image = document.getElementById("stretchImage");
+				image.style.height = div.style.height;
+				image.style.width = div.style.width;
+			});
+			
+			$(document).on("swipeleft", function(event) {
+				document.getElementById("holder").style.display = "none";
+				document.getElementById("content").style.width = "102%";
+			});
 		</script>
 	</body>
 </html>
